@@ -1,0 +1,13 @@
+'use strict';
+/* Glossaire · chapitre 7 · probabilités */
+module.exports = ({ sv, t, box, W }) => {
+  const faces = (n, hl) => Array.from({ length: n }, (_, i) => box(14 + (i % 10) * 26, 22 + Math.floor(i / 10) * 30, 22, 24, hl(i + 1) ? 'k' : 'wh') + t(25 + (i % 10) * 26, 38 + Math.floor(i / 10) * 30, String(i + 1), { fs: 10, c: hl(i + 1) ? 'tw' : 'tx' })).join('');
+  return [
+    W('experience', 'une expérience aléatoire', sv(box(40, 30, 60, 60, 'k2') + `<circle cx="58" cy="48" r="5" class="k"/><circle cx="82" cy="72" r="5" class="k"/><circle cx="70" cy="60" r="5" class="k"/>` + t(190, 54, 'on connaît les issues,', { fs: 12 }) + t(190, 72, 'pas le résultat', { fs: 12, c: 'kt' }), 'Un dé : on sait ce qui peut sortir, pas ce qui va sortir'), 'Une expérience dont on connaît toutes les issues possibles, sans pouvoir prévoir laquelle se produira.', 'Lancer un dé à 20 faces est une expérience aléatoire.'),
+    W('issue', 'une issue', sv(faces(20, n => n === 17) + t(144, 100, 'l’issue 17', { fs: 12, c: 'kt' }), 'Les 20 faces, dont la face 17'), 'Un résultat possible d’une expérience aléatoire.', 'Avec un dé à 20 faces, il y a 20 issues.'),
+    W('evenement', 'un événement', sv(faces(20, n => n >= 15) + t(144, 100, '« 15 ou plus » : 6 issues', { fs: 12, c: 'kt' }), 'Les faces 15 à 20 forment un événement'), 'Un ensemble d’issues, décrit par une phrase.', '« Obtenir 15 ou plus » est un événement.'),
+    W('equiprob', 'équiprobable', sv(faces(10, () => false) + t(144, 70, 'chaque face : 1 chance sur 10', { fs: 12, c: 'kt' }) + t(144, 96, 'dé équilibré', { fs: 11, c: 'ts' }), 'Dix faces qui ont toutes la même chance'), 'Des issues sont équiprobables quand elles ont toutes la même probabilité.', 'Les 20 faces d’un dé équilibré sont équiprobables.'),
+    W('proba', 'une probabilité', sv(`<path d="M24 60H264" class="ks" stroke-width="3"/>` + [[0, '0'], [.3, '0,3'], [1, '1']].map(([p, l]) => `<circle cx="${24 + p * 240}" cy="60" r="6" class="k"/>` + t(24 + p * 240, 84, l, { fs: 12 })).join('') + t(96, 44, '15 ou plus', { fs: 11, c: 'kt' }) + t(144, 108, 'un nombre entre 0 et 1', { fs: 11, c: 'ts' }), 'Une échelle de 0 à 1 avec la valeur 0,3'), 'Un nombre entre 0 et 1 qui mesure la chance qu’un événement se réalise. 0 : impossible ; 1 : certain.', 'La probabilité d’obtenir 15 ou plus avec un D20 est 0,3.', { formule: 'P(A) = favorables ÷ possibles' }),
+    W('contraire', 'l’événement contraire', sv(faces(20, n => n !== 1) + t(144, 100, 'non A : tout sauf 1', { fs: 12, c: 'kt' }), 'Toutes les faces sauf 1'), 'L’événement qui se réalise quand A ne se réalise pas.', 'P(ne pas obtenir 1) = 1 − 1/20 = 0,95.', { formule: 'P(non A) = 1 − P(A)' })
+  ];
+};
