@@ -169,11 +169,36 @@
     runs.filter(r => r.length > 1).forEach(pcs => { const anchor = pcs[0].previousElementSibling; const sorted = pcs.slice().sort((x, y) => (+x.querySelector('[data-numof]').textContent || 0) - (+y.querySelector('[data-numof]').textContent || 0)); pcs.forEach(x => x.remove()); let ref = anchor; sorted.forEach(x => { if (ref) ref.after(x); else inn.prepend(x); ref = x; }); }); });
   // corrigé express : dans l’ordre des numéros d’exercice
   document.querySelectorAll('.cc').forEach(cc => { const ps = [...cc.querySelectorAll(':scope > p')]; ps.sort((x, y) => (+x.querySelector('.cn').textContent || 0) - (+y.querySelector('.cn').textContent || 0)).forEach(x => cc.appendChild(x)); });
+  // formules : jamais coupées par un retour à la ligne. Seules les opérations réellement coupées sont jointes (espaces insécables), si la page a la place ; sinon on les signale
+  res.mxfix = 0; res.mxkeep = [];
+  {
+    const NB = '\\u00a0\\u202f', NUM = `\\d+(?:[${NB} ]\\d{3}(?!\\d))*(?:,\\d+)?(?:[a-zA-Z](?![\\p{L}]))?[²³]?`, UNIT = `(?:[${NB} ]?(?:%|€|°|cm|km|kg|mm|ml|cl|min|[mgLhs])[²³]?(?![\\p{L}]))?`;
+    const OPD = `(?:[A-Za-z]{0,3}\\([^()<>]{1,40}\\)[²³]?|${NUM}${UNIT}|[a-zA-Z](?![\\p{L}])[²³]?)`;
+    const OP = `[${NB} ]?[+−×÷=≈<>≤≥/·][${NB} ]?`;
+    const RE = new RegExp(`${OPD}(?:${OP}${OPD})+`, 'gu');
+    [...out.children].forEach((pg, i) => { const inn = pg.querySelector('.inner'); if (!inn) return;
+      const w = document.createTreeWalker(inn, NodeFilter.SHOW_TEXT, { acceptNode: n => (n.parentElement && !n.parentElement.closest('.katex,.katex-mathml,svg,script,style,textarea,template,.pfoot') && /[+−×÷=≈<>≤≥\/·]/.test(n.nodeValue)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+      const nodes = []; let t; while ((t = w.nextNode())) nodes.push(t);
+      nodes.forEach(n => { const s = n.nodeValue; RE.lastIndex = 0; let m;
+        while ((m = RE.exec(s))) { if (m[0].length < 4 || m[0].length > 130) continue;
+          const rg = document.createRange(); rg.setStart(n, m.index); rg.setEnd(n, m.index + m[0].length);
+          if (new Set([...rg.getClientRects()].filter(r => r.width > 0.5).map(r => Math.round(r.top / 4))).size < 2) continue;
+          const cur = n.nodeValue; n.nodeValue = cur.slice(0, m.index) + m[0].replace(/ /g, ' ') + cur.slice(m.index + m[0].length);
+          if (over(inn)) { n.nodeValue = cur; res.mxkeep.push('p. ' + (i + 1) + ' : ' + m[0]); } else res.mxfix++; } }); });
+  }
   // contrôles : rien ne déborde, ni en bas ni à droite
   [...out.children].forEach((p, i) => { const el = p.querySelector('.inner'); if (el && over(el)) res.errors.push('Page ' + (i + 1) + ' déborde');
     if (PROF) return;
     p.querySelectorAll('.ex, .gcard, .az, .chead, .ghead').forEach(b => { const R = b.getBoundingClientRect();
       for (const d of b.querySelectorAll('span,b,i,p,div,li,td,svg,strong')) { if (d.closest('.prof-only')) continue; const r = d.getBoundingClientRect(); if (r.width && r.right > R.right + 0.5) { res.errors.push(`Page ${i + 1} : dépasse du cadre → « ${(d.textContent || d.tagName).trim().slice(0, 40)} »`); break; } } }); });
   document.body.classList.remove('paging');
+  // version professeur : une réponse rouge plus longue que son pointillé élargit le pointillé (elle ne passe jamais sur le texte qui suit), si la page a la place
+  res.ansfix = 0; res.anskeep = [];
+  if (PROF) { const cv = document.createElement('canvas').getContext('2d');
+    [...out.children].forEach((pg, i) => { const inn = pg.querySelector('.inner'); if (!inn) return;
+      inn.querySelectorAll('[data-a]').forEach(e => { const cs = getComputedStyle(e, '::after'); if (!cs || cs.content === 'none' || cs.whiteSpace !== 'nowrap' || cs.position !== 'absolute') return;
+        const left = parseFloat(cs.left); if (isNaN(left) || e.classList.contains('rl')) return; const r = e.getBoundingClientRect(); if (!r.width) return;
+        cv.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; const wd = cv.measureText(e.getAttribute('data-a')).width, need = left + wd + 5; if (need <= r.width) return;
+        const old = e.style.minWidth; e.style.minWidth = need + 'px'; if (over(inn)) { e.style.minWidth = old; res.anskeep.push('p. ' + (i + 1) + ' : ' + e.getAttribute('data-a').slice(0, 40)); } else res.ansfix++; }); }); }
   res.pages = out.children.length; window.__result = res;
 })();
