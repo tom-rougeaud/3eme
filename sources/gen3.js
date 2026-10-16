@@ -253,7 +253,8 @@ const anchors = h => h.replace(/(<section [^>]*data-key="([^"]+)"[^>]*>)<div cla
 const detsHtml = () => `<div id="dets" hidden>${DETS.map(d => `<div class="dz-src" data-for="${d.id}">${d.h}</div>`).join('')}</div>`;
 const doc = (title, body, cls) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${esc(title)}</title><style>${FONTS}\n${TEX.css()}\n${ROOT}\n${CSS}</style></head>
 <body class="${cls}" data-foot="${esc(FOOT)}"><div id="flow">${anchors(typo(body))}</div><div id="out"></div>${cls === 'prof' ? typo(detsHtml()) : ''}${TPL}<script>${PAG}</script></body></html>`;
-const front = pCover + pGuide + pComp1 + pComp2 + pToc;
+const pBlank = `<div class="page blank" data-recto="0"></div>`;
+const front = pCover + pBlank + pGuide + pComp1 + pComp2 + pToc;
 fs.writeFileSync(path.join(B, 'eleve.html'), doc('Maths · 3ème Série Pro — manuel', front + pontSec + chapSecs + dnbSecs + repSec + glo, 'eleve'));
 fs.writeFileSync(path.join(B, 'prof.html'), doc('Maths · 3ème Série Pro — version professeur', front + pontSec + pontProf + chapSecs + dnbSecs + repSec+ glo, 'prof'));
 const nEx = CH.reduce((a, x) => a + x.rep.length + x.c.probs.length, 0);
