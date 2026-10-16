@@ -1,5 +1,5 @@
 /* ===== Manuel « Maths et MCV · 2de » : compléments à la charte des manuels (print.css + n3.css) ===== */
-.c-brand{--cc:#8A5F00;--tt:#FFF3C4}
+.c-brand{--cc:#9A5B00;--tt:#FFEFD1}
 /* schémas : couleurs du chapitre */
 .pic .k{fill:var(--cc)}.pic .k2{fill:var(--tt)}.pic .ks{stroke:var(--cc)}
 .pic .tx{fill:#1D2240}.pic .tw{fill:#fff}.pic .kt{fill:var(--cc)}
@@ -57,8 +57,8 @@ p.ans .bl{flex:none}
 .srcl{margin:.4mm 0 0;font:700 7.6pt 'Inter';color:#7d84a6}
 .cbig{max-width:150mm}
 /* encart juridique */
-.enc{border:2px solid #2B2D7C;border-radius:4mm;background:#F5F6FD;margin-bottom:3mm;overflow:hidden}
-.enc-h{background:#2B2D7C;color:#fff;font:800 11pt 'Inter';padding:1.4mm 4mm}
+.enc{border:2px solid #9A5B00;border-radius:4mm;background:#F5F6FD;margin-bottom:3mm;overflow:hidden}
+.enc-h{background:#9A5B00;color:#fff;font:800 11pt 'Inter';padding:1.4mm 4mm}
 .enc-b{padding:1.6mm 4mm;font-size:10.4pt}.enc-b p{margin:.6mm 0}
 .enc-s{padding:0 4mm 1.6mm;font:700 7.6pt 'Inter';color:#545B7A}
 /* méthodes */
@@ -112,7 +112,7 @@ table.sh-t td.sh-sel{outline:2px solid #1E7F45;outline-offset:-2px}
 /* message */
 .ms{border-radius:4mm;background:#F2F5FC;padding:2mm 3mm;font-size:10.2pt}
 .ms-h{display:flex;align-items:center;gap:2mm;margin-bottom:1mm}.ms-h small{display:block;font-size:7.8pt;color:#7d84a6}
-.ms-av{display:grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:#2B2D7C;color:#fff;font:800 9pt 'Inter'}
+.ms-av{display:grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:#9A5B00;color:#fff;font:800 9pt 'Inter'}
 .ms-b{background:#fff;border-radius:3mm;padding:1.6mm 2.6mm;border:1px solid #DCE2F2}
 /* affiche promo */
 .pr{background:#1D2240;color:#fff;border-radius:3mm;padding:3mm 4mm;text-align:center;position:relative;max-width:62mm;margin:2mm auto}
@@ -144,7 +144,7 @@ table.dt.dt-sm{font-size:8.4pt}
 /* ---------- pages fixes : mode d’emploi, sommaire ---------- */
 .guide-g{display:grid;grid-template-columns:1fr 1fr;gap:2.4mm}
 .gd{display:grid;grid-template-columns:10mm 1fr;gap:2mm;align-items:start;background:#F3F6FE;border-radius:3.4mm;padding:2mm 3mm}
-.gd .gi{font-size:16pt;line-height:1}.gd b{display:block;font:800 11pt 'Inter';color:#2B2D7C}.gd span{font-size:10pt;line-height:1.28}
+.gd .gi{font-size:16pt;line-height:1}.gd b{display:block;font:800 11pt 'Inter';color:#9A5B00}.gd span{font-size:10pt;line-height:1.28}
 .compet{display:grid;grid-template-columns:auto 1fr;gap:1.4mm 3mm;align-items:center;font-size:10.2pt}
 .palx{display:grid;grid-template-columns:auto 1fr;gap:1.6mm 3mm;align-items:center;font-size:10.4pt}
 .toc2{display:grid;gap:1.6mm}
@@ -153,7 +153,7 @@ table.dt.dt-sm{font-size:8.4pt}
 .tc2 b{font:800 12.5pt 'Inter';color:var(--cc);display:block}.tc2 span{font-size:9.6pt;color:#2d3356}
 .tc2 .tp2{font:800 12pt 'Inter';color:var(--cc)}
 .tc2.soon{opacity:.55}
-.tc2.ann{background:#F3F4F9;--cc:#2B2D7C}
+.tc2.ann{background:#F3F4F9;--cc:#9A5B00}
 /* corrigé et coups de pouce */
 .pc{border-left:3mm solid var(--cc);padding:.6mm 0 .6mm 3.4mm;margin-bottom:2.2mm;font-size:10pt}
 .pc b{color:var(--cc)}
@@ -206,8 +206,8 @@ mark.hl{background:linear-gradient(transparent 10%,#FFE47A 10%,#FFE47A 90%,trans
 .tbl.mkt{width:100%;border:none;margin:0;font-size:10pt}.tbl.mkt td{border:none;border-bottom:1px dotted #C9D1EA;text-align:left;padding:.8mm 1.6mm}
 .tbl.mkt td.mk-w{font:800 9.8pt 'Inter';color:var(--cc);width:58mm}
 /* astuces */
-.ast{border:2px solid #2B2D7C;border-radius:5mm;padding:2.2mm 3.4mm 3mm;margin-bottom:3mm;background:#fff}
-.ast-h{font:800 13pt 'Inter';color:#2B2D7C;margin-bottom:2mm}.ast-h span{font:700 9pt 'Inter';color:#545B7A;margin-left:2mm}
+.ast{border:2px solid #9A5B00;border-radius:5mm;padding:2.2mm 3.4mm 3mm;margin-bottom:3mm;background:#fff}
+.ast-h{font:800 13pt 'Inter';color:#9A5B00;margin-bottom:2mm}.ast-h span{font:700 9pt 'Inter';color:#545B7A;margin-left:2mm}
 .ast-g{display:grid;grid-template-columns:1fr 1fr;gap:2.4mm}
 .ast-b{border-radius:3mm;padding:1.6mm 2.8mm;font-size:10.2pt;line-height:1.32}
 .ast-b p{margin:.9mm 0;padding-left:3.4mm;position:relative}.ast-b p::before{content:"›";position:absolute;left:0;font-weight:800}
@@ -249,13 +249,13 @@ b.nw{background:linear-gradient(transparent 12%,#FFE47A 12%,#FFE47A 88%,transpar
 /* page « comment ça marche » */
 .gsteps{display:grid;gap:2mm}
 .gs2{display:grid;grid-template-columns:8mm 10mm 1fr;align-items:center;gap:2mm;background:#F3F6FE;border-radius:3.4mm;padding:2mm 3.4mm}
-.gn{display:grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:#2B2D7C;color:#fff;font:800 10pt 'Inter'}
-.gs2 .gi{font-size:16pt}.gs2 b{display:block;font:800 11.5pt 'Inter';color:#2B2D7C}.gs2 span{font-size:10.2pt;line-height:1.3}
+.gn{display:grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:#9A5B00;color:#fff;font:800 10pt 'Inter'}
+.gs2 .gi{font-size:16pt}.gs2 b{display:block;font:800 11.5pt 'Inter';color:#9A5B00}.gs2 span{font-size:10.2pt;line-height:1.3}
 .mg-i{white-space:normal;flex-wrap:wrap}
 /* facture (chapitre 4) */
 .ex .fac,.fac{background:#fff;border:1.4px solid #B9C2DE;border-radius:2.6mm;padding:2.4mm 3.4mm;font-size:9.4pt;line-height:1.3;margin:1mm 0 2mm}
-.fac-h{display:flex;justify-content:space-between;gap:4mm;align-items:flex-start;border-bottom:2px solid var(--cc,#2B2D7C);padding-bottom:1.4mm}
-.fac-t{font:800 13pt 'Inter';text-align:right;color:var(--cc,#2B2D7C);letter-spacing:.04em}.fac-t small{font:600 8.4pt 'Inter';color:#545B7A;letter-spacing:0}
+.fac-h{display:flex;justify-content:space-between;gap:4mm;align-items:flex-start;border-bottom:2px solid var(--cc,#9A5B00);padding-bottom:1.4mm}
+.fac-t{font:800 13pt 'Inter';text-align:right;color:var(--cc,#9A5B00);letter-spacing:.04em}.fac-t small{font:600 8.4pt 'Inter';color:#545B7A;letter-spacing:0}
 .fac-c{margin:1.4mm 0;font-weight:700}
 .fac-f{font-size:7.8pt;color:#545B7A;margin:1.2mm 0 0}
 .fac table.dt{width:100%}
@@ -271,7 +271,7 @@ svg.fig text{font-family:'Inter',sans-serif;font-weight:700}
 /* tableau croisé (chapitre 8) */
 table.dt.tcx th{text-align:center}table.dt.tcx tbody th{text-align:left;background:var(--tt,#EEF0FB);font-family:'Inter';font-weight:800;font-size:.92em;color:#1D2240;padding:.8mm 2mm;border:1px solid #C9D1EA}
 table.dt.tcx td{text-align:center}table.dt.tcx td.tot,table.dt.tcx tr.tot td{font-weight:800;background:#F4F6FC}
-table.dt.tcx td.hlc{background:var(--cc,#2B2D7C);color:#fff;font-weight:800}
+table.dt.tcx td.hlc{background:var(--cc,#9A5B00);color:#fff;font-weight:800}
 .fx.fxm{white-space:normal}
 /* « Au travail » : lien avec le métier */
 .metier{display:flex;flex-wrap:wrap;align-items:center;gap:1.4mm 2.4mm;border:1.6px dashed var(--cc);border-radius:4mm;padding:1.8mm 3.4mm;margin:0 0 3mm;background:#fff;font-size:10.2pt}
@@ -279,10 +279,10 @@ table.dt.tcx td.hlc{background:var(--cc,#2B2D7C);color:#fff;font-weight:800}
 .mt-r{display:flex;flex-wrap:wrap;gap:1.2mm}.mt-r span{background:var(--tt);border-radius:99px;padding:.3mm 2.4mm;font:700 8.8pt 'Inter';color:#1D2240}
 .mt-t{flex:1 1 60mm;color:#2d3356}
 /* « S’évaluer » */
-.evh{border:2.4px solid var(--cc);border-radius:5mm;padding:3mm 4mm;margin-bottom:3mm;background:linear-gradient(180deg,var(--tt) 0,#fff 26mm)}
+.evh{border:2.4px solid var(--cc);border-radius:5mm;padding:3mm 4mm;margin-bottom:3mm;background:var(--tt)}
 .evh-t h2{margin:.6mm 0 .4mm;font-size:17pt;color:#1D2240}.evh-t p{margin:0;font-size:9.8pt;color:#545B7A}
 .evh-k{display:inline-block;font:800 9pt 'Inter';background:var(--cc);color:#fff;border-radius:99px;padding:.4mm 3mm;letter-spacing:.03em}
-.evh-n{display:grid;grid-template-columns:auto 1fr auto 30mm auto;gap:2.4mm;align-items:end;margin:2mm 0;font:800 10pt 'Inter';color:#2B2D7C}.evh-n i{border-bottom:2px dashed #9aa3c7;height:6mm}.evh-n b{font-size:14pt;border:2px solid var(--cc);border-radius:3mm;padding:.6mm 3mm;color:var(--cc)}
+.evh-n{display:grid;grid-template-columns:auto 1fr auto 30mm auto;gap:2.4mm;align-items:end;margin:2mm 0;font:800 10pt 'Inter';color:#9A5B00}.evh-n i{border-bottom:2px dashed #9aa3c7;height:6mm}.evh-n b{font-size:14pt;border:2px solid var(--cc);border-radius:3mm;padding:.6mm 3mm;color:var(--cc)}
 .tbl.evg{width:100%;font-size:9pt;margin-top:1mm}.tbl.evg th,.tbl.evg td{border:1px solid #C9D1EA;padding:.6mm 1.6mm;text-align:center}.tbl.evg td.tl{text-align:left}
 .evx{border-top:2px solid var(--cc);padding:2mm 0 .4mm;margin:2mm 0 .6mm;background:#fff}
 .evx-h{display:flex;align-items:center;gap:2mm;margin-bottom:1mm}.evx-n{font:800 9.4pt 'Inter';background:var(--cc);color:#fff;border-radius:2mm;padding:.4mm 2.2mm}.evx-t{font:800 12pt 'Inter';color:#1D2240;flex:1}.evx-p{font:800 9.6pt 'Inter';color:var(--cc);border:1.4px solid var(--cc);border-radius:99px;padding:.2mm 2.4mm}
