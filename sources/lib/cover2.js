@@ -84,12 +84,11 @@ function cover(o = {}) {
   L.forEach(([k, x, y, r, sc, op]) => { s += G(x, y, r, sc, op, M[k]()); });
   // titre
   s += `<g font-family="Inter">`;
-  s += `<rect x="70" y="420" width="700" height="330" rx="40" fill="#1D2240" opacity=".92"/>`;
+  s += `<rect x="70" y="420" width="700" height="300" rx="40" fill="#1D2240" opacity=".92"/>`;
   s += `<text x="110" y="492" font-size="24" font-weight="800" fill="${YEL}" letter-spacing="3" textLength="620" lengthAdjust="spacingAndGlyphs">MATHÉMATIQUES · 3E PRÉPA-MÉTIERS</text>`;
   s += `<text x="106" y="596" font-size="92" font-weight="800" fill="${W}" letter-spacing="-2" textLength="620" lengthAdjust="spacingAndGlyphs">3ème Série Pro</text>`;
   s += `</g>` + `<path d="${line(110, 628, 470, 622, 2.5)}" fill="none" stroke="${YEL}" stroke-width="9" stroke-linecap="round"/>`;
-  s += `<g font-family="Inter"><text x="110" y="690" font-size="38" font-weight="700" fill="${W}">Pop culture et brevet</text>`;
-  s += `<text x="110" y="728" font-size="27" font-weight="700" fill="${YEL}">Mangas · Séries · Cinéma · Jeux</text></g>`;
+  s += `<g font-family="Inter"><text x="110" y="690" font-size="38" font-weight="700" fill="${W}">Brevet série professionnelle</text></g>`;
   // bas de page : auteur et QR code
   s += `<rect x="0" y="1040" width="840" height="148" fill="#1D2240" opacity=".9"/>`;
   s += `<g font-family="Inter"><text x="70" y="1108" font-size="26" font-weight="800" fill="${W}">Tom Rougeaud</text>`;
