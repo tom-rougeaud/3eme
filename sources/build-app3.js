@@ -41,7 +41,7 @@ const CSS = ['print.css', 'n3.css', 'mcv.css'].map(f => rd('style/' + f)).join('
   .replace(/@page\{[^}]*\}/g, '').replace(/html,body\{margin:0;padding:0;background:#fff\}/, 'html,body{margin:0;padding:0}');
 const APPCSS = rd('app/app.css') + '\n' + rd('app/app3.css');
 const js = s => s.replace(/<\/script/gi, '<\\/script');
-const FAV = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#FFEC73"/><text x="32" y="47" font-family="Arial,sans-serif" font-size="44" font-weight="700" fill="#5A4700" text-anchor="middle">Σ</text></svg>`);
+const FAV = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#F5A300"/><text x="32" y="47" font-family="Arial,sans-serif" font-size="44" font-weight="700" fill="#1D2240" text-anchor="middle">Σ</text></svg>`);
 
 const html = `<!doctype html>
 <html lang="fr">
