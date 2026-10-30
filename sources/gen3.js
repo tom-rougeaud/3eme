@@ -140,7 +140,7 @@ const pGuide = `<div class="page c-nombre" data-recto="0"><div class="inner" dat
   <div class="owner"><span>Ce manuel appartient à</span><i></i><span>Classe</span><i></i></div>
   <p class="pg-p small lic">© Tom Rougeaud · Manuel et appli sous licence <b>CC BY-NC 4.0</b> : tu peux les partager et les adapter, sans usage commercial, en citant l’auteur.</p>
 </div><div class="foot"></div></div>`;
-/* les compétences, expliquées par le métier (double page) */
+/* les compétences, expliquées par le métier (une seule page) */
 const COMPS = [
   ['che', 'Trouver l’information utile, faire des essais, poser des questions.', 'Repérer sur un plan de câblage la prise qui ne répond pas.', 'Je surligne les données, je teste un exemple avant de me lancer.'],
   ['mod', 'Traduire une situation en calcul, en équation ou en fonction.', 'Écrire le prix de n mois d’abonnement : 7,99 × n.', 'Je me demande : « Quel calcul répond à la question ? »'],
@@ -148,24 +148,17 @@ const COMPS = [
   ['rai', 'Justifier avec une propriété, un calcul ou un contre-exemple.', 'Prouver qu’un mur est bien d’équerre avant de poser une étagère.', 'J’écris : « Je sais que… Or… Donc… ».'],
   ['cal', 'Calculer juste, à la main, de tête ou avec un outil.', 'Calculer les vraies dimensions d’une pièce à partir d’un plan à l’échelle.', 'Je pose le calcul, j’écris l’unité, j’arrondis comme demandé.'],
   ['com', 'Expliquer sa démarche et rédiger une réponse claire.', 'Expliquer à un client le devis d’une réparation.', 'Je réponds par une phrase complète, avec le résultat et l’unité.']];
-const compCard = ([k, geste, metier, manuel]) => `<div class="cpc cpc6 cpc-${k}"><div class="cpc-i">${CP[k]()}</div><div><span class="cp cp-${k}">${CPS[k]}</span><p class="cpc-g">${geste}</p><p class="cpc-m">🧑‍🔧 <b>Dans un métier</b> · ${metier}</p><p class="cpc-x">✏️ <b>Dans le manuel</b> · ${manuel}</p></div></div>`;
-const pComp1 = `<div class="page c-algo"><div class="inner" data-sec="competences">
+const compCard = ([k, geste, metier, manuel]) => `<div class="cpc cpc7 cpc-${k}"><div class="cpc-i">${CP[k]()}</div><div><div class="cpc-h"><span class="cp cp-${k}">${CPS[k]}</span><p class="cpc-g">${geste}</p></div><p class="cpc-m">🧑‍🔧 <b>Dans un métier</b> · ${metier}</p><p class="cpc-x">✏️ <b>Dans le manuel</b> · ${manuel}</p></div></div>`;
+const pComp = `<div class="page c-algo"><div class="inner cps6" data-sec="competences">
   <h1 class="pg-t">Les 6 compétences du brevet</h1>
   <p class="pg-p">Au brevet et en 3e, on évalue six compétences, sur quatre degrés de maîtrise. Ce sont aussi des gestes de tous les métiers.</p>
-  ${COMPS.slice(0, 4).map(compCard).join('')}
-</div><div class="foot"></div></div>`;
-const pComp2 = `<div class="page c-algo"><div class="inner">
-  ${COMPS.slice(4).map(compCard).join('')}
-  <h2 class="pg-s">Les consignes</h2>
-  <table class="tbl cons2"><tr><th>Dans le manuel</th><th>Au brevet</th><th>Ce qu’on attend</th></tr>
-  <tr><td>Calcule</td><td>Calculer</td><td>un résultat chiffré, avec son unité</td></tr>
-  <tr><td>Détermine</td><td>Déterminer</td><td>un résultat, par le calcul ou par lecture</td></tr>
-  <tr><td>Justifie</td><td>Justifier, montrer</td><td>une raison : un calcul, une propriété, un document</td></tr>
-  <tr><td>Vérifie</td><td>Vérifier</td><td>un contrôle qui confirme le résultat</td></tr>
-  <tr><td>Rédige</td><td>Rédiger</td><td>des phrases complètes qui répondent à la question</td></tr></table>
-  <h2 class="pg-s">Mes outils</h2>
-  <div class="guide-g"><div class="gd"><span class="gi">🧮</span><div><b>Calculatrice collège</b><span>Pour la partie 2 du brevet : fractions, puissances (touche ^ ou xʸ), racine carrée, cosinus, sinus, tangente.</span></div></div><div class="gd"><span class="gi">📊</span><div><b>Tableur</b><span>Moyenne, médiane, formules recopiées vers le bas, graphiques.</span></div></div><div class="gd"><span class="gi">📐</span><div><b>GeoGebra</b><span>Tracer une droite ou une figure, vérifier une longueur, un angle, une transformation.</span></div></div><div class="gd"><span class="gi">🐱</span><div><b>Scratch</b><span>Lire et écrire des programmes avec des blocs : boucles, conditions, variables.</span></div></div></div>
-  <p class="pg-p small">Les données de pop culture viennent de sources réelles, indiquées sous chaque document, avec leur date. Les personnages ne sont jamais dessinés : seuls les chiffres comptent. Les boutiques, les prix et les enquêtes inventés pour les exercices sont signalés comme fictifs.</p>
+  ${COMPS.map(compCard).join('')}
+  <div class="cpbot"><div><h2 class="pg-s">Les consignes</h2><table class="tbl cons2"><tr><th>Consigne · Au brevet</th><th>Ce qu’on attend</th></tr>
+  <tr><td><b>Calcule</b> · Calculer</td><td>un résultat chiffré, avec son unité</td></tr>
+  <tr><td><b>Détermine</b> · Déterminer</td><td>un résultat, par le calcul ou par lecture</td></tr>
+  <tr><td><b>Justifie</b> · Justifier, montrer</td><td>une raison : un calcul, une propriété, un document</td></tr>
+  <tr><td><b>Vérifie</b> · Vérifier</td><td>un contrôle qui confirme le résultat</td></tr>
+  <tr><td><b>Rédige</b> · Rédiger</td><td>des phrases complètes qui répondent à la question</td></tr></table><p class="rappel">📌 <b>Rappel</b> · Les données de pop culture viennent de sources réelles, indiquées sous chaque document avec leur date. Tout le reste (boutiques, prix, taux, enquêtes, personnages) est inventé pour les exercices. Les personnages ne sont jamais dessinés : seuls les chiffres comptent.</p></div><div><h2 class="pg-s">Mes outils</h2><div class="guide-g"><div class="gd"><span class="gi">🧮</span><div><b>Calculatrice collège</b><span>Pour la partie 2 du brevet : fractions, puissances (touche ^ ou xʸ), racine carrée, cosinus, sinus, tangente.</span></div></div><div class="gd"><span class="gi">📊</span><div><b>Tableur</b><span>Moyenne, médiane, formules recopiées vers le bas, graphiques.</span></div></div><div class="gd"><span class="gi">📐</span><div><b>GeoGebra</b><span>Tracer une droite ou une figure, vérifier une longueur, un angle, une transformation.</span></div></div><div class="gd"><span class="gi">🐱</span><div><b>Scratch</b><span>Lire et écrire des programmes avec des blocs : boucles, conditions, variables.</span></div></div></div></div></div>
 </div><div class="foot"></div></div>`;
 const pToc = `<div class="page" data-recto="0"><div class="inner" data-sec="sommaire">
   <h1 class="pg-t">Sommaire</h1>
@@ -254,7 +247,7 @@ const detsHtml = () => `<div id="dets" hidden>${DETS.map(d => `<div class="dz-sr
 const doc = (title, body, cls) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${esc(title)}</title><style>${FONTS}\n${TEX.css()}\n${ROOT}\n${CSS}</style></head>
 <body class="${cls}" data-foot="${esc(FOOT)}"><div id="flow">${anchors(typo(body))}</div><div id="out"></div>${cls === 'prof' ? typo(detsHtml()) : ''}${TPL}<script>${PAG}</script></body></html>`;
 const pBlank = `<div class="page blank" data-recto="0"></div>`;
-const front = pCover + pBlank + pGuide + pComp1 + pComp2 + pToc;
+const front = pCover + pBlank + pGuide + pComp + pToc;
 fs.writeFileSync(path.join(B, 'eleve.html'), doc('Maths · 3ème Série Pro — manuel', front + pontSec + chapSecs + dnbSecs + repSec + glo, 'eleve'));
 fs.writeFileSync(path.join(B, 'prof.html'), doc('Maths · 3ème Série Pro — version professeur', front + pontSec + pontProf + chapSecs + dnbSecs + repSec+ glo, 'prof'));
 const nEx = CH.reduce((a, x) => a + x.rep.length + x.c.probs.length, 0);

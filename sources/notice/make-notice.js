@@ -76,7 +76,7 @@ table{width:100%;border-collapse:collapse;font-size:9.6pt}th,td{border:1px solid
 <p class="small">Chaque chapitre a 6 onglets : Départ (scène, document à toucher, « Ce que tu sais déjà »), Leçon (les notions en 5 temps), Méthodes (exercices résolus et simulateur), S’entraîner (10 automatismes, 3 exercices qui changent à chaque essai, indices, erreurs fréquentes expliquées, Scratch), Problèmes (dont « vers le brevet » et le métier), S’évaluer (sur 20).</p></div>
 
 <h2><b>6</b>Données personnelles et utilisation</h2>
-<div class="box g"><ul><li>Aucun compte, aucun cookie, aucun traceur, aucune police ni script externe. La progression reste dans le navigateur, sous les clés <code>mcv3e.v1.progression</code> et <code>mcv3e.v1.preferences</code>, distinctes des autres niveaux.</li><li>Export, import et effacement depuis « Mes données ». Une fois ouverte, l’appli fonctionne sans réseau ; on peut aussi enregistrer <code>index.html</code> sur un poste.</li></ul></div>
+<div class="box g"><ul><li><b>Installation sur l’écran d’accueil</b> : sur Android (Chrome, Edge), une bannière « Installer l’appli » apparaît ; sur iPhone et iPad (Safari), Partager → « Sur l’écran d’accueil ». Une fois installée, l’appli s’ouvre sans réseau.</li><li>Aucun compte, aucun cookie, aucun traceur, aucune police ni script externe. La progression reste dans le navigateur, sous les clés <code>mcv3e.v1.progression</code> et <code>mcv3e.v1.preferences</code>, distinctes des autres niveaux.</li><li>Export, import et effacement depuis « Mes données ». Une fois ouverte, l’appli fonctionne sans réseau ; on peut aussi enregistrer <code>index.html</code> sur un poste.</li></ul></div>
 
 <h2><b>7</b>Les manuels PDF</h2>
 <div class="box"><ul><li><b>Version élève</b> (${RES('eleve')} pages) : couverture, « Comment ça marche », les 6 compétences, sommaire, « Ce que tu sais déjà », 10 chapitres, les 3 sujets blancs, les réponses de « Je m’entraîne », le glossaire visuel.</li>
@@ -91,7 +91,7 @@ table{width:100%;border-collapse:collapse;font-size:9.6pt}th,td{border:1px solid
 <tr><td>Programmes Scratch : dessinés et calculés, mais pas exécutés dans Scratch</td><td><span class="tag mid">à vérifier</span></td></tr>
 <tr><td>Navigateurs : Chromium seulement ; Safari, Firefox, iPad et tablettes Android non testés ; lecture à voix haute non testée</td><td><span class="tag mid">à vérifier</span></td></tr></table></div>
 
-<div class="box"><p>Données réelles : Wikipédia (épisodes des Simpson, statue de l’Unicorn Gundam), Shueisha (One Piece, tome 114), The Pokémon Company (chiffres au 31 mars 2026), JeChange et centre d’aide Netflix (tarifs, débits), CNC (fréquentation et top 2025, visa d’Avengers : Endgame), IFAB (lois du jeu). Les entreprises, clubs et jeux des exercices sont fictifs et signalés comme tels.</p>
+<div class="box"><p>Données réelles : Wikipédia (épisodes des Simpson, statue de l’Unicorn Gundam), Shueisha (One Piece, tome 114), The Pokémon Company (chiffres au 31 mars 2026), JeChange et centre d’aide Netflix (tarifs, débits), CNC (fréquentation et top 2025, visa d’Avengers : Endgame), IFAB (lois du jeu). Les entreprises, clubs et jeux des exercices sont inventés.</p>
 <p>Tom Rougeaud · licence <b>CC BY-NC 4.0</b>.</p></div>
 </body></html>`;
 fs.writeFileSync(path.join(__dirname, 'notice.html'), html);

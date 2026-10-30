@@ -47,14 +47,14 @@ module.exports = function (chk) {
   chk(6 * 6 + 7 * 6 + 10 === 11 * 8 && 4 * (5 + 3) - 12 === 20 && Math.abs(14.99 * 6 - (7.99 * 6 + 42)) < 1e-9 && 2 * -4 + 8 === 0 && 2 * 3 + 8 === 14, 'c3 notions');
 
   c.notions = [
-    { titre: 'Développer une expression', decouvre: { txt: `Un poster de film (fictif) mesure ${H('(x + 5) dm')} de long et ${H('(x + 2) dm')} de large. Comment écrire son aire sans parenthèses ?`, img: skPoster() },
+    { titre: 'Développer une expression', decouvre: { txt: `Un poster de film mesure ${H('(x + 5) dm')} de long et ${H('(x + 2) dm')} de large. Comment écrire son aire sans parenthèses ?`, img: skPoster() },
       methode: ['Je découpe le rectangle en quatre rectangles : x sur x, 5 sur x, x sur 2 et 5 sur 2.', 'Je calcule l’aire de chaque morceau : x², 5x, 2x et 10.', 'J’additionne les quatre aires : x² + 5x + 2x + 10.', 'Je réduis en regroupant les termes en x : x² + 7x + 10.'],
       vois: vDev,
       solution: `<p>${FM(R`(x+5)(x+2)=x^2+7x+10`)}. Développer, c’est transformer le produit en somme.</p><p>Je vérifie avec x = 6 : (6 + 5) × (6 + 2) = 11 × 8 = 88 et 36 + 42 + 10 = 88 ✓.</p>`,
       retiens: `<p><b>Simple distributivité</b> : ${FM(R`k(a+b)=ka+kb`)}</p><p><b>Double distributivité</b> : ${FM(R`(a+b)(c+d)=ac+ad+bc+bd`)}</p>`,
       attention: '(x + 5)² n’est pas x² + 25 : (x + 5)(x + 5) = x² + 10x + 25.',
       amoi: [['Développe 3(x + 4).', '3x + 12'], ['Développe (x + 1)(x + 3).', 'x² + 4x + 3']] },
-    { titre: 'Factoriser et prouver avec une lettre', decouvre: { txt: `Une carte d’énigme (fictive) dit : « Choisis un nombre, ${H('ajoute 3')}, ${H('multiplie par 4')}, puis ${H('enlève 12')}. Tu obtiens toujours 4 fois ton nombre. » Est-ce vrai pour tous les nombres ?`, img: skEnigme() },
+    { titre: 'Factoriser et prouver avec une lettre', decouvre: { txt: `Une carte d’énigme dit : « Choisis un nombre, ${H('ajoute 3')}, ${H('multiplie par 4')}, puis ${H('enlève 12')}. Tu obtiens toujours 4 fois ton nombre. » Est-ce vrai pour tous les nombres ?`, img: skEnigme() },
       methode: ['J’appelle x le nombre choisi : une lettre représente n’importe quel nombre.', 'J’écris le programme avec x : x + 3, puis 4(x + 3), puis 4(x + 3) − 12.', 'Je développe et je réduis : 4x + 12 − 12 = 4x.', 'Un exemple aide à comprendre, mais seul le calcul avec x prouve que c’est toujours vrai.'],
       vois: vProg,
       solution: `<p>${FM(R`4(x+3)-12=4x+12-12=4x`)} : quel que soit le nombre choisi, on obtient 4 fois ce nombre. L’énigme dit vrai.</p><p>Dans l’autre sens, 4x + 12 = 4(x + 3) : c’est une <b>factorisation</b>.</p>`,
@@ -68,7 +68,7 @@ module.exports = function (chk) {
       retiens: `<p>Une <b>équation</b> est une égalité avec une inconnue. La <b>résoudre</b>, c’est trouver la valeur de l’inconnue qui la rend vraie.</p><p>On garde l’égalité vraie en faisant la même opération des deux côtés : ajouter, soustraire, multiplier ou diviser (par un nombre non nul).</p>`,
       attention: 'On fait toujours la même opération des deux côtés du signe =. Pour isoler x dans 7x = 42, on divise par 7 : on ne soustrait pas 7.',
       amoi: [['Résous 3x + 5 = 20.', 'x = 5'], ['Résous 5x − 4 = 2x + 11.', 'x = 5']] },
-    { titre: 'Résoudre une équation produit nul', decouvre: { txt: `Dans un escape game (fictif), le code du cadenas est un nombre x tel que ${H('(x − 3)(2x + 8) = 0')}. Quelles valeurs faut-il essayer ?`, img: skCadenas() },
+    { titre: 'Résoudre une équation produit nul', decouvre: { txt: `Dans un escape game, le code du cadenas est un nombre x tel que ${H('(x − 3)(2x + 8) = 0')}. Quelles valeurs faut-il essayer ?`, img: skCadenas() },
       methode: ['Un produit est nul si l’un de ses facteurs est nul : x − 3 = 0 ou 2x + 8 = 0.', 'Je résous la première équation : x − 3 = 0, donc x = 3.', 'Je résous la seconde : 2x + 8 = 0, donc 2x = −8 et x = −4.', 'Je vérifie les deux valeurs dans le produit de départ.'],
       vois: vNul,
       solution: `<p>L’équation a <b>deux solutions</b> : x = 3 et x = −4.</p><p>Un code de cadenas est positif : il faut essayer 3.</p>`,
@@ -95,7 +95,7 @@ module.exports = function (chk) {
   chk(Math.abs(21.99 * 12 - 263.88) < 1e-9 && Math.abs(21.99 - 7.99 - 14) < 1e-9 && 98 / 14 === 7 && Math.abs((7.99 + 21.99) / 2 - 14.99) < 1e-9, 'c3 problème 3');
   c.probs = [
     PB({ id: 'p1', etape: 2, lc: 3, comps: ['mod', 'cal'], titre: 'Le pass de jeux vidéo',
-      intro: `<p>Un service de jeux vidéo (fictif) coûte ${H('12 € par mois')}, avec ${H('30 €')} de frais d’inscription payés une seule fois.</p>`,
+      intro: `<p>Un service de jeux vidéo coûte ${H('12 € par mois')}, avec ${H('30 €')} de frais d’inscription payés une seule fois.</p>`,
       qs: [Q('a.', 'Combien coûtent 5 mois, inscription comprise ?', '30 + 12 × 5 = 90 €', 90, { w: 24, lab: 'en € :' }), Q('b.', 'Écris le prix de x mois, inscription comprise.', '12x + 30', null, { w: 34 }), Q('c.', 'Inès a un budget de 186 €. Écris une équation, puis trouve combien de mois elle peut payer.', '12x + 30 = 186, donc 12x = 156 et x = 13 mois', 13, { lines: 1, lab: 'nombre de mois :' }), Q('d.', 'Vérifie ta réponse.', '12 × 13 + 30 = 156 + 30 = 186 ✓', null, { lines: 1 })],
       err: { 0: [{ v: 12 * 5, m: 'N’oublie pas les 30 € d’inscription.' }, { v: (12 + 30) * 5, m: 'Les 30 € ne se paient qu’une fois.' }], 2: [{ v: 186 / 12, m: 'Il faut d’abord enlever les 30 € d’inscription : 12x + 30 = 186.' }] },
       hints: ['Prix = inscription + prix par mois × nombre de mois.', 'Remplace le nombre de mois par x.', 'Enlève 30 des deux côtés, puis divise par 12.'], pouce: 'Prix de x mois : 12x + 30. Équation : 12x + 30 = 186, donc 12x = 156.', corr: 'a. 90 €. b. 12x + 30. c. 13 mois. d. 186 ✓.' }),

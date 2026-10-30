@@ -6,10 +6,10 @@
   const { fr, rnd, tb, sb, T, svg, table, num, qcm, pick, int, xs } = H;
   const PI = Math.PI;
 
-  /* point de départ : trois seaux de pop-corn (fictifs), des cylindres */
+  /* point de départ : trois seaux de pop-corn, des cylindres */
   DEP.c10 = R => {
     const S = [['S', 12, 15], ['M', 16, 20], ['L', 20, 25]], k = int(R, 0, 2), V = S.map(([, d, h]) => PI * (d / 2) ** 2 * h);
-    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Seau</th><th>Diamètre</th><th>Hauteur</th></tr></thead><tbody>${S.map(([t, d, h], i) => `<tr><th>${t}</th><td data-cell="${i}">${d} cm</td><td>${h} cm</td></tr>`).join('')}</tbody></table><p class="srcl">Seaux fictifs, en forme de cylindre. V = π × r² × h.</p>`;
+    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Seau</th><th>Diamètre</th><th>Hauteur</th></tr></thead><tbody>${S.map(([t, d, h], i) => `<tr><th>${t}</th><td data-cell="${i}">${d} cm</td><td>${h} cm</td></tr>`).join('')}</tbody></table><p class="srcl">Seaux en forme de cylindre. V = π × r² × h.</p>`;
     return { titre: 'Les seaux de pop-corn', doc,
       qs: [{ t: `Touche le diamètre du seau ${S[k][0]}.`, kind: 'tap', cell: String(k), v: S[k][1], tol: .01, a: S[k][1] + ' cm' },
         { t: 'Quel est le rayon du seau L ?', kind: 'num', v: 10, tol: .01, a: '10 cm', x: '20 ÷ 2 = 10 cm' },
@@ -60,7 +60,7 @@
     const items = order.map((k, i) => qcm('abc'[i], ['translation', 'symétrie axiale', 'rotation'], ['translation', 'symétrie axiale', 'rotation'].indexOf(k), k));
     items.push(num('d', tx, 0, String(tx), [{ v: tx + 1, m: 'Compte les cases entre une case du départ et la même case de l’image.' }]));
     xs(items, { d: `chaque case avance de ${tx} cases vers la droite` });
-    return { titre: 'Les transformations du sprite', consigne: 'Dans un jeu en pixel art (fictif), le sprite de départ (foncé) est transformé trois fois. Reconnais chaque transformation.',
+    return { titre: 'Les transformations du sprite', consigne: 'Dans un jeu en pixel art, le sprite de départ (foncé) est transformé trois fois. Reconnais chaque transformation.',
       support: svg(600, 12 + 9 * cs + 10, s, 'Un sprite et trois images transformées sur une grille') + `<p class="tr-l">a. A est obtenu par : · b. B par : · c. C par :</p><p class="tr-l">d. Pour la translation, de combien de cases le sprite a-t-il avancé ? ${tb('d', String(tx), 10)}</p>`, items,
       hints: ['Translation : le sprite glisse, sans tourner ni se retourner.', 'Symétrie axiale : le sprite est retourné, comme dans un miroir.', 'Rotation : le sprite a tourné d’un quart de tour.'] };
   };

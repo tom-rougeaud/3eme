@@ -24,7 +24,7 @@ module.exports = chk => {
       { t: 'Triangle rectangle de côtés de l’angle droit 6 cm et 8 cm. Hypoténuse ?', comp: 'cal', pts: 1, a: '10 cm', v: 10, tol: .01, w: 20, x: '6² + 8² = 36 + 64 = 100 ; √100 = 10 cm.' },
       { t: 'Volume d’un cube d’arête 3 cm ?', comp: 'cal', pts: .5, a: '27 cm³', v: 27, tol: .01, w: 20, x: '3 × 3 × 3 = 27 cm³.' }],
     exos: [
-      { t: 'Les lots de badges', intro: `<p>Les organisateurs d’une convention manga (fictive) ont ${H('84 badges')} et ${H('126 marque-pages')}. Ils veulent faire des lots identiques, en utilisant tout.</p>`, qs: [
+      { t: 'Les lots de badges', intro: `<p>Les organisateurs d’une convention manga ont ${H('84 badges')} et ${H('126 marque-pages')}. Ils veulent faire des lots identiques, en utilisant tout.</p>`, qs: [
         { t: 'Décomposer 84 et 126 en produits de facteurs premiers.', comp: 'cal', pts: 1, a: '84 = 2² × 3 × 7 ; 126 = 2 × 3² × 7', v: null, lines: 1, x: '84 ÷ 2 = 42 ; ÷ 2 = 21 ; ÷ 3 = 7 : 84 = 2² × 3 × 7. 126 ÷ 2 = 63 ; ÷ 3 = 21 ; ÷ 3 = 7 : 126 = 2 × 3² × 7.' },
         { t: 'Déterminer le nombre maximal de lots et la composition d’un lot.', comp: 'che', pts: 1, a: '2 × 3 × 7 = 42 lots, de 2 badges et 3 marque-pages', v: 42, tol: .01, lines: 1, lab: 'nombre de lots :', x: 'Facteurs communs : 2 × 3 × 7 = 42. 84 ÷ 42 = 2 badges et 126 ÷ 42 = 3 marque-pages par lot.' }] },
       { t: 'Le pass ateliers', intro: `<p>À la convention, un atelier de dessin coûte ${H('9 €')} sans pass. Avec le pass à ${H('15 €')}, l’atelier coûte ${H('4 €')}. Pour x ateliers : f(x) = 9x sans pass, g(x) = 4x + 15 avec le pass.</p>`, qs: [
@@ -36,7 +36,7 @@ module.exports = chk => {
         { t: 'Calculer l’angle sous lequel il voit le sommet, au dixième de degré.', comp: 'cal', pts: 1.5, a: 'tan x = 19,7 ÷ 25 ; x ≈ 38,2°', v: 38.2, tol: .06, w: 22, lab: 'en ° :', x: 'Triangle rectangle au pied de la statue. tan x = opposé ÷ adjacent = 19,7 ÷ 25 = 0,788 ; x = tan⁻¹(0,788) ≈ 38,2°.' },
         { t: 'Calculer la distance entre le visiteur et le sommet, au dixième.', comp: 'cal', pts: 1.5, a: '√(25² + 19,7²) ≈ 31,8 m', v: 31.8, tol: .06, w: 22, lab: 'en m :', x: 'Pythagore : d² = 25² + 19,7² = 625 + 388,09 = 1 013,09 ; d = √1 013,09 ≈ 31,8 m.' },
         { t: 'Une maquette de la statue est au 1/144. Quelle est sa hauteur, au millimètre ?', comp: 'mod', pts: 1, a: '1 970 ÷ 144 ≈ 13,7 cm', v: 13.7, tol: .06, w: 22, lab: 'en cm :', x: '19,7 m = 1 970 cm ; 1 970 ÷ 144 ≈ 13,7 cm.' }] },
-      { t: 'Le tirage au sort', intro: `<p>Pour gagner un tome dédicacé (fictif), on tire un badge au hasard dans un sac : ${H('5 rouges')}, ${H('4 bleus')} et ${H('3 verts')}.</p>`, qs: [
+      { t: 'Le tirage au sort', intro: `<p>Pour gagner un tome dédicacé, on tire un badge au hasard dans un sac : ${H('5 rouges')}, ${H('4 bleus')} et ${H('3 verts')}.</p>`, qs: [
         { t: 'Calculer la probabilité de tirer un badge rouge.', comp: 'cal', pts: 1, a: '5/12', v: 5 / 12, tol: .002, w: 22, x: '12 badges en tout, 5 rouges : P = 5/12.' },
         { t: 'Calculer la probabilité de ne pas tirer un badge vert. Justifier.', comp: 'rai', pts: 1, a: '1 − 3/12 = 9/12 = 3/4', v: .75, tol: .002, lines: 1, x: 'P(vert) = 3/12 = 1/4. Événement contraire : 1 − 1/4 = 3/4.' }] }] });
 
@@ -87,10 +87,10 @@ module.exports = chk => {
       { t: 'Combien vaut cos 60° ?', comp: 'cal', pts: .5, a: '0,5', v: .5, tol: .002, w: 20, x: 'cos 60° = 0,5.' },
       { t: 'Volume d’un cylindre de rayon 1 cm et de hauteur 5 cm, au dixième ?', comp: 'cal', pts: 1, a: '≈ 15,7 cm³', v: 15.7, tol: .06, w: 20, x: 'π × 1² × 5 = 5π ≈ 15,7 cm³.' }],
     exos: [
-      { t: 'Les boosters', intro: `<p>Dans un jeu de cartes (fictif), un booster contient une carte rare avec la probabilité ${H('1/5')}, indépendamment des autres boosters.</p>`, qs: [
+      { t: 'Les boosters', intro: `<p>Dans un jeu de cartes, un booster contient une carte rare avec la probabilité ${H('1/5')}, indépendamment des autres boosters.</p>`, qs: [
         { t: 'Calculer la probabilité qu’un booster ne contienne pas de carte rare.', comp: 'cal', pts: 1, a: '1 − 1/5 = 4/5', v: .8, tol: .002, w: 22, x: 'Événement contraire : 1 − 1/5 = 4/5 = 0,8.' },
         { t: 'On ouvre deux boosters. Calculer la probabilité de n’avoir aucune carte rare.', comp: 'mod', pts: 1, a: '4/5 × 4/5 = 16/25 = 0,64', v: .64, tol: .002, w: 22, x: 'Sur l’arbre, branche « pas rare » puis « pas rare » : 4/5 × 4/5 = 16/25 = 0,64.' }] },
-      { t: 'La salle du tournoi', intro: `<p>Le plan (fictif) de la salle est à l’échelle ${H('1/250')} : c’est un rectangle de ${H('8 cm')} sur ${H('4,8 cm')}. Un projecteur placé à ${H('5 m')} d’un écran donne une image de ${H('2 m')} de large.</p>`, qs: [
+      { t: 'La salle du tournoi', intro: `<p>Le plan de la salle est à l’échelle ${H('1/250')} : c’est un rectangle de ${H('8 cm')} sur ${H('4,8 cm')}. Un projecteur placé à ${H('5 m')} d’un écran donne une image de ${H('2 m')} de large.</p>`, qs: [
         { t: 'Calculer la longueur réelle de la salle, en mètres.', comp: 'cal', pts: 1, a: '8 × 250 = 2 000 cm = 20 m', v: 20, tol: .01, w: 20, lab: 'en m :', x: '8 × 250 = 2 000 cm = 20 m.' },
         { t: 'Calculer l’aire réelle de la salle.', comp: 'cal', pts: 1, a: '4,8 × 250 = 1 200 cm = 12 m ; 20 × 12 = 240 m²', v: 240, tol: .01, w: 22, lab: 'en m² :', x: 'Largeur : 4,8 × 250 = 1 200 cm = 12 m. Aire : 20 × 12 = 240 m².' },
         { t: 'On recule le projecteur à 7,5 m de l’écran. Calculer la nouvelle largeur de l’image.', comp: 'cal', pts: 1, a: '2 × 7,5 ÷ 5 = 3 m', v: 3, tol: .01, w: 20, lab: 'en m :', x: '5/7,5 = 2/L, donc L = 2 × 7,5 ÷ 5 = 3 m.' },

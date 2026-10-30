@@ -33,7 +33,7 @@
     const items = [num('a', a, 0, a + 'x', [{ v: a + 1, m: 'Le morceau mesure x sur ' + a + ' : son aire est ' + a + ' × x.' }]), num('b', a * b, 0, String(a * b), [{ v: a + b, m: 'Le petit rectangle mesure ' + a + ' sur ' + b + ' : on multiplie.' }]),
       num('c', a + b, 0, String(a + b), [{ v: a * b, m: 'On réduit les termes en x : ' + b + 'x + ' + a + 'x.' }]), num('d', v, 0, String(v), [{ v: t * t + a * b, m: 'N’oublie pas les termes en x : ' + (a + b) + ' × ' + t + '.' }])];
     xs(items, { a: `x × ${a} = ${a}x`, b: `${a} × ${b} = ${a * b}`, c: `x² + ${cx(b)} + ${a}x + ${a * b} = x² + ${a + b}x + ${a * b}`, d: `${t}² + ${a + b} × ${t} + ${a * b} = ${t * t} + ${(a + b) * t} + ${a * b} = ${v} ; et (${t} + ${a})(${t} + ${b}) = ${t + a} × ${t + b} = ${v}` });
-    return { titre: 'Le rectangle découpé', consigne: `Un poster (fictif) mesure (x + ${a}) sur (x + ${b}). On le découpe en quatre rectangles pour développer son aire.`,
+    return { titre: 'Le rectangle découpé', consigne: `Un poster mesure (x + ${a}) sur (x + ${b}). On le découpe en quatre rectangles pour développer son aire.`,
       support: svg(W, y0 + hx + hb + 10, s, 'Rectangle découpé en quatre') + `<p class="tr-l">c. (x + ${a})(x + ${b}) = x² + ${tb('c', String(a + b), 10)} x + ${a * b}</p><p class="tr-l">d. Aire pour x = ${t} : ${tb('d', String(v), 14)}</p>`, items,
       hints: ['L’aire d’un rectangle : longueur × largeur.', 'On additionne les quatre morceaux, puis on regroupe les termes en x.', 'Pour vérifier, remplace x par ' + t + ' dans les deux écritures.'] };
   };

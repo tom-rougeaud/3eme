@@ -12,10 +12,10 @@
   const red = (n, d) => { const g = gcd(n, d); return [n / g, d / g]; };
   const ft = (n, d) => `${n}/${d}`;
 
-  /* point de départ : le classeur de Sam (fictif) */
+  /* point de départ : le classeur de Sam */
   DEP.c2 = R => {
     const N = pick(R, [120, 180, 240, 360]), E = N / 4, D = N / 6, B = N / 5;
-    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Le classeur de Sam</th><th>Ce qu’il contient</th></tr></thead><tbody><tr><th>Total</th><td data-cell="0">${N} cartes</td></tr><tr><th>Cartes énergie</th><td data-cell="1">${F(1, 4)} des cartes</td></tr><tr><th>Cartes dresseur</th><td data-cell="2">${F(1, 6)} des cartes</td></tr><tr><th>Cartes brillantes</th><td data-cell="3">${B} cartes</td></tr></tbody></table><p class="srcl">Collection fictive.</p>`;
+    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Le classeur de Sam</th><th>Ce qu’il contient</th></tr></thead><tbody><tr><th>Total</th><td data-cell="0">${N} cartes</td></tr><tr><th>Cartes énergie</th><td data-cell="1">${F(1, 4)} des cartes</td></tr><tr><th>Cartes dresseur</th><td data-cell="2">${F(1, 6)} des cartes</td></tr><tr><th>Cartes brillantes</th><td data-cell="3">${B} cartes</td></tr></tbody></table>`;
     return { titre: 'Le classeur de Sam', doc,
       qs: [{ t: 'Touche la case qui donne le nombre total de cartes.', kind: 'tap', cell: '0', v: N, tol: .01, a: String(N) },
         { t: 'Combien y a-t-il de cartes énergie ?', kind: 'num', v: E, tol: .01, a: String(E), x: `1/4 de ${N} : ${N} ÷ 4 = ${E} cartes` },
@@ -37,7 +37,7 @@
       num('d', S, 0, String(S), [{ v: a + c, m: 'Il faut d’abord écrire les deux fractions avec le dénominateur ' + D + '.' }]),
       num('e', rest, 0, String(rest), [{ v: S, m: 'C’est la part des deux familles. Le reste : ' + D + ' − ' + S + '.' }])];
     xs(items, { a: `${D} est le plus petit multiple commun de ${b} et ${d}`, b: `${a}/${b} = (${a} × ${D / b})/(${b} × ${D / b}) = ${n1}/${D}`, c: `${c}/${d} = (${c} × ${D / d})/(${d} × ${D / d}) = ${n2}/${D}`, d: `${n1}/${D} + ${n2}/${D} = ${S}/${D}`, e: `1 − ${S}/${D} = ${D}/${D} − ${S}/${D} = ${rest}/${D}` });
-    return { titre: 'La barre de fractions', consigne: `Dans une collection (fictive), ${a}/${b} sont des ${ctx[0]} et ${c}/${d} des ${ctx[1]}. La barre est partagée en ${D} parts égales.`,
+    return { titre: 'La barre de fractions', consigne: `Dans une collection, ${a}/${b} sont des ${ctx[0]} et ${c}/${d} des ${ctx[1]}. La barre est partagée en ${D} parts égales.`,
       support: svg(W, 116, s, 'Barre partagée en parts égales') + `<p class="tr-l">a. Dénominateur commun : ${tb('a', String(D), 12)}</p><p class="tr-l">${a}/${b} = ${tb('b', String(n1), 10)} / ${D} · ${c}/${d} = ${tb('c', String(n2), 10)} / ${D}</p><p class="tr-l">d. Les deux familles ensemble : ${tb('d', String(S), 10)} / ${D} · e. Il reste ${tb('e', String(rest), 10)} / ${D}</p>`, items,
       hints: ['Cherche un nombre qui est dans la table de ' + b + ' et dans celle de ' + d + '.', 'Pour changer de dénominateur, on multiplie en haut et en bas par le même nombre.', 'Le tout vaut ' + D + '/' + D + ' : le reste, c’est ' + D + ' moins la somme.'] };
   };
@@ -45,7 +45,7 @@
   /* e2 · puissances de 10 et préfixes */
   TR.c2e2 = R => {
     const p = int(R, 2, 6), q = int(R, 2, 5), u = int(R, 5, 9), v = int(R, 2, 4), n = int(R, 2, 4);
-    const pre = pick(R, [['méga', 'M', 6, 'Mbit', 'bits', 'débit d’une box (fictive)'], ['giga', 'G', 9, 'Go', 'octets', 'mémoire d’une console (fictive)'], ['kilo', 'k', 3, 'ko', 'octets', 'taille d’une image (fictive)']]);
+    const pre = pick(R, [['méga', 'M', 6, 'Mbit', 'bits', 'débit d’une box'], ['giga', 'G', 9, 'Go', 'octets', 'mémoire d’une console'], ['kilo', 'k', 3, 'ko', 'octets', 'taille d’une image']]);
     const k = pick(R, [15, 25, 40, 64, 120, 500]);
     const items = [num('a', p + q, 0, String(p + q), [{ v: p * q, m: 'On additionne les exposants : 10' + sup(p) + ' × 10' + sup(q) + ' = 10 puissance ' + p + ' + ' + q + '.' }]),
       num('b', u - v, 0, String(u - v), [{ v: u / v, m: 'Pour une division, on soustrait les exposants.' }]),
@@ -59,7 +59,7 @@
   };
 
   /* e3 · écriture scientifique */
-  const BIG = [[4500000, 'vues d’une bande-annonce (fictive)'], [32000000, 'joueurs d’un jeu en ligne (fictif)'], [870000, 'abonnés d’une chaîne de dessin (fictive)'], [2600000000, 'écoutes d’une chanson (fictive)'], [56000000, 'exemplaires d’une série de mangas (fictive)']];
+  const BIG = [[4500000, 'vues d’une bande-annonce'], [32000000, 'joueurs d’un jeu en ligne'], [870000, 'abonnés d’une chaîne de dessin'], [2600000000, 'écoutes d’une chanson'], [56000000, 'exemplaires d’une série de mangas']];
   const SMALL = [[0.00032, 'épaisseur d’une feuille, en m'], [0.0045, 'durée d’une image de jeu vidéo à 220 images par seconde, en s'], [0.00008, 'taille d’un pixel d’écran, en m'], [0.0006, 'épaisseur d’une carte, en m']];
   const sci = x => { const e = Math.floor(Math.log10(Math.abs(x)) + 1e-9); return [+(x / 10 ** e).toFixed(6), e]; };
   TR.c2e3 = R => {

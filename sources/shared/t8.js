@@ -45,7 +45,7 @@
     const ts = H.shuffle(R, TRIS).slice(0, 3), [[[a, b, c]]] = ts;
     const items = [num('a', c * c, 0, fr(c * c), [{ v: a * a, m: 'On calcule le carré du plus grand côté, ' + c + '.' }]), num('b', a * a + b * b, 0, fr(a * a + b * b)), ...ts.map(([s, r], i) => qcm('cde'[i], ['oui', 'non'], r ? 0 : 1, r ? `oui : ${s[0]}² + ${s[1]}² = ${s[2]}² = ${fr(s[2] * s[2])}` : `non : ${s[0]}² + ${s[1]}² = ${fr(s[0] * s[0] + s[1] * s[1])} et ${s[2]}² = ${fr(s[2] * s[2])}`))];
     xs(items, { a: `${c}² = ${fr(c * c)}`, b: `${a}² + ${b}² = ${fr(a * a)} + ${fr(b * b)} = ${fr(a * a + b * b)}` });
-    return { titre: 'Rectangle ou pas ?', consigne: 'Un charpentier (fictif) vérifie l’équerre de trois cadres. Les longueurs sont en cm.',
+    return { titre: 'Rectangle ou pas ?', consigne: 'Un charpentier vérifie l’équerre de trois cadres. Les longueurs sont en cm.',
       support: table(['Cadre', 'Côtés', 'Rectangle ?'], ts.map(([s], i) => [String(i + 1), s.join(' ; '), `${'cde'[i]}.`])) + `<p class="tr-l">Pour le cadre 1 : a. ${c}² = ${tb('a', fr(c * c), 14)} · b. ${a}² + ${b}² = ${tb('b', fr(a * a + b * b), 14)}</p>`, items,
       hints: ['Repère le plus grand côté.', 'Compare son carré à la somme des carrés des deux autres.', 'Égalité : rectangle (réciproque de Pythagore). Sinon : pas rectangle.'] };
   };

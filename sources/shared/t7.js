@@ -8,10 +8,10 @@
   const fx = (k, n) => { const g = gcd(k, n) || 1; return k === 0 ? '0' : k === n ? '1' : (g > 1 ? `${k}/${n} = ${k / g}/${n / g}` : `${k}/${n}`); };
   const tolF = .002;
 
-  /* point de départ : le sac de dés d’un club de jeux de rôle (fictif) */
+  /* point de départ : le sac de dés d’un club de jeux de rôle */
   DEP.c7 = R => {
     const a = int(R, 3, 6), b = int(R, 2, 4), c = 10 - a - b, N = 10;
-    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Dé</th><th>Nombre dans le sac</th></tr></thead><tbody><tr><th>dé à 6 faces</th><td data-cell="0">${a}</td></tr><tr><th>dé à 8 faces</th><td data-cell="1">${b}</td></tr><tr><th>dé à 20 faces</th><td data-cell="2">${c}</td></tr></tbody></table><p class="srcl">Sac fictif. On tire un dé au hasard, sans regarder.</p>`;
+    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Dé</th><th>Nombre dans le sac</th></tr></thead><tbody><tr><th>dé à 6 faces</th><td data-cell="0">${a}</td></tr><tr><th>dé à 8 faces</th><td data-cell="1">${b}</td></tr><tr><th>dé à 20 faces</th><td data-cell="2">${c}</td></tr></tbody></table><p class="srcl">On tire un dé au hasard, sans regarder.</p>`;
     return { titre: 'Le sac de dés', doc,
       qs: [{ t: 'Touche le nombre de dés à 20 faces.', kind: 'tap', cell: '2', v: c, tol: .01, a: String(c) },
         { t: 'Combien y a-t-il de dés en tout ?', kind: 'num', v: N, tol: .01, a: '10', x: `${a} + ${b} + ${c} = 10` },

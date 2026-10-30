@@ -18,7 +18,7 @@
   /* point de départ : ranger des cartes dans un classeur de 9 pochettes par page */
   DEP.c1 = R => {
     const cols = pick(R, [[126, 135, 140, 162], [117, 144, 150, 171], [108, 153, 160, 189]]), k = int(R, 0, 3), bad = cols.find(n => n % 9), good = cols.filter(n => n % 9 === 0)[0];
-    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Collection</th><th>Nombre de cartes</th></tr></thead><tbody>${cols.map((n, i) => `<tr><th>${['Ava', 'Bilal', 'Chloé', 'Dany'][i]}</th><td data-cell="${i}">${n}</td></tr>`).join('')}</tbody></table><p class="srcl">Un classeur range 9 cartes par page. Collections fictives.</p>`;
+    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>Collection</th><th>Nombre de cartes</th></tr></thead><tbody>${cols.map((n, i) => `<tr><th>${['Ava', 'Bilal', 'Chloé', 'Dany'][i]}</th><td data-cell="${i}">${n}</td></tr>`).join('')}</tbody></table><p class="srcl">Un classeur range 9 cartes par page.</p>`;
     const rest = bad % 9, pages = Math.ceil(bad / 9);
     return { titre: 'Des cartes à ranger, 9 par page', doc,
       qs: [{ t: `Combien de cartes a ${['Ava', 'Bilal', 'Chloé', 'Dany'][k]} ?`, kind: 'tap', cell: String(k), v: cols[k], tol: .01, a: String(cols[k]) },
@@ -83,7 +83,7 @@
       num('c', B / g, 0, String(B / g)),
       qcm('d', ['oui', 'non'], (A % 4 === 0 && B % 4 === 0) ? 0 : 1, (A % 4 === 0 && B % 4 === 0) ? `oui : 4 divise ${A} et ${B}` : `non : 4 ne divise pas ${A % 4 ? A : B}`)];
     xs(items, { a: `diviseurs communs : ${com.join(', ')} ; le plus grand est ${g}`, b: `${A} ÷ ${g} = ${A / g}`, c: `${B} ÷ ${g} = ${B / g}`, d: `${A} ÷ 4 = ${A % 4 ? fr(A / 4) : A / 4} et ${B} ÷ 4 = ${B % 4 ? fr(B / 4) : B / 4}` });
-    return { titre: 'Des lots identiques', consigne: `Un club (fictif) fait des lots identiques avec ${A} ${ctx[0]} et ${B} ${ctx[1]}, sans rien laisser. Les diviseurs communs sont en gras.`,
+    return { titre: 'Des lots identiques', consigne: `Un club fait des lots identiques avec ${A} ${ctx[0]} et ${B} ${ctx[1]}, sans rien laisser. Les diviseurs communs sont en gras.`,
       support: table(['Nombre', 'Ses diviseurs'], [[String(A), lst(A)], [String(B), lst(B)]]) + `<p class="tr-l">a. Nombre maximal de lots : ${tb('a', String(g), 12)}</p><p class="tr-l">Dans chaque lot : b. ${tb('b', String(A / g), 10)} ${ctx[0]} et c. ${tb('c', String(B / g), 10)} ${ctx[1]}</p><p class="tr-l">d. Peut-on faire exactement 4 lots identiques ?</p>`, items,
       hints: ['Un nombre de lots possible divise les deux quantités.', 'Le plus grand diviseur commun donne le nombre maximal de lots.', 'Dans chaque lot : quantité ÷ nombre de lots.'] };
   };

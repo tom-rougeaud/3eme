@@ -37,7 +37,7 @@ const yn = ['oui', 'non'];
       { t: 'Quel est le reste de la division de 47 par 5 ?', comp: 'cal', pts: 1, a: '2 (47 = 5 × 9 + 2)', v: 2, tol: .01, w: 20 },
       { t: '9 est-il un diviseur de 108 ?', comp: 'che', pts: 1, choices: yn, ok: 0, a: 'oui : 108 = 9 × 12', v: null }],
     exos: [
-      { t: 'Le tournoi de cartes', intro: `<p>Un club (fictif) prépare un tournoi avec ${H('180 cartes')} et ${H('150 jetons')}. Il veut faire des lots identiques, en utilisant tout.</p>`, qs: [
+      { t: 'Le tournoi de cartes', intro: `<p>Un club prépare un tournoi avec ${H('180 cartes')} et ${H('150 jetons')}. Il veut faire des lots identiques, en utilisant tout.</p>`, qs: [
         { t: 'Décomposer 180 et 150 en produits de facteurs premiers.', comp: 'cal', pts: 2, a: '180 = 2² × 3² × 5 ; 150 = 2 × 3 × 5²', v: null, lines: 1 },
         { t: 'Déterminer le nombre maximal de lots.', comp: 'mod', pts: 1.5, a: 'facteurs communs : 2 × 3 × 5 = 30 lots', v: 30, tol: .01, w: 24 },
         { t: 'Donner la composition d’un lot.', comp: 'cal', pts: 1.5, a: '180 ÷ 30 = 6 cartes et 150 ÷ 30 = 5 jetons', v: 6, tol: .01, w: 24, lab: 'cartes par lot :' },
@@ -67,7 +67,7 @@ const yn = ['oui', 'non'];
         { t: 'Quelle fraction des 85 milliards a été produite en un an ? Donner une fraction irréductible.', comp: 'cal', pts: 1.5, a: '10/85 = 2/17', v: 2 / 17, tol: .001, w: 26 },
         { t: 'Calculer le nombre moyen de cartes produites par jour, en millions, arrondi à l’unité.', comp: 'mod', pts: 1.5, a: '10 000 millions ÷ 365 ≈ 27 millions', v: 27, tol: .5, w: 24, lab: 'en millions :' },
         { t: 'Combien de fois 10 milliards est-il plus grand que 600 millions ? Arrondir au dixième.', comp: 'che', pts: 1.5, a: '10¹⁰ ÷ (6 × 10⁸) ≈ 16,7 fois', v: 16.7, tol: .05, w: 24 }] },
-      { t: 'Le booster de 20 cartes', intro: `<p>Un booster (fictif) contient ${H('20 cartes')} : ${H('3/5')} sont communes, ${H('1/4')} sont peu communes, les autres sont rares.</p>`, qs: [
+      { t: 'Le booster de 20 cartes', intro: `<p>Un booster contient ${H('20 cartes')} : ${H('3/5')} sont communes, ${H('1/4')} sont peu communes, les autres sont rares.</p>`, qs: [
         { t: 'Calculer le nombre de cartes communes.', comp: 'cal', pts: 1, a: '20 ÷ 5 × 3 = 12 cartes', v: 12, tol: .01, w: 22 },
         { t: 'Quelle fraction du booster font les cartes communes et peu communes ensemble ?', comp: 'cal', pts: 2, a: '3/5 + 1/4 = 12/20 + 5/20 = 17/20', v: 17 / 20, tol: .001, w: 26 },
         { t: 'En déduire la fraction de cartes rares, puis leur nombre.', comp: 'mod', pts: 1.5, a: '1 − 17/20 = 3/20, soit 3 cartes', v: 3, tol: .01, w: 22, lab: 'nombre de rares :' },
@@ -112,7 +112,7 @@ const yn = ['oui', 'non'];
       { t: 'Un car parcourt 120 km en 2 h. Sa vitesse moyenne, en km/h ?', comp: 'cal', pts: 1, a: '60 km/h', v: 60, tol: .01, w: 20 },
       { t: 'Partager 25 dans le ratio 2 : 3 donne :', comp: 'mod', pts: 1, choices: ['10 et 15', '2 et 3', '12 et 13'], ok: 0, a: '10 et 15', v: null }],
     exos: [
-      { t: 'Les ramen de la cantine', intro: `<p>Une recette (fictive) de ramen pour ${H('4 personnes')} demande ${H('300 g')} de nouilles. Le bouillon se prépare avec de l’eau et de la sauce dans le ${H('ratio 4 : 1')}.</p>`, qs: [
+      { t: 'Les ramen de la cantine', intro: `<p>Une recette de ramen pour ${H('4 personnes')} demande ${H('300 g')} de nouilles. Le bouillon se prépare avec de l’eau et de la sauce dans le ${H('ratio 4 : 1')}.</p>`, qs: [
         { t: 'Calculer la masse de nouilles pour 10 personnes.', comp: 'cal', pts: 1.5, a: '300 ÷ 4 × 10 = 750 g', v: 750, tol: .01, w: 22, lab: 'en g :' },
         { t: 'La masse de nouilles est-elle proportionnelle au nombre de personnes ? Donner le coefficient.', comp: 'mod', pts: 1.5, a: 'Oui : on multiplie par 75 (300 ÷ 4 = 75 g par personne).', v: null, lines: 1 },
         { t: 'Pour 1,5 L de bouillon, quel volume d’eau faut-il ?', comp: 'cal', pts: 1.5, a: '1,5 ÷ 5 = 0,3 L par part ; eau : 4 × 0,3 = 1,2 L', v: 1.2, tol: .01, w: 22, lab: 'en L :' },
@@ -139,13 +139,13 @@ const yn = ['oui', 'non'];
       { t: 'Quelle est l’ordonnée à l’origine de f(x) = 4x − 2 ?', comp: 'rep', pts: 1, a: '−2', v: -2, tol: .01, w: 20 },
       { t: 'La droite d’une fonction linéaire passe toujours par :', comp: 'rep', pts: 1, choices: ['l’origine', 'le point (1 ; 1)', 'le point (0 ; 1)'], ok: 0, a: 'l’origine', v: null }],
     exos: [
-      { t: 'Le saut du personnage', intro: `<p>Dans un jeu (fictif), la hauteur d’un saut, en cases, est donnée par ${H('h(t) = 4t − 0,5t²')}, où t est le temps en dixièmes de seconde.</p>${g.wrap(g.base + g.curve(hh))}`, qs: [
+      { t: 'Le saut du personnage', intro: `<p>Dans un jeu, la hauteur d’un saut, en cases, est donnée par ${H('h(t) = 4t − 0,5t²')}, où t est le temps en dixièmes de seconde.</p>${g.wrap(g.base + g.curve(hh))}`, qs: [
         { t: 'Lire graphiquement l’image de 2 par h.', comp: 'rep', pts: 1, a: 'h(2) = 6', v: 6, tol: .01, w: 20 },
         { t: 'Lire les antécédents de 7,5.', comp: 'rep', pts: 1.5, a: '3 et 5', v: null, w: 24 },
         { t: 'Quelle est la hauteur maximale, et à quel instant ?', comp: 'che', pts: 1, a: '8 cases, pour t = 4', v: null, w: 34 },
         { t: 'Calculer h(1,5).', comp: 'cal', pts: 1.5, a: '4 × 1,5 − 0,5 × 1,5² = 6 − 1,125 = 4,875', v: 4.875, tol: .001, w: 22 },
         { t: 'La fonction h est-elle affine ? Justifier.', comp: 'rai', pts: 1, a: 'Non : sa représentation n’est pas une droite (elle contient t²).', v: null, lines: 1 }] },
-      { t: 'Deux formules de cinéma', intro: `<p>Sans carte, une séance coûte ${H('11 €')} : f(x) = 11x. Avec une carte (fictive) à ${H('30 €')}, la séance coûte ${H('5 €')} : g(x) = 5x + 30.</p>`, qs: [
+      { t: 'Deux formules de cinéma', intro: `<p>Sans carte, une séance coûte ${H('11 €')} : f(x) = 11x. Avec une carte à ${H('30 €')}, la séance coûte ${H('5 €')} : g(x) = 5x + 30.</p>`, qs: [
         { t: 'Calculer le prix de 4 séances avec chaque formule.', comp: 'cal', pts: 1, a: 'f(4) = 44 € ; g(4) = 50 €', v: null, w: 40 },
         { t: 'Laquelle des deux fonctions est linéaire ? Justifier.', comp: 'rai', pts: 1, a: 'f, car f(x) = 11x est de la forme ax.', v: null, lines: 1 },
         { t: 'Résoudre l’équation 11x = 5x + 30.', comp: 'cal', pts: 2, a: '6x = 30 ; x = 5', v: 5, tol: .01, w: 22, lab: 'x =' },
@@ -240,7 +240,7 @@ const yn = ['oui', 'non'];
       { t: 'Une longueur de 6 cm agrandie × 1,5 mesure :', comp: 'cal', pts: 1, a: '9 cm', v: 9, tol: .01, w: 20 },
       { t: '(MN) // (BC), M sur [AB], N sur [AC]. Alors :', comp: 'rai', pts: 1, choices: ['AM/AB = MN/BC', 'AM/MB = MN/BC', 'AB/AM = MN/BC'], ok: 0, a: 'AM/AB = MN/BC', v: null }],
     exos: [
-      { t: 'Le plan de la salle', intro: `<p>Le plan (fictif) d’une salle de cinéma est à l’échelle ${H('1/200')}. Sur le plan, la salle est un rectangle de ${H('12 cm')} sur ${H('8 cm')}, et l’écran mesure ${H('7 cm')}.</p>`, qs: [
+      { t: 'Le plan de la salle', intro: `<p>Le plan d’une salle de cinéma est à l’échelle ${H('1/200')}. Sur le plan, la salle est un rectangle de ${H('12 cm')} sur ${H('8 cm')}, et l’écran mesure ${H('7 cm')}.</p>`, qs: [
         { t: 'Calculer la largeur réelle de l’écran, en mètres.', comp: 'cal', pts: 1.5, a: '7 × 200 = 1 400 cm = 14 m', v: 14, tol: .01, w: 20, lab: 'en m :' },
         { t: 'Calculer la longueur réelle de la salle, en mètres.', comp: 'cal', pts: 1, a: '12 × 200 = 2 400 cm = 24 m', v: 24, tol: .01, w: 20, lab: 'en m :' },
         { t: 'Calculer l’aire réelle de la salle, sachant que sa largeur réelle est 16 m.', comp: 'mod', pts: 1.5, a: '24 × 16 = 384 m²', v: 384, tol: .01, w: 22, lab: 'en m² :' },
@@ -264,7 +264,7 @@ const yn = ['oui', 'non'];
       { t: 'Pour tracer un hexagone régulier, le lutin tourne de combien de degrés à chaque coin ?', comp: 'cal', pts: 1, a: '60°', v: 60, tol: .01, w: 20 },
       { t: 'La latitude de l’équateur est :', comp: 'rai', pts: 1, choices: ['0°', '90°', '180°'], ok: 0, a: '0°', v: null }],
     exos: [
-      { t: 'Le seau de pop-corn', intro: `<p>Un seau de pop-corn (fictif) est un cylindre de rayon ${H('10 cm')} et de hauteur ${H('25 cm')}.</p>`, qs: [
+      { t: 'Le seau de pop-corn', intro: `<p>Un seau de pop-corn est un cylindre de rayon ${H('10 cm')} et de hauteur ${H('25 cm')}.</p>`, qs: [
         { t: 'Calculer le volume du seau, au cm³.', comp: 'cal', pts: 2, a: 'π × 10² × 25 ≈ 7 854 cm³', v: 7854, tol: 1, w: 24 },
         { t: 'Convertir ce volume en litres, au dixième.', comp: 'cal', pts: 1, a: '7 854 cm³ ≈ 7,9 L', v: 7.9, tol: .06, w: 20, lab: 'en L :' },
         { t: 'Un cornet conique a le même rayon et la même hauteur. Calculer son volume, au cm³.', comp: 'mod', pts: 1.5, a: '7 854 ÷ 3 ≈ 2 618 cm³', v: 2618, tol: 1, w: 24 },

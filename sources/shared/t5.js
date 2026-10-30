@@ -8,10 +8,10 @@
   const sg = n => n < 0 ? '− ' + fr(-n) : '+ ' + fr(n);
   const sb0 = n => n ? ' ' + sg(n) : '';
 
-  /* point de départ : le saut d’un personnage de jeu de plateforme (fictif) */
+  /* point de départ : le saut d’un personnage de jeu de plateforme */
   DEP.c5 = R => {
     const [L, k] = pick(R, [[8, .5], [10, .5], [8, 1]]), h = t => k * t * (L - t), ts = Array.from({ length: L + 1 }, (_, i) => i), t1 = int(R, 1, L / 2 - 1), tm = L / 2;
-    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>t (dixièmes de s)</th>${ts.map(t => `<th>${t}</th>`).join('')}</tr></thead><tbody><tr><th>h(t) (cases)</th>${ts.map(t => `<td data-cell="${t}">${fr(h(t))}</td>`).join('')}</tr></tbody></table><p class="srcl">Jeu fictif. h(t) est la hauteur du personnage au temps t.</p>`;
+    const doc = `<table class="dt tcx dt-sm"><thead><tr><th>t (dixièmes de s)</th>${ts.map(t => `<th>${t}</th>`).join('')}</tr></thead><tbody><tr><th>h(t) (cases)</th>${ts.map(t => `<td data-cell="${t}">${fr(h(t))}</td>`).join('')}</tr></tbody></table><p class="srcl">h(t) est la hauteur du personnage au temps t.</p>`;
     return { titre: 'Le saut d’un personnage', doc,
       qs: [{ t: `Touche la case de h(${t1}).`, kind: 'tap', cell: String(t1), v: h(t1), tol: .01, a: fr(h(t1)) },
         { t: `Quelle est l’image de ${tm} par la fonction h ?`, kind: 'num', v: h(tm), tol: .01, a: fr(h(tm)), x: `h(${tm}) = ${fr(h(tm))} : on lit la colonne t = ${tm}` },
@@ -44,7 +44,7 @@
       num('d', k, 2, String(k), [{ v: a * yk + b, m: 'On cherche l’antécédent : résous ' + fr(a) + 'x' + sb0(b) + ' = ' + fr(yk) + '.' }]),
       qcm('e', ['linéaire', 'affine, non linéaire'], b ? 1 : 0, b ? 'affine, non linéaire : b = ' + b + ' ≠ 0' : 'linéaire : b = 0')];
     xs(items, { a: `f(${xs3[0]}) = ${fr(a)} × ${xs3[0]}${sb0(b)} = ${fr(f(xs3[0]))}`, b: `f(${xs3[1]}) = ${fr(a)} × ${xs3[1]}${sb0(b)} = ${fr(f(xs3[1]))}`, c: `f(${xs3[2]}) = ${fr(a)} × ${xs3[2]}${sb0(b)} = ${fr(f(xs3[2]))}`, d: `${fr(a)}x${sb0(b)} = ${fr(yk)} ; ${fr(a)}x = ${fr(yk - b)} ; x = ${k}` });
-    return { titre: 'Le tableau de valeurs', consigne: `Un service (fictif) facture ${ctx} : f(x) = ${fr(a)}x${b ? ' ' + sg(b) : ''}, en euros, pour x unités.`,
+    return { titre: 'Le tableau de valeurs', consigne: `Un service facture ${ctx} : f(x) = ${fr(a)}x${b ? ' ' + sg(b) : ''}, en euros, pour x unités.`,
       support: table(['x', String(xs3[0]), String(xs3[1]), String(xs3[2])], [['f(x)', tb('a', fr(f(xs3[0])), 12), tb('b', fr(f(xs3[1])), 12), tb('c', fr(f(xs3[2])), 12)]]) + `<p class="tr-l">d. Pour quel nombre d’unités paie-t-on ${eur(yk)} ? ${tb('d', String(k), 12)}</p><p class="tr-l">e. La fonction f est-elle linéaire ?</p>`, items,
       hints: ['Remplace x par le nombre, puis calcule.', 'Pour l’antécédent, écris une équation.', 'Linéaire : de la forme ax, sans nombre ajouté.'] };
   };
@@ -58,7 +58,7 @@
       qcm('e', ['sans carte', 'avec la carte'], 1, `avec la carte : ${eur(q * n2 + r)} contre ${eur(p * n2)}`)];
     xs(items, { a: `f(${n1}) = ${p} × ${n1} = ${p * n1} €`, b: `g(${n1}) = ${q} × ${n1} + ${r} = ${q * n1 + r} €`, c: `${p}x = ${q}x + ${r} ; ${p - q}x = ${r} ; x = ${X}`, d: `f(${X}) = ${p} × ${X} = ${p * X} € = g(${X})`, e: `pour ${n2} séances : f = ${p * n2} € et g = ${q * n2 + r} €` });
     const g = P.plot({ W: 560, H: 220, x: [0, X + 4, 1], y: [0, Math.ceil(p * (X + 4) / 20) * 20, 20], ml: 46, mr: 16, mt: 12, mb: 28, fs: 11, xl: 'séances', yl: 'prix (€)', cls: 'pic vis trs' });
-    return { titre: 'Deux formules de cinéma', consigne: `Sans carte, une séance coûte ${p} € : f(x) = ${p}x. Avec une carte (fictive) de ${r} €, la séance coûte ${q} € : g(x) = ${q}x + ${r}.`,
+    return { titre: 'Deux formules de cinéma', consigne: `Sans carte, une séance coûte ${p} € : f(x) = ${p}x. Avec une carte de ${r} €, la séance coûte ${q} € : g(x) = ${q}x + ${r}.`,
       support: g.wrap(g.base + g.line(p, 0, { stroke: P.BLUE }) + g.line(q, r, { stroke: P.RED }) + g.txt(X + 3.5, p * (X + 3.5), 'f', { dx: -14, dy: -4, fill: P.BLUE }) + g.txt(X + 3.5, q * (X + 3.5) + r, 'g', { dx: 4, dy: 18, fill: P.RED })) + table(['Séances', 'Sans carte f(x)', 'Avec carte g(x)'], [[String(n1), tb('a', eur(p * n1), 14), tb('b', eur(q * n1 + r), 14)]]) + `<p class="tr-l">c. Les deux formules coûtent le même prix pour x = ${tb('c', String(X), 10)} séances, soit ${tb('d', eur(p * X), 14)}.</p><p class="tr-l">e. Pour ${n2} séances, quelle formule est la moins chère ?</p>`, items,
       hints: ['Remplace x par le nombre de séances dans chaque formule.', 'Même prix : résous f(x) = g(x).', 'Après l’intersection, la droite la plus basse donne la formule la moins chère.'] };
   };

@@ -20,9 +20,9 @@ module.exports = function (chk) {
   /* ---------- méthodes visuelles ---------- */
   const cellR = (x, y, w, h, txt, o = {}) => Rc(x, y, w, h, { rx: 4, c: o.c || 'wh' }) + T(x + w / 2, y + h / 2 + 6, txt, { fs: o.fs || 16, c: o.tc || 'tx' });
   // 1. 4 épisodes en 88 min → 22 épisodes
-  const vProp = S(600, 230, st(1, SN(1, 22, 30) + T(44, 36, '1 h 28 min = 60 + 28 = 88 min', { fs: 15, a: 'start' }))
+  const vProp = S(600, 230, st(1, SN(1, 22, 30) + T(44, 33, '1 h 28 min = 60 + 28 = 88 min', { fs: 15, a: 'start' }))
     + st(2, SN(2, 22, 76) + cellR(60, 60, 110, 36, 'épisodes', { fs: 13, c: 'k2' }) + cellR(170, 60, 90, 36, '4') + cellR(60, 96, 110, 36, 'minutes', { fs: 13, c: 'k2' }) + cellR(170, 96, 90, 36, '88'))
-    + st(3, SN(3, 290, 30) + cellR(260, 60, 90, 36, '1') + cellR(260, 96, 90, 36, '22', { c: 'k', tc: 'tw' }) + Ar(215, 54, 300, 54, { w: 2, h: 8, lab: '÷ 4', fs: 12, dy: -8 }) + Ar(215, 140, 300, 140, { w: 2, h: 8 }) + T(258, 158, '÷ 4', { fs: 12, c: 'kt' }))
+    + st(3, SN(3, 290, 30) + cellR(260, 60, 90, 36, '1') + cellR(260, 96, 90, 36, '22', { c: 'k', tc: 'tw' }) + Ar(215, 54, 300, 54, { w: 2, h: 8, lab: '÷ 4', fs: 12, dy: -6 }) + Ar(215, 140, 300, 140, { w: 2, h: 8 }) + T(258, 158, '÷ 4', { fs: 12, c: 'kt' }))
     + st(4, SN(4, 400, 30) + cellR(350, 60, 90, 36, '22') + cellR(350, 96, 90, 36, '484', { c: 'k', tc: 'tw' }) + Ar(305, 140, 390, 140, { w: 2, h: 8 }) + T(348, 158, '× 22', { fs: 12, c: 'kt' }) + Rc(60, 176, 520, 40, { c: 'k2', rx: 10 }) + T(320, 202, '484 min = 8 × 60 + 4 = 8 h 04 min', { fs: 16 })),
   'Tableau de proportionnalité : 4 épisodes pour 88 minutes, 1 épisode pour 22 minutes, 22 épisodes pour 484 minutes');
   // 2. hausses Netflix
@@ -68,7 +68,7 @@ module.exports = function (chk) {
       retiens: `<p>Une <b>grandeur composée</b> se calcule avec deux grandeurs. Vitesse moyenne : ${FM(R`v=\dfrac dt`)} en km/h ou m/s. Débit : données ÷ durée, en Mbit/s.</p><p>On en déduit : ${FM(R`d=v\times t`)} et données = débit × durée.</p>`,
       attention: 'Les unités doivent aller ensemble : des Mbit/s avec des secondes, des km/h avec des heures. Et 1 octet = 8 bits.',
       amoi: [['Un TGV parcourt 450 km en 1 h 30. Vitesse moyenne ?', '450 ÷ 1,5 = 300 km/h'], ['À 50 km/h, quelle distance en 3 h ?', '150 km']] },
-    { titre: 'Partager selon un ratio', decouvre: { txt: `Pour un bol de ramen comme dans un animé, une recette (fictive) mélange bouillon et sauce dans le ${H('ratio 5 : 1')}. Combien faut-il de bouillon et de sauce pour ${H('1,2 L')} de soupe ?`, img: skRamen() },
+    { titre: 'Partager selon un ratio', decouvre: { txt: `Pour un bol de ramen comme dans un animé, une recette mélange bouillon et sauce dans le ${H('ratio 5 : 1')}. Combien faut-il de bouillon et de sauce pour ${H('1,2 L')} de soupe ?`, img: skRamen() },
       methode: ['Ratio 5 : 1 : 5 parts de bouillon pour 1 part de sauce, soit 6 parts en tout.', 'Je calcule une part : 1,2 L ÷ 6 = 0,2 L.', 'Bouillon : 5 × 0,2 = 1 L. Sauce : 1 × 0,2 = 0,2 L.', 'Je vérifie la somme et le ratio.'],
       vois: vRat,
       solution: '<p>Il faut <b>1 L de bouillon</b> et <b>0,2 L de sauce</b> (20 cL).</p>',
@@ -93,7 +93,7 @@ module.exports = function (chk) {
   chk(181 * 60 === 10860 && 15 * 10860 === 162900 && Math.round(162900 / 8 / 100) === 204 && Math.floor(100 / 20.3625) === 4 && (15 - 3) / 15 === 0.8, 'c4 problème 3');
   c.probs = [
     PB({ id: 'p1', etape: 2, lc: 1, comps: ['mod', 'cal'], titre: 'Des ramen pour toute la classe',
-      intro: `<p>Une recette (fictive) de ramen pour ${H('4 bols')} demande ${H('400 g')} de nouilles, ${H('1,2 L')} de bouillon et ${H('2 œufs')}. On veut ${H('26 bols')} pour la classe.</p>`,
+      intro: `<p>Une recette de ramen pour ${H('4 bols')} demande ${H('400 g')} de nouilles, ${H('1,2 L')} de bouillon et ${H('2 œufs')}. On veut ${H('26 bols')} pour la classe.</p>`,
       qs: [Q('a.', 'Par combien faut-il multiplier les quantités ?', '26 ÷ 4 = 6,5', 6.5, { w: 24 }), Q('b.', 'Quelle masse de nouilles faut-il, en kg ?', '400 × 6,5 = 2 600 g = 2,6 kg', 2.6, { w: 24, lab: 'en kg :' }), Q('c.', 'Quel volume de bouillon faut-il ?', '1,2 × 6,5 = 7,8 L', 7.8, { w: 24, lab: 'en L :' }), Q('d.', 'Combien d’œufs faut-il ?', '2 × 6,5 = 13 œufs', 13, { w: 22 })],
       err: { 0: [{ v: 26 - 4, m: 'On ne soustrait pas : on cherche par combien multiplier, 26 ÷ 4.' }], 1: [{ v: 2600, m: 'C’est en grammes. La question demande des kilogrammes.' }] },
       hints: ['Coefficient = 26 ÷ 4.', 'On multiplie chaque quantité par le coefficient.', '1 kg = 1 000 g.'], pouce: 'Coefficient 26 ÷ 4 = 6,5. Nouilles : 400 × 6,5 g. Bouillon : 1,2 × 6,5 L. Œufs : 2 × 6,5.', corr: 'a. 6,5. b. 2,6 kg. c. 7,8 L. d. 13 œufs.' }),

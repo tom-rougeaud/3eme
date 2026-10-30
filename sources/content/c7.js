@@ -36,7 +36,7 @@ module.exports = function (chk) {
   'Les vingt faces d’un dé ; les faces 15 à 20 sont colorées : 6 chances sur 20');
   // 2. l’échelle des probabilités
   const X = p => 50 + p * 500;
-  const tick = (p, lab, up, cls = 'kt') => `<line x1="${X(p)}" y1="96" x2="${X(p)}" y2="${up ? 72 : 120}" class="ks" stroke-width="2"/><circle cx="${X(p)}" cy="96" r="7" class="k"/>` + T(X(p), up ? 62 : 138, lab, { fs: 13, c: cls });
+  const tick = (p, lab, up, cls = 'kt') => `<line x1="${X(p)}" y1="96" x2="${X(p)}" y2="${up ? 72 : 120}" class="ks" stroke-width="2"/><circle cx="${X(p)}" cy="96" r="7" class="k"/>` + T(p < .2 ? X(p) - 14 : p > .8 ? X(p) + 14 : X(p), up ? 62 : 138, lab, { fs: 13, c: cls, a: p < .2 ? 'start' : p > .8 ? 'end' : 'middle' });
   const vEch = S(600, 230, `<line x1="50" y1="96" x2="550" y2="96" class="ks" stroke-width="3"/>` + T(50, 172, '0', { fs: 14 }) + T(550, 172, '1', { fs: 14 }) + T(300, 172, '0,5', { fs: 13, c: 'ts' })
     + st(1, SN(1, 22, 30) + tick(.05, 'échec : 1/20 = 0,05', true))
     + st(2, SN(2, 300, 30) + tick(.95, 'pas d’échec : 1 − 0,05 = 0,95', true))
@@ -77,7 +77,7 @@ module.exports = function (chk) {
       retiens: `<p>L’<b>événement contraire</b> de A, noté « non A », se réalise quand A ne se réalise pas : ${FM(R`P(\text{non }A)=1-P(A)`)}</p><p>Un événement <b>impossible</b> a une probabilité de 0, un événement <b>certain</b> une probabilité de 1.</p>`,
       attention: '« Ne pas obtenir 1 » n’est pas « obtenir 20 » : c’est obtenir 2, 3, …, ou 20.',
       amoi: [['P(A) = 0,3. Calcule P(non A).', '0,7'], ['P(obtenir 0 avec ce dé) ?', '0 : impossible']] },
-    { titre: 'Une expérience à deux épreuves', decouvre: { txt: `Dans un jeu de plateau (fictif), on lance ${H('deux dés équilibrés à 6 faces')} et on additionne. Quelle est la probabilité d’obtenir ${H('une somme de 7')} ? Et d’obtenir un double ?`, img: skDeuxDes() },
+    { titre: 'Une expérience à deux épreuves', decouvre: { txt: `Dans un jeu de plateau, on lance ${H('deux dés équilibrés à 6 faces')} et on additionne. Quelle est la probabilité d’obtenir ${H('une somme de 7')} ? Et d’obtenir un double ?`, img: skDeuxDes() },
       methode: ['Je construis un tableau à double entrée : un dé en ligne, l’autre en colonne. Il y a 6 × 6 = 36 issues équiprobables.', 'Je repère les cases où la somme vaut 7 : il y en a 6.', 'Je calcule : P(somme 7) = 6/36 = 1/6.', 'Les doubles sont sur la diagonale : 6 cases, P = 6/36 = 1/6.'],
       vois: vDeux,
       solution: `<p>${FM(R`P(\text{somme }7)=\dfrac{6}{36}=\dfrac16`)} et ${FM(R`P(\text{double})=\dfrac{6}{36}=\dfrac16`)}</p><p>La somme 7 est la plus probable : c’est celle qui a le plus de cases.</p>`,
@@ -118,7 +118,7 @@ module.exports = function (chk) {
       err: { 0: [{ v: 2 / 20, m: 'N’oublie pas 18 : 18, 19 et 20.' }] },
       hints: ['Compte les faces qui conviennent.', 'Moins de 18, c’est le contraire de 18 ou plus.', 'Les multiples de 5 jusqu’à 20 : 5, 10, 15, 20.'], pouce: 'P(18 ou plus) = 3/20 ; P(moins de 18) = 1 − 3/20 ; multiples de 5 : 4 faces.', corr: 'a. 0,15. b. 0,85. c. 0,2. d. oui, 10/20.' }),
     PB({ id: 'p2', etape: 3, lc: 3, defi: 4, bulle: 'Ce cas se fait en 4 étapes. Dessine un arbre : premier booster, puis second booster, avec « rare » et « pas rare » à chaque fois.', autravail: { comp: 'mod', txt: 'estimer combien de pièces défectueuses on risque de trouver dans un lot, à partir d’une probabilité de défaut.' }, comps: ['che', 'mod', 'cal', 'rai'], titre: 'Deux boosters',
-      intro: `<p>Dans un jeu de cartes (fictif), chaque booster contient une carte rare avec une probabilité de ${H('1/5')}, indépendamment des autres boosters. On ouvre ${H('deux boosters')}.</p>`,
+      intro: `<p>Dans un jeu de cartes, chaque booster contient une carte rare avec une probabilité de ${H('1/5')}, indépendamment des autres boosters. On ouvre ${H('deux boosters')}.</p>`,
       qs: [Q('a.', 'Quelle est la probabilité qu’un booster ne contienne pas de carte rare ?', '1 − 1/5 = 4/5', .8, { w: 22, tol: .002 }), Q('b.', 'Quelle est la probabilité d’avoir deux cartes rares ?', '1/5 × 1/5 = 1/25 = 0,04', .04, { w: 22, tol: .002 }), Q('c.', 'Quelle est la probabilité de n’avoir aucune carte rare ?', '4/5 × 4/5 = 16/25 = 0,64', .64, { w: 22, tol: .002 }), Q('d.', 'Déduis-en la probabilité d’avoir au moins une carte rare.', '1 − 0,64 = 0,36', .36, { w: 22, tol: .002 }), Q('e.', 'Sur 500 paires de boosters, combien de fois environ aura-t-on au moins une rare ?', '500 × 0,36 = 180 fois environ', 180, { w: 22, tol: .5 })],
       err: { 1: [{ v: 2 / 5, m: 'Pour deux épreuves à la suite, on multiplie les probabilités le long de la branche.' }], 3: [{ v: .4, m: '« Au moins une » est le contraire de « aucune » : 1 − 0,64.' }] },
       hints: ['Le contraire de « rare » : 1 − 1/5.', 'Sur un arbre, on multiplie les probabilités le long d’une branche.', '« Au moins une rare » est le contraire de « aucune rare ».'], pouce: 'P(pas rare) = 4/5 ; deux rares : 1/5 × 1/5 ; aucune : 4/5 × 4/5 = 16/25 ; au moins une : 1 − 16/25.', corr: 'a. 4/5. b. 1/25. c. 16/25. d. 9/25 = 0,36. e. 180.' }),

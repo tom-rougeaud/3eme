@@ -27,6 +27,6 @@ python3 test-app3.py "$PWD/../index.html"   # test de bout en bout (ordinateur e
 
 La version professeur (`build/maths-3e-serie-pro-professeur.pdf`) n’est pas publiée.
 
-Données réelles : Wikipédia (épisodes des Simpson, statue de l’Unicorn Gundam), Shueisha (One Piece), The Pokémon Company, JeChange et centre d’aide Netflix, CNC (fréquentation 2025), IFAB (lois du jeu). Les entreprises, clubs et jeux des exercices sont fictifs et signalés comme tels.
+Données réelles : Wikipédia (épisodes des Simpson, statue de l’Unicorn Gundam), Shueisha (One Piece), The Pokémon Company, JeChange et centre d’aide Netflix, CNC (fréquentation 2025), IFAB (lois du jeu). Les entreprises, clubs et jeux des exercices sont inventés.
 
 Tom Rougeaud · licence CC BY-NC 4.0.

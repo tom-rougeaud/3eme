@@ -22,7 +22,7 @@
     const r1 = L[0] * n / 100, r2 = L[1] * n / 100, p3 = real3 * 100 / n;
     const items = [num('a', r1, 2, fr(r1) + ' m', [{ v: L[0] * n, m: 'C’est en cm : convertis en mètres (÷ 100).' }]), num('b', r2, 2, fr(r2) + ' m'), num('c', p3, 2, fr(p3) + ' cm', [{ v: real3 * n, m: 'Pour passer du réel au plan, on divise par ' + n + '.' }]), num('d', rnd(r1 * r2, 2), 2, fr(rnd(r1 * r2, 2)) + ' m²')];
     xs(items, { a: `${L[0]} × ${n} = ${fr(L[0] * n)} cm = ${fr(r1)} m`, b: `${L[1]} × ${n} = ${fr(L[1] * n)} cm = ${fr(r2)} m`, c: `${real3} m = ${fr(real3 * 100)} cm ; ${fr(real3 * 100)} ÷ ${n} = ${fr(p3)} cm`, d: `${fr(r1)} × ${fr(r2)} = ${fr(rnd(r1 * r2, 2))} m²` });
-    return { titre: 'Le plan à l’échelle', consigne: `Le plan (fictif) d’une salle de jeux vidéo est à l’échelle 1/${n} : 1 cm sur le plan représente ${n} cm en vrai.`,
+    return { titre: 'Le plan à l’échelle', consigne: `Le plan d’une salle de jeux vidéo est à l’échelle 1/${n} : 1 cm sur le plan représente ${n} cm en vrai.`,
       support: table(['', 'Sur le plan', 'En vrai'], [['Longueur de la salle', `${L[0]} cm`, `a. ${tb('a', fr(r1), 12)} m`], ['Largeur de la salle', `${L[1]} cm`, `b. ${tb('b', fr(r2), 12)} m`], ['Un écran géant', `c. ${tb('c', fr(p3), 12)} cm`, `${real3} m`]]) + `<p class="tr-l">d. Aire réelle de la salle : ${tb('d', fr(rnd(r1 * r2, 2)), 14)} m²</p>`, items,
       hints: ['Du plan au réel : × ' + n + '.', 'Du réel au plan : ÷ ' + n + ', avec la même unité.', '1 m = 100 cm.'] };
   };
@@ -33,7 +33,7 @@
     const what = k > 1 ? 'agrandissement' : 'réduction';
     const items = [qcm('a', ['agrandissement', 'réduction'], k > 1 ? 0 : 1, `${what} : k ${k > 1 ? '>' : '<'} 1`), num('b', rnd(Ln * k, 2), 2, fr(rnd(Ln * k, 2)) + ' cm'), num('c', rnd(A * k * k, 2), 2, fr(rnd(A * k * k, 2)) + ' cm²', [{ v: rnd(A * k, 2), m: 'Une aire est multipliée par k² = ' + fr(k * k) + ', pas par k.' }]), num('d', rnd(V * k ** 3, 2), 2, fr(rnd(V * k ** 3, 2)) + ' cm³', [{ v: rnd(V * k, 2), m: 'Un volume est multiplié par k³ = ' + fr(k ** 3) + '.' }, { v: rnd(V * k * k, 2), m: 'Pour un volume, c’est k³, pas k².' }])];
     xs(items, { b: `${Ln} × ${fr(k)} = ${fr(rnd(Ln * k, 2))} cm`, c: `${A} × ${fr(k)}² = ${A} × ${fr(k * k)} = ${fr(rnd(A * k * k, 2))} cm²`, d: `${V} × ${fr(k)}³ = ${V} × ${fr(k ** 3)} = ${fr(rnd(V * k ** 3, 2))} cm³` });
-    return { titre: 'Agrandir ou réduire', consigne: `On fabrique une figurine (fictive) à partir d’un modèle, avec un coefficient k = ${fr(k)}.`,
+    return { titre: 'Agrandir ou réduire', consigne: `On fabrique une figurine à partir d’un modèle, avec un coefficient k = ${fr(k)}.`,
       support: table(['', 'Modèle', 'Nouvelle figurine'], [['Hauteur', `${Ln} cm`, `b. ${tb('b', fr(rnd(Ln * k, 2)), 12)} cm`], ['Aire à peindre', `${A} cm²`, `c. ${tb('c', fr(rnd(A * k * k, 2)), 14)} cm²`], ['Volume de résine', `${V} cm³`, `d. ${tb('d', fr(rnd(V * k ** 3, 2)), 14)} cm³`]]) + `<p class="tr-l">a. Est-ce un agrandissement ou une réduction ?</p>`, items,
       hints: ['k > 1 : agrandissement ; k < 1 : réduction.', 'Longueurs × k, aires × k².', 'Volumes × k³.'] };
   };
