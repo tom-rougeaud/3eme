@@ -3,6 +3,7 @@
 const K = require('./kit3e');
 const { H, FM, R, Q, BQ, PB, S, T, Rc, Ar, st, SN, Sketch, MCVP, tab } = K;
 const { D, SV, tt, fill } = require('./sk3');
+const PIE = require('../shared/pie.js');
 
 module.exports = function (chk) {
   const c = { id: 'c6', n: 6, col: 'donnees', icone: '📊', dom: 'Organisation et gestion de données · statistiques', titre: 'Statistiques', sous: 'Moyenne, médiane, étendue, diagrammes et tableur' };
@@ -20,7 +21,7 @@ module.exports = function (chk) {
   /* ---------- illustrations « Je découvre » ---------- */
   const skSaisons = () => { const k = Sketch(761); let s = fill(18, 18, 120, 80, .45, 'k2', 6) + k.P(k.rect(18, 18, 120, 80)) + k.P(k.line(78, 98, 78, 110) + k.line(56, 112, 100, 112), { w: 2 }) + tt(78, 54, '10', 22) + tt(78, 78, 'saisons', 12); return SV(s + tt(166, 58, '226', 15) + tt(166, 78, 'épisodes', 10) + tt(100, 126, 'en moyenne ?', 11), 'Un téléviseur : dix saisons, 226 épisodes'); };
   const skClap = () => { const k = Sketch(762); return SV(fill(40, 46, 120, 64, .9, 'k2', 4) + k.P(k.rect(40, 46, 120, 64)) + k.P(k.poly([[40, 46], [44, 22], [162, 10], [160, 34]], true), { w: 2.4 }) + tt(100, 84, 'TOP 10', 18) + tt(100, 104, '2025', 12) + tt(100, 126, 'entrées en millions', 11), 'Un clap de cinéma : le top 10 de 2025'); };
-  const skBarres = () => { const k = Sketch(763); let s = k.P(k.line(16, 104, 186, 104) + k.line(16, 104, 16, 14), { w: 2 }); M25.forEach((v, i) => { s += fill(22 + i * 13.5, 104 - v * 4, 10, v * 4, .9, i === 11 ? 'k' : 'k2', 1); }); return SV(s + tt(100, 124, 'entrées par mois, 2025', 11), 'Un diagramme en barres des entrées mois par mois'); };
+  const skBarres = () => SV(PIE.bars({ x0: 26, y0: 100, pitch: 14, bw: 10, u: 3.4, vals: M25, cats: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'], ticks: [0, 10, 20], vmax: 22, fs: 8, vfs: 8.5, labels: [11], fmt: v => String(Math.round(v * 10) / 10).replace('.', ','), color: i => PIE.col(i === 11 ? 0 : 1), unit: 'millions' }) + tt(100, 124, 'entrées par mois, 2025', 10), 'Un diagramme en barres des entrées mois par mois, gradué de 0 à 20 millions');
   const skTableur = () => { const k = Sketch(764); let s = ''; for (let r = 0; r < 5; r++) for (let q = 0; q < 3; q++) s += `<rect x="${24 + q * 52}" y="${16 + r * 18}" width="52" height="18" class="${r === 0 || q === 0 ? 'k2' : 'wh'} ks" stroke-width="1"/>`; s += tt(50, 29, 'A', 10) + tt(102, 29, 'B', 10) + tt(154, 29, 'C', 10) + tt(102, 47, '22', 11) + tt(102, 65, '21', 11) + tt(102, 83, '23', 11); return SV(s + tt(100, 120, '=NB.SI(B2:B37;22)', 12), 'Une feuille de tableur avec une formule'); };
 
   /* ---------- méthodes visuelles ---------- */

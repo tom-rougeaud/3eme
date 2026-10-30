@@ -65,12 +65,15 @@ const html = `<!doctype html>
 <footer class="foot2">3ème Série Pro — Tom Rougeaud · CC BY-NC 4.0 · <a href="#/confidentialite">Confidentialité</a> · <a href="#/donnees">Mes données</a> · <a href="https://tom-rougeaud.github.io/mcv/">Tout le programme</a></footer>
 <script>${js(rd('shared/gens.js'))}</script>
 <script>${js(rd('shared/g1.js'))}</script>
+<script>${js(rd('shared/pie.js'))}</script>
 <script>${js(rd('shared/train.js'))}</script>
 <script>${js(rd('shared/auto3.js'))}</script>
 ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter(n => fs.existsSync(path.join(HERE, 'shared/t' + n + '.js'))).map(n => `<script>${js(rd('shared/t' + n + '.js'))}</script>`).join('\n')}
 <script>${js(rd('app/widgets.js'))}</script>
 <script type="application/json" id="mcv-data">${json}</script>
 <script>${js(rd('app/app3.js'))}</script>
+<script>${js(rd('lib/svgfit.js'))}</script>
+<script>try { MCVfit.watch(document.getElementById('main')); } catch (e) { }</script>
 </body>
 </html>
 `;

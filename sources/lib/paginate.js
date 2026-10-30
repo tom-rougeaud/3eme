@@ -2,6 +2,7 @@
    Auto-ajustement des textes (.fit), contrôle des débordements à droite. */
 (async function () {
   if (document.fonts) { try { await Promise.all([...document.fonts].map(f => f.load())); } catch (e) { } await document.fonts.ready; }
+  try { if (window.MCVfit) MCVfit.fitAll(document.getElementById('flow')); } catch (e) { }
   const MM = 96 / 25.4, PROF = document.body.classList.contains('prof');
   document.body.classList.add('paging'); // les réponses du professeur ne comptent pas dans la mise en page
   const flow = document.getElementById('flow'), out = document.getElementById('out');

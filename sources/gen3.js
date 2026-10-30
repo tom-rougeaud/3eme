@@ -245,7 +245,7 @@ const CSS = ['print.css', 'n3.css', 'mcv.css', 'v3.css'].map(f => fs.readFileSyn
 .ev-p2{margin:0 0 2mm;padding:1.6mm 3mm;border-radius:3mm;background:var(--tt);font:800 10.4pt 'Inter',${FALL};color:#1D2240}
 .evred{margin:2mm 0 0;border:2px dashed var(--cc);border-radius:3mm;padding:1.8mm 3.4mm;font-size:10.2pt;background:#FFFBE0}
 `;
-const PAG = fs.readFileSync(path.join(HERE, 'lib', 'paginate.js'), 'utf8');
+const PAG = fs.readFileSync(path.join(HERE, 'lib', 'svgfit.js'), 'utf8') + '\n' + fs.readFileSync(path.join(HERE, 'lib', 'paginate.js'), 'utf8');
 const TPL = `<template id="notesTpl"><div class="blk notes"><h3>📝 Mes notes</h3><div class="lines"></div></div></template>`;
 const FOOT = 'Maths · 3ème Série Pro // T. Rougeaud';
 const typo = h => h.split(/(<pre[\s\S]*?<\/pre>|<style[\s\S]*?<\/style>|<svg[\s\S]*?<\/svg>)/).map((part, i) => i % 2 ? part : part.replace(/>([^<]+)</g, (m, t) => '>' + t.replace(/ ([?!:;»])/g, ' $1').replace(/« /g, '« ').replace(/(\d) (%|€)/g, '$1 $2').replace(/([+−]) (\d)/g, '$1 $2') + '<')).join('');

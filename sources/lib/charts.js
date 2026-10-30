@@ -3,7 +3,7 @@
    Unité du viewBox ≈ 0,25 mm quand le graphique occupe 160 mm de large. */
 'use strict';
 const { fr, esc } = require('./util');
-const INK = '#1D2240', SOFT = '#545B7A', GRID = '#DCE2F2', AX = '#1D2240';
+const INK = '#1D2240', SOFT = '#545B7A', GRID = '#C4CCE4', AX = '#1D2240';
 const tw = (s, fs) => String(s).length * fs * 0.56; // largeur approximative d’un texte
 
 function niceStep(range, n = 6) {
@@ -76,6 +76,7 @@ function lines(o) {
     if (se.step && se.until != null) d += `H${X(se.until).toFixed(1)}`;
     s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="${se.width || 3}"${se.dash ? ` stroke-dasharray="${se.dash}"` : ''} stroke-linejoin="round"/>`;
     if (se.dots) se.pts.forEach(p => { s += `<circle cx="${X(p[0]).toFixed(1)}" cy="${Y(p[1]).toFixed(1)}" r="4" fill="#fff" stroke="${se.color}" stroke-width="2.4"/>`; });
+    if (se.labels) se.pts.forEach(p => { s += T(X(p[0]), Y(p[1]) - 9, (o.yfmt || fr)(p[1]), { fs: fs - 2, anchor: 'middle', w: 700 }); });
     (se.notes || []).forEach(nt => { s += T(X(nt[0]), Y(nt[1]) - 8, nt[2], { fs: fs - 1, anchor: nt[3] || 'middle', w: 700, fill: se.color }); });
   });
   s += T(14, Tp + ph / 2, o.yLabel, { fs, anchor: 'middle', rot: -90, fill: SOFT, w: 700 });
@@ -123,18 +124,15 @@ function boxes(o) {
   return s + '</svg>';
 }
 
-/* Diagramme circulaire avec légende. parts : [{name, v, color}] */
+/* Diagramme circulaire avec légende. parts : [{name, v, color}] ; frontières noires, couleurs contrastées si color est omis, valeur écrite sur chaque secteur */
 function pie(o) {
+  const PIE = require('../shared/pie.js');
   const W = o.w || 640, fs = o.fs || 12, H = o.h || 250, cx = 150, cy = (o.title ? 30 : 0) + (H - (o.title ? 30 : 0)) / 2, r = Math.min(105, (H - (o.title ? 30 : 0)) / 2 - 12);
-  const tot = o.parts.reduce((a, p) => a + p.v, 0);
+  const tot = o.parts.reduce((a, p) => a + p.v, 0), fm = o.fmt || (v => fr(v));
   let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
   if (o.title) s += T(W / 2, 20, o.title, { fs: fs + 2, w: 700, anchor: 'middle' });
-  let a0 = -Math.PI / 2;
-  o.parts.forEach((p, i) => { const a1 = a0 + p.v / tot * 2 * Math.PI, big = a1 - a0 > Math.PI ? 1 : 0;
-    s += `<path d="M${cx} ${cy}L${(cx + r * Math.cos(a0)).toFixed(1)} ${(cy + r * Math.sin(a0)).toFixed(1)}A${r} ${r} 0 ${big} 1 ${(cx + r * Math.cos(a1)).toFixed(1)} ${(cy + r * Math.sin(a1)).toFixed(1)}Z" fill="${p.color}" stroke="#fff" stroke-width="2"/>`;
-    const am = (a0 + a1) / 2; if (p.v / tot > .06) s += T(cx + r * .62 * Math.cos(am), cy + r * .62 * Math.sin(am) + 4, (o.fmt || (v => fr(v)))(p.v), { fs: fs, anchor: 'middle', w: 700, fill: p.ink || '#fff' });
-    const ly = (o.title ? 44 : 20) + i * 26; s += `<rect x="300" y="${ly - 12}" width="16" height="16" rx="3" fill="${p.color}"/>` + T(324, ly + 1, p.name, { fs });
-    a0 = a1; });
+  s += PIE.sectors({ cx, cy, r, fs: fs + 1, minIn: 26, parts: o.parts.map((p, i) => ({ a: p.v / tot * 360, c: i, in: fm(p.v) })) });
+  o.parts.forEach((p, i) => { const ly = (o.title ? 44 : 20) + i * 26; s += PIE.chip(300, ly - 12, i, 16) + T(324, ly + 1, p.name, { fs }); });
   if (o.source) s += T(W - 14, H - 4, 'Source : ' + o.source, { fs: fs - 2, anchor: 'end', fill: SOFT });
   return s + '</svg>';
 }

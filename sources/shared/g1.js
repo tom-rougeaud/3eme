@@ -4,13 +4,13 @@
   'use strict';
   const MC = typeof module !== 'undefined' ? require('./gens.js').MCVG : root.MCVG;
   const { fr } = MC;
-  const INK = '#1D2240', SOFT = '#545B7A', GRID = '#DCE2F2', RED = '#C2332A', BLUE = '#1D5FC2', ORG = '#B05200', GRN = '#1E7F45', VIO = '#7438C0';
+  const INK = '#1D2240', SOFT = '#545B7A', GRID = '#C4CCE4', RED = '#C2332A', BLUE = '#1D5FC2', ORG = '#B05200', GRN = '#1E7F45', VIO = '#7438C0';
   const f1 = n => (Math.round(n * 10) / 10).toString();
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const T = (x, y, s, o = {}) => `<text x="${f1(x)}" y="${f1(y)}" font-size="${o.fs || 12}" text-anchor="${o.a || 'middle'}" font-weight="${o.w || 700}" ${o.fill ? `fill="${o.fill}"` : `class="${o.c || 'tx'}"`}${o.r ? ` transform="rotate(${o.r} ${f1(x)} ${f1(y)})"` : ''}>${s}</text>`;
   /* repère : x ∈ [x0 ; x1] pas dx, y ∈ [y0 ; y1] pas dy */
   function plot(o) {
-    const W = o.W || 600, H = o.H || 300, [x0, x1, dx] = o.x, [y0, y1, dy] = o.y, ml = o.ml == null ? 50 : o.ml, mr = o.mr == null ? 16 : o.mr, mt = o.mt == null ? 16 : o.mt, mb = o.mb == null ? 36 : o.mb;
+    const W = o.W || 600, H = o.H || 300, [x0, x1, dx] = o.x, [y0, y1, dy] = o.y, ml = o.ml == null ? 50 : o.ml, mr = o.mr == null ? 16 : o.mr, mt = Math.max(o.mt == null ? 16 : o.mt, o.yl ? 22 : 0), mb = Math.max(o.mb == null ? 36 : o.mb, o.xl ? 42 : 0);
     const X = x => ml + (x - x0) / (x1 - x0) * (W - ml - mr), Y = y => H - mb - (y - y0) / (y1 - y0) * (H - mt - mb);
     const inY = y => Number.isFinite(y) && y >= y0 - 1e-9 && y <= y1 + 1e-9;
     let base = '';
@@ -23,11 +23,11 @@
     const fs = o.fs || 12, lx = o.lx || 1, ly = o.ly || 1;
     let i = 0;
     if (o.xt) { for (const [x, lab] of o.xt) base += `<line x1="${f1(X(x))}" y1="${f1(Y(ax0))}" x2="${f1(X(x))}" y2="${f1(Y(ax0) + 5)}" stroke="${INK}" stroke-width="1.6"/>` + T(X(x), Y(ax0) + 19, lab, { fs, w: 400, c: 'ts' }); }
-    else for (let x = x0; x <= x1 + 1e-9; x += dx, i++) { base += `<line x1="${f1(X(x))}" y1="${f1(Y(ax0)) }" x2="${f1(X(x))}" y2="${f1(Y(ax0) + 5)}" stroke="${INK}" stroke-width="1.6"/>`; if (i % lx === 0 && !(o.zeroAxes && Math.abs(x) < 1e-9 && ay0 === 0 && false)) base += T(X(x), Y(ax0) + 19, fr(+x.toFixed(6)), { fs, w: 400, c: 'ts' }); }
+    else for (let x = x0; x <= x1 + 1e-9; x += dx, i++) { base += `<line x1="${f1(X(x))}" y1="${f1(Y(ax0)) }" x2="${f1(X(x))}" y2="${f1(Y(ax0) + 5)}" stroke="${INK}" stroke-width="1.6"/>`; if (i % lx === 0) { const org = o.zeroAxes && Math.abs(x) < 1e-9 && ay0 === 0 && x0 < 0; base += T(org ? X(x) - 8 : X(x), Y(ax0) + 19, fr(+x.toFixed(6)), { fs, w: 400, c: 'ts', a: org ? 'end' : 'middle' }); } }
     i = 0;
-    for (let y = y0; y <= y1 + 1e-9; y += dy, i++) { base += `<line x1="${f1(X(ay0) - 5)}" y1="${f1(Y(y))}" x2="${f1(X(ay0))}" y2="${f1(Y(y))}" stroke="${INK}" stroke-width="1.6"/>`; if (i % ly === 0) base += T(X(ay0) - 9, Y(y) + 4, fr(+y.toFixed(6)), { fs, a: 'end', w: 400, c: 'ts' }); }
-    if (o.xl) base += T(X(x1), H - 1, o.xl, { fs: fs + 1, a: 'end', c: 'ts' });
-    if (o.yl) base += T(ml - 4, 11, o.yl, { fs: fs + 1, a: 'start', c: 'ts' });
+    for (let y = y0; y <= y1 + 1e-9; y += dy, i++) { base += `<line x1="${f1(X(ay0) - 5)}" y1="${f1(Y(y))}" x2="${f1(X(ay0))}" y2="${f1(Y(y))}" stroke="${INK}" stroke-width="1.6"/>`; if (i % ly === 0 && !(o.zeroAxes && Math.abs(y) < 1e-9 && ax0 === 0 && ay0 === 0 && x0 < 0 && y0 < 0)) base += T(X(ay0) - 9, Y(y) + 4, fr(+y.toFixed(6)), { fs, a: 'end', w: 400, c: 'ts' }); }
+    if (o.xl) base += T(X(x1), H - 5, o.xl, { fs: fs + 1, a: 'end', c: 'ts' });
+    if (o.yl) base += T(ml - 4, mt - 8, o.yl, { fs: fs + 1, a: 'start', c: 'ts' });
     /* courbe d’une fonction, coupée là où elle sort du cadre */
     const curve = (fn, c = {}) => {
       const a = c.a == null ? x0 : c.a, b = c.b == null ? x1 : c.b, n = c.n || 240; let d = '', pen = false;
