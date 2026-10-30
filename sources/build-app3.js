@@ -53,6 +53,12 @@ const html = `<!doctype html>
 <meta name="theme-color" content="#FFEC73">
 <meta name="author" content="Tom Rougeaud">
 <link rel="icon" href="${FAV}">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="3ème Série Pro">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>${FONTS}</style>
 <style>${require('./lib/tex').css()}</style>
 <style>${CSS}</style>
@@ -74,6 +80,8 @@ ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter(n => fs.existsSync(path.join(HERE, 'sha
 <script>${js(rd('app/app3.js'))}</script>
 <script>${js(rd('lib/svgfit.js'))}</script>
 <script>try { MCVfit.watch(document.getElementById('main')); } catch (e) { }</script>
+<script>window.MCVPWA={"name": "3ème Série Pro", "short": "3ème Série Pro", "key": "mcv3e.v1", "color": "#F5A300", "ink": "#1D2240"};</script>
+<script>${js(rd('pwa/pwa.js'))}</script>
 </body>
 </html>
 `;
