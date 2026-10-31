@@ -103,5 +103,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais additionner et soustraire des fractions.', ['e1', 'p3']], ['Je sais prendre une fraction d’une quantité.', ['p3']], ['Je sais calculer avec les puissances de 10 et les préfixes.', ['e2', 'p2']], ['Je sais utiliser l’écriture scientifique.', ['e3', 'p1', 'p2']]];
   c.words = require('./gl3')('c2');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c2e4', lc: 2 }); if (c.bilan[1]) c.bilan[1][1].push('e4');
   return c;
 };

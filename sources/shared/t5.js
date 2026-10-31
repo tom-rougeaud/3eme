@@ -62,4 +62,28 @@
       support: g.wrap(g.base + g.line(p, 0, { stroke: P.BLUE }) + g.line(q, r, { stroke: P.RED }) + g.txt(X + 3.5, p * (X + 3.5), 'f', { dx: -14, dy: -4, fill: P.BLUE }) + g.txt(X + 3.5, q * (X + 3.5) + r, 'g', { dx: 4, dy: 18, fill: P.RED })) + table(['Séances', 'Sans carte f(x)', 'Avec carte g(x)'], [[String(n1), tb('a', eur(p * n1), 14), tb('b', eur(q * n1 + r), 14)]]) + `<p class="tr-l">c. Les deux formules coûtent le même prix pour x = ${tb('c', String(X), 10)} séances, soit ${tb('d', eur(p * X), 14)}.</p><p class="tr-l">e. Pour ${n2} séances, quelle formule est la moins chère ?</p>`, items,
       hints: ['Remplace x par le nombre de séances dans chaque formule.', 'Même prix : résous f(x) = g(x).', 'Après l’intersection, la droite la plus basse donne la formule la moins chère.'] };
   };
+  /* ===== exercice ajouté : notion 1 (image, antécédent, lecture graphique) ===== */
+  {
+    const { Q, fr, pick, int, shuffle, svg, T } = H;
+    TR.c5e4 = R => {
+      const X = [0, 2, 4, 6, 8], Y = shuffle(R, [0, 2, 4, 6, 8, 10, 12]).slice(0, 5).sort((a, b) => a - b);
+      const x0 = 46, y0 = 196, sx = 44, sy = 14, px = x => x0 + x * sx, py = y => y0 - y * sy;
+      let g = '';
+      for (let x = 0; x <= 8; x++) g += `<line x1="${px(x)}" y1="${py(0)}" x2="${px(x)}" y2="${py(12)}" stroke="#D5DBEC" stroke-width="1"/>` + T(px(x), y0 + 16, String(x), { fs: 11 });
+      for (let y = 0; y <= 12; y += 2) g += `<line x1="${px(0)}" y1="${py(y)}" x2="${px(8)}" y2="${py(y)}" stroke="#D5DBEC" stroke-width="1"/>` + T(x0 - 8, py(y) + 4, String(y), { fs: 11, a: 'end' });
+      g += `<line x1="${px(0)}" y1="${py(0)}" x2="${px(8) + 10}" y2="${py(0)}" stroke="#1D2240" stroke-width="2"/><line x1="${px(0)}" y1="${py(0)}" x2="${px(0)}" y2="${py(12) - 10}" stroke="#1D2240" stroke-width="2"/>` + T(px(8) + 14, y0 + 4, 'x', { fs: 12, a: 'start' }) + T(x0 + 14, py(12) - 8, 'f(x)', { fs: 12, a: 'start' });
+      g += `<polyline points="${X.map((x, i) => px(x) + ',' + py(Y[i])).join(' ')}" fill="none" stroke="#2B59C3" stroke-width="3" stroke-linejoin="round"/>` + X.map((x, i) => `<circle cx="${px(x)}" cy="${py(Y[i])}" r="4.5" fill="#2B59C3"/>`).join('');
+      const pic = svg(440, 226, g, 'Courbe de la fonction f : lecture d’images et d’antécédents');
+      const i = int(R, 1, 4); let j = int(R, 1, 4); while (j === i) j = int(R, 1, 4);
+      let p = int(R, 1, 4), q = int(R, 1, 4); const yes = R() < .5; if (yes) q = p; else while (q === p) q = int(R, 1, 4);
+      const m = pick(R, [1, 2, 3, 4]), xm = X[m - 1] + 1, ym = (Y[m - 1] + Y[m]) / 2;
+      return Q('Lire une courbe : image et antécédent', 'Voici la courbe de la fonction f. Les points marqués sont sur des croisements du quadrillage ; entre deux points, la courbe est un segment.', [
+        { lab: `Image de ${X[i]} par f : f(${X[i]})`, v: Y[i], d: 0, w: 12, x: `On part de ${X[i]} sur l’axe horizontal, on monte jusqu’à la courbe, puis on lit l’axe vertical : f(${X[i]}) = ${Y[i]}.`, err: [{ v: X[i], m: 'L’image se lit sur l’axe vertical, pas sur l’axe horizontal.' }] },
+        { lab: `Antécédent de ${Y[j]} par f`, v: X[j], d: 0, w: 12, x: `On part de ${Y[j]} sur l’axe vertical, on va vers la courbe, puis on lit l’axe horizontal : l’antécédent de ${Y[j]} est ${X[j]}.`, err: [{ v: Y[j], m: 'Un antécédent se lit sur l’axe horizontal.' }] },
+        { lab: `Le point de coordonnées (${X[p]} ; ${Y[q]}) est-il sur la courbe ?`, qcm: ['oui', 'non'], ok: yes ? 0 : 1, x: yes ? `f(${X[p]}) = ${Y[p]} : le point (${X[p]} ; ${Y[p]}) est bien sur la courbe.` : `f(${X[p]}) = ${Y[p]}, pas ${Y[q]} : le point n’est pas sur la courbe.` },
+        { lab: `Dans l’égalité f(${X[i]}) = ${Y[i]}, le nombre ${X[i]} est…`, qcm: [`l’image de ${Y[i]}`, `un antécédent de ${Y[i]}`], ok: 1, x: `Dans f(a) = b, b est l’image de a et a est un antécédent de b : ${X[i]} est un antécédent de ${Y[i]}.` },
+        { lab: `Image de ${xm} (lecture sur le segment)`, v: ym, d: 0, w: 12, x: `${xm} est au milieu de ${X[m - 1]} et ${X[m]} : la courbe passe à mi-hauteur entre ${Y[m - 1]} et ${Y[m]}, soit (${Y[m - 1]} + ${Y[m]}) ÷ 2 = ${ym}.` }],
+        ['L’image se lit sur l’axe vertical, l’antécédent sur l’axe horizontal.', 'Pour une image : pars de x, monte ou descends jusqu’à la courbe.', 'Pour un antécédent : pars de la valeur sur l’axe vertical, va jusqu’à la courbe, puis descends.'], pic);
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

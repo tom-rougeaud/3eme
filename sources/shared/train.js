@@ -30,7 +30,14 @@
   const DEP = {}, TR = {};
   /* calculs détaillés (version professeur) : xs(items, { a: '…', b: '…' }) */
   const xs = (items, m) => { items.forEach(it => { if (m[it.k]) it.x = m[it.k]; }); return items; };
-  const H = { MC, P, fr, rnd, eur, pct, esc, TOL, L, tb, sb, T, svg, table, num, qcm, pick, int, shuffle, NB, xs };
+  /* ligne de réponse « a. consigne : [case] » et trame d’un exercice : Q(titre, consigne, rows, hints, support) ; rows : { lab, v, d, a, x, err, w } ou { lab, qcm, ok, x } */
+  const ln = (k, lab, a, w = 16) => `<p class="tr-l">${k}. ${lab} : ${tb(k, a, w)}</p>`;
+  const Q = (titre, consigne, rows, hints, pre = '') => {
+    const items = rows.map((r, i) => { const k = L[i], d = r.d == null ? 2 : r.d; const it = r.qcm ? qcm(k, r.qcm, r.ok, r.a) : num(k, r.v, d, r.a != null ? r.a : (Number.isInteger(rnd(r.v, d)) ? fr(r.v, 0) : d === 2 ? fr(r.v, 2) : fr(rnd(r.v, d))), r.err || []); if (r.x) it.x = r.x; return it; });
+    return { titre, consigne, support: pre + rows.map((r, i) => r.qcm ? `<p class="tr-l">${L[i]}. ${r.lab}</p>` : ln(L[i], r.lab, items[i].a, r.w || 16)).join(''), items, hints };
+  };
+  const sgn = (x, v = 'x') => `${x < 0 ? '−' : '+'} ${fr(Math.abs(x), 0)}`;
+  const H = { MC, P, fr, rnd, eur, pct, esc, TOL, L, tb, sb, T, svg, table, num, qcm, pick, int, shuffle, NB, xs, ln, Q };
 
   /* vérification d’une réponse, avec l’erreur fréquente reconnue */
   function verdict(it, s) {

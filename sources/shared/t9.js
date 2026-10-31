@@ -50,4 +50,20 @@
       support: svg(600, 216, s, 'Configuration de Thalès dans un triangle') + `<p class="tr-l">a. Rapport AM/AB : ${tb('a', `${AM}/${AB}`, 12)} · b. MN = ${tb('b', fr(MN), 12)} cm · c. AN = ${tb('c', fr(AN), 12)} cm</p>`, items,
       hints: ['Le sommet commun est A.', 'Thalès : AM/AB = AN/AC = MN/BC.', 'Produit en croix : MN = BC × AM ÷ AB.'] };
   };
+  /* ===== exercice ajouté : notion 2 (agrandir et réduire des longueurs) ===== */
+  {
+    const { Q, fr, pick, int, table, rnd } = H;
+    TR.c9e4 = R => {
+      const k = pick(R, [0.5, 0.25, 0.2, 0.1, 2, 3, 4, 1.5]), L1 = pick(R, [20, 40, 60, 80]), M = pick(R, [12, 16, 24, 28, 32, 36, 40]), T = pick(R, [10, 15, 25, 30, 50]), ang = pick(R, [35, 40, 55, 65, 70, 110]), red = k < 1;
+      const l1 = rnd(L1 * k, 2), mm = rnd(M * k, 2), pp = rnd(k * T, 2), nom = red ? 'une maquette' : 'un agrandissement';
+      return Q('Agrandir et réduire', `On construit ${nom} d’une pièce métallique. La longueur AB mesure ${fr(L1, 0)} cm sur la pièce et ${fr(l1)} cm sur ${red ? 'la maquette' : 'l’agrandissement'}.`, [
+        { lab: 'Coefficient de la transformation k (longueur obtenue ÷ longueur de départ)', v: k, d: 2, w: 14, x: `${fr(l1)} ÷ ${fr(L1, 0)} = ${fr(k)}`, err: [{ v: rnd(1 / k, 2), m: 'Divise la longueur obtenue par la longueur de départ, dans cet ordre.' }] },
+        { lab: `Longueur de CD sur ${red ? 'la maquette' : 'l’agrandissement'}, sachant que CD mesure ${fr(M, 0)} cm sur la pièce (en cm)`, v: mm, d: 2, x: `${fr(M, 0)} × ${fr(k)} = ${fr(mm)}`, err: [{ v: rnd(M / k, 2), m: 'Toutes les longueurs sont multipliées par k, pas divisées.' }] },
+        { lab: `Un segment mesure ${fr(pp)} cm sur ${red ? 'la maquette' : 'l’agrandissement'} : sa longueur sur la pièce (en cm)`, v: T, d: 2, x: `On revient à la pièce en divisant par k : ${fr(pp)} ÷ ${fr(k)} = ${fr(T, 0)}`, err: [{ v: rnd(pp * k, 2), m: 'Pour revenir à la pièce, on divise par k.' }] },
+        { lab: `Un angle de ${ang}° sur la pièce mesure sur ${red ? 'la maquette' : 'l’agrandissement'} (en °)`, v: ang, d: 0, w: 12, x: `Les angles ne changent pas dans un agrandissement ou une réduction : ${ang}°.`, err: [{ v: rnd(ang * k, 0), m: 'Les angles sont conservés : ils ne sont pas multipliés par k.' }] },
+        { lab: 'Cette transformation est…', qcm: ['un agrandissement', 'une réduction'], ok: red ? 1 : 0, x: red ? `k = ${fr(k)} est plus petit que 1 : c’est une réduction.` : `k = ${fr(k)} est plus grand que 1 : c’est un agrandissement.` }],
+        ['k = longueur obtenue ÷ longueur de départ.', 'Toutes les longueurs sont multipliées par k, les angles ne changent pas.', 'k plus grand que 1 : agrandissement. k plus petit que 1 : réduction.'],
+        table(['', 'Longueur AB', 'Longueur CD'], [['Pièce', `${fr(L1, 0)} cm`, `${fr(M, 0)} cm`], [red ? 'Maquette' : 'Agrandissement', `${fr(l1)} cm`, '?']]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

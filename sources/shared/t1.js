@@ -88,4 +88,36 @@
       hints: ['Un nombre de lots possible divise les deux quantités.', 'Le plus grand diviseur commun donne le nombre maximal de lots.', 'Dans chaque lot : quantité ÷ nombre de lots.'] };
   };
   if (typeof module !== 'undefined') module.exports = { dec, decTxt, divs, gcd, isPrime };
+  /* ===== exercices ajoutés : notions 2 et 4 ===== */
+  {
+    const { Q, fr, pick, int, shuffle, table } = H, { gcd, decTxt } = H.arith, MCF = H.MC.frac;
+    /* e4 · nombres premiers */
+    TR.c1e4 = R => {
+      const PR = shuffle(R, [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]), CO = shuffle(R, [21, 27, 33, 39, 49, 51, 57, 63, 65, 69, 77, 81, 85, 87, 91, 93, 95]);
+      const np = pick(R, [2, 3]), pr = PR.slice(0, np), co = CO.slice(0, 5 - np), all = shuffle(R, pr.concat(co));
+      const small = n => { for (let p = 2; p * p <= n; p++) if (n % p === 0) return p; return n; };
+      const c1 = co[0], f1 = small(c1), big = Math.max(...pr);
+      const why = n => H.arith.isPrime(n) ? `${n} est premier (ni 2, ni 3, ni 5, ni 7 ne le divisent)` : `${n} = ${small(n)} × ${n / small(n)} : pas premier`;
+      return Q('Nombres premiers', 'Voici cinq nombres. Pour chacun, cherche s’il a un diviseur autre que 1 et lui-même.', [
+        { lab: 'Combien de ces nombres sont premiers ?', v: np, d: 0, w: 12, x: all.map(why).join(' ; ') + ` : ${np} nombres premiers.`, err: [{ v: 5 - np, m: 'Tu as compté les nombres qui ne sont pas premiers.' }] },
+        { lab: 'Le plus grand nombre premier de la liste', v: big, d: 0, w: 12, x: `Les nombres premiers de la liste sont ${pr.slice().sort((a, b) => a - b).join(', ')} : le plus grand est ${big}.` },
+        { lab: `Le plus petit diviseur de ${c1} autre que 1`, v: f1, d: 0, w: 12, x: `${c1} = ${f1} × ${c1 / f1}. On essaie 2, 3, 5, 7 : le plus petit qui divise ${c1} est ${f1}.`, err: [{ v: c1, m: 'Cherche un diviseur plus petit que le nombre lui-même.' }] },
+        { lab: 'Le nombre 1 est-il premier ?', qcm: ['oui', 'non'], ok: 1, x: '1 n’a qu’un seul diviseur, lui-même : un nombre premier en a exactement deux (1 et lui-même). 1 n’est pas premier.' },
+        { lab: 'Le seul nombre premier pair est', v: 2, d: 0, w: 12, x: 'Tout nombre pair plus grand que 2 est divisible par 2 : il a au moins trois diviseurs (1, 2 et lui-même). Seul 2 est premier et pair.' }],
+        ['Un nombre premier a exactement deux diviseurs : 1 et lui-même.', 'Essaie de diviser par 2, 3, 5 puis 7 : si aucun ne convient, le nombre est premier (jusqu’à 100).', '1 n’est pas premier, et 2 est le seul premier pair.'],
+        table(['Liste', 'Les cinq nombres'], [['À étudier', all.join(' · ')]]));
+    };
+    /* e5 · rendre une fraction irréductible */
+    TR.c1e5 = R => {
+      const g = pick(R, [2, 3, 4, 5, 6, 7]), [p, q] = pick(R, [[2, 3], [3, 4], [3, 5], [5, 6], [4, 7], [5, 8], [7, 9], [5, 7], [7, 10], [8, 9]]), n = g * p, d = g * q;
+      const [p2, q2] = pick(R, [[7, 12], [9, 14], [11, 15], [12, 18], [15, 20], [14, 21], [18, 27], [16, 24], [21, 35], [25, 40], [13, 20], [8, 15]]), g2 = gcd(p2, q2);
+      return Q('Fraction irréductible', `Simplifie la fraction ${MCF(n, d)} pour la rendre irréductible.`, [
+        { lab: `Le plus grand diviseur commun de ${n} et ${d}`, v: g, d: 0, w: 12, x: `${n} = ${decTxt(n)} et ${d} = ${decTxt(d)} : le plus grand diviseur commun est ${g}.`, err: [{ v: 1, m: `${n} et ${d} ont un diviseur commun plus grand que 1.` }] },
+        { lab: 'Numérateur de la fraction irréductible', v: p, d: 0, w: 12, x: `${n} ÷ ${g} = ${p}`, err: [{ v: n, m: 'Divise le numérateur par le diviseur commun.' }] },
+        { lab: 'Dénominateur de la fraction irréductible', v: q, d: 0, w: 12, x: `${d} ÷ ${g} = ${q} : ${MCF(n, d)} = ${MCF(p, q)}`, err: [{ v: d, m: 'Divise aussi le dénominateur par le diviseur commun.' }] },
+        { lab: `La fraction ${MCF(p2, q2)} est-elle irréductible ?`, qcm: ['oui', 'non'], ok: g2 === 1 ? 0 : 1, x: g2 === 1 ? `${p2} et ${q2} n’ont aucun diviseur commun autre que 1 : la fraction est irréductible.` : `${p2} et ${q2} sont tous deux divisibles par ${g2} : on peut simplifier, la fraction n’est pas irréductible.` }],
+        ['Cherche les diviseurs communs du numérateur et du dénominateur.', 'Divise en haut et en bas par le même nombre.', 'Une fraction est irréductible quand le seul diviseur commun est 1.'],
+        table(['Fraction à simplifier'], [[MCF(n, d)]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

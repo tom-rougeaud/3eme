@@ -111,5 +111,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais calculer une longueur avec Pythagore.', ['e1', 'p1', 'p3']], ['Je sais prouver qu’un triangle est rectangle.', ['e2', 'p3']], ['Je sais calculer une longueur avec la trigonométrie.', ['e3', 'p3']], ['Je sais calculer un angle.', ['e3', 'p2', 'p3']]];
   c.words = require('./gl3')('c8');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c8e4', lc: 4 }); if (c.bilan[3]) c.bilan[3][1].push('e4');
   return c;
 };

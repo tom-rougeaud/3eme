@@ -14,7 +14,7 @@ module.exports = chk => {
     chk(!!c.metier && !!c.metier.job && c.metier.job.apres.length >= 1 && !!c.eval, `métier ou évaluation manquant : ${c.id}`);
     chk(c.notions.length >= 3 && c.notions.length <= 6, `${c.id} : 3 à 6 notions`);
     chk(!!c.parties && c.parties.flatMap(p => p.n).join() === c.notions.map((_, i) => i + 1).join(), `${c.id} : les parties couvrent toutes les notions, dans l’ordre`);
-    chk(c.entraine.length === 3 && c.probs.length === 3, `${c.id} : 3 exercices et 3 problèmes`);
+    chk(c.entraine.length >= 3 && c.probs.length === 3, `${c.id} : 3 exercices et 3 problèmes`);
     chk(c.resolus.length === 2 && !!c.resolus[1].trous, `${c.id} : un résolu complet et un à trous`);
     return TEX.deep(c);
   });

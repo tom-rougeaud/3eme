@@ -110,5 +110,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais calculer une quatrième proportionnelle.', ['e1', 'p1']], ['Je sais calculer et appliquer un pourcentage d’évolution.', ['e2', 'p2']], ['Je sais calculer avec une vitesse ou un débit.', ['e3', 'p3']], ['Je sais partager selon un ratio.', ['n4']]];
   c.words = require('./gl3')('c4');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c4e4', lc: 4 }); if (c.bilan[3]) c.bilan[3][1].push('e4');
   return c;
 };

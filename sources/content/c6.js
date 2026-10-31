@@ -124,5 +124,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais calculer une moyenne, simple ou pondérée.', ['e1', 'p1', 'p3']], ['Je sais déterminer une médiane et une étendue.', ['e2', 'p2', 'p3']], ['Je sais lire un diagramme.', ['e3', 'p2']], ['Je sais calculer une fréquence.', ['e3', 'p1']]];
   c.words = require('./gl3')('c6');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c6e4', lc: 4 }); if (c.bilan[3]) c.bilan[3][1].push('e4');
   return c;
 };

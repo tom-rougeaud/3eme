@@ -63,4 +63,22 @@
       support: table(['Nombre de départ', 'Résultat'], [[String(n1), tb('a', rel(f(n1)), 12)], [rel(n2), tb('b', rel(f(n2)), 12)]]) + `<p class="tr-l">Avec x : ${m}(x + ${p}) − ${q} = ${tb('c', String(m), 10)} x + ${tb('d', rel(m * p - q), 12)}</p><p class="tr-l">e. Quel nombre de départ donne ${target} ? ${tb('e', String(Rr), 12)}</p>`, items,
       hints: ['Applique les étapes dans l’ordre, avec la calculatrice si besoin.', 'Avec une lettre : x + ' + p + ', puis ' + m + '(x + ' + p + '), puis on enlève ' + q + '.', 'Pour trouver le départ, écris l’équation et résous-la.'] };
   };
+  /* ===== exercice ajouté : notion 4 (équation produit nul) ===== */
+  {
+    const { Q, fr, pick, int, table } = H;
+    const fac = (m, r) => `(${m === 1 ? '' : m}x ${-m * r < 0 ? '−' : '+'} ${Math.abs(m * r)})`;
+    const solv = (m, r) => `${m === 1 ? '' : m}x ${-m * r < 0 ? '−' : '+'} ${Math.abs(m * r)} = 0 donne ${m === 1 ? 'x' : m + 'x'} = ${fr(m * r, 0)}${m === 1 ? '' : `, soit x = ${fr(m * r, 0)} ÷ ${m} = ${fr(r, 0)}`}`;
+    TR.c3e4 = R => {
+      let r1 = 0, r2 = 0; while (!r1 || !r2 || r1 === r2) { r1 = int(R, -9, 9); r2 = int(R, -9, 9); }
+      const m1 = pick(R, [1, 1, 2, 3]), m2 = pick(R, [1, 1, 2, 4]), lo = Math.min(r1, r2), hi = Math.max(r1, r2);
+      return Q('Un produit nul', 'Pour résoudre une équation produit nul, on cherche la valeur de x qui annule chaque facteur.', [
+        { lab: 'Valeur de x qui annule le premier facteur', v: r1, d: 0, w: 14, x: solv(m1, r1), err: [{ v: -r1, m: 'Attention au signe : isole x en passant le nombre de l’autre côté.' }] },
+        { lab: 'Valeur de x qui annule le second facteur', v: r2, d: 0, w: 14, x: solv(m2, r2), err: [{ v: -r2, m: 'Attention au signe : isole x en passant le nombre de l’autre côté.' }] },
+        { lab: 'La plus petite des deux solutions', v: lo, d: 0, w: 14, x: `Les solutions sont ${fr(r1, 0)} et ${fr(r2, 0)} : la plus petite est ${fr(lo, 0)}.` },
+        { lab: 'La plus grande des deux solutions', v: hi, d: 0, w: 14, x: `Les solutions sont ${fr(r1, 0)} et ${fr(r2, 0)} : la plus grande est ${fr(hi, 0)}.` },
+        { lab: 'Combien de solutions cette équation a-t-elle ?', qcm: ['une', 'deux', 'aucune'], ok: 1, x: `Un produit est nul si l’un de ses facteurs est nul : x = ${fr(r1, 0)} ou x = ${fr(r2, 0)}. L’équation a deux solutions.` }],
+        ['Un produit est nul si l’un des facteurs est nul.', 'Écris « premier facteur = 0 », puis « second facteur = 0 ».', 'Résous chaque petite équation séparément.'],
+        table(['Équation'], [[`${fac(m1, r1)} × ${fac(m2, r2)} = 0`]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

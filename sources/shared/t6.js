@@ -57,4 +57,20 @@
       hints: ['Lis le haut de chaque barre sur l’axe vertical : chaque ligne vaut 100.', 'Un écart peut être négatif si le second jour a plus de spectateurs.', 'Fréquence = effectif ÷ total × 100.'] };
   };
   if (typeof module !== 'undefined') module.exports = { SIMP, med, sum };
+  /* ===== exercice ajouté : notion 4 (fréquences et tableur) ===== */
+  {
+    const { Q, fr, pick, int, table, rnd } = H;
+    TR.c6e4 = R => {
+      const vals = pick(R, [[6, 8, 10, 12, 14], [8, 10, 12, 14, 16], [5, 8, 10, 13, 15], [7, 9, 11, 13, 15]]), eff = vals.map(() => int(R, 1, 8)), N = eff.reduce((a, b) => a + b, 0);
+      const i = int(R, 0, 4), j = int(R, 0, 4), t = 2, ge = eff.slice(t).reduce((a, b) => a + b, 0), last = N + 1;
+      return Q('Fréquences et tableur', 'Le tableau donne les notes d’un groupe d’élèves à un contrôle et le nombre d’élèves pour chaque note.', [
+        { lab: 'Effectif total (nombre d’élèves)', v: N, d: 0, w: 12, x: `${eff.join(' + ')} = ${N} (au tableur : =SOMME de la ligne des effectifs)`, err: [{ v: vals.reduce((a, b) => a + b, 0), m: 'L’effectif total est la somme des effectifs, pas des notes.' }] },
+        { lab: `Fréquence de la note ${vals[i]}, en % (au dixième)`, v: rnd(eff[i] / N * 100, 1), d: 1, w: 14, x: `${eff[i]} ÷ ${N} = ${fr(eff[i] / N, 3)} soit ${fr(rnd(eff[i] / N * 100, 1), 1)} %`, err: [{ v: rnd(eff[i] / N, 3), m: 'Pour avoir un pourcentage, multiplie la fréquence par 100.' }] },
+        { lab: `Quelle formule compte les élèves ayant exactement ${vals[j]} dans la colonne A2:A${last} ?`, qcm: [`=NB.SI(A2:A${last} ; ${vals[j]})`, `=SOMME(A2:A${last})`, `=MOYENNE(A2:A${last})`], ok: 0, x: `La fonction NB.SI compte les cellules qui vérifient une condition : =NB.SI(A2:A${last} ; ${vals[j]}).` },
+        { lab: `Nombre d’élèves ayant une note supérieure ou égale à ${vals[t]}`, v: ge, d: 0, w: 12, x: `${eff.slice(t).join(' + ')} = ${ge}` },
+        { lab: 'La fréquence en % de ces élèves (au dixième)', v: rnd(ge / N * 100, 1), d: 1, w: 14, x: `${ge} ÷ ${N} = ${fr(ge / N, 3)} soit ${fr(rnd(ge / N * 100, 1), 1)} %` }],
+        ['Effectif total = somme des effectifs.', 'Fréquence = effectif ÷ effectif total ; pour un pourcentage, multiplie par 100.', '=NB.SI compte les cellules qui répondent à une condition.'],
+        table(['Note', ...vals], [['Effectif', ...eff]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

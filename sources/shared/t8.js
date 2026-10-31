@@ -65,4 +65,30 @@
       support: svg(600, 222, sup, 'Triangle rectangle en A avec un angle en B') + `<p class="tr-l">a. Quelle formule utiliser pour calculer ${ask} ? · b. ${ask} ≈ ${tb('b', fr(val), 14)} m (au centième)</p><p class="tr-l">c. Dans un autre triangle rectangle, le côté opposé à l’angle x mesure ${o} m et le côté adjacent ${a2} m. x ≈ ${tb('c', fr(A2), 12)}° (au dixième)</p>`, items,
       hints: ['Repère les côtés par rapport à l’angle : opposé, adjacent, hypoténuse.', 'CAH : cos = adjacent ÷ hypoténuse ; SOH : sin = opposé ÷ hypoténuse ; TOA : tan = opposé ÷ adjacent.', 'Pour trouver un angle : touches cos⁻¹, sin⁻¹ ou tan⁻¹.'] };
   };
+  /* ===== exercice ajouté : notion 4 (calculer un angle) ===== */
+  {
+    const { Q, fr, pick, int, svg, T, rnd } = H;
+    TR.c8e4 = R => {
+      const [p, q, h0] = pick(R, [[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29], [9, 40, 41]]), k = pick(R, [1, 1, 2]), sw = R() < .5;
+      const opp = (sw ? q : p) * k, adj = (sw ? p : q) * k, hyp = h0 * k, cas = pick(R, ['tan', 'sin', 'cos']);
+      const num_ = cas === 'tan' ? opp : cas === 'sin' ? opp : adj, den_ = cas === 'tan' ? adj : hyp;
+      const ratio = num_ / den_, ang = cas === 'tan' ? Math.atan(ratio) : cas === 'sin' ? Math.asin(ratio) : Math.acos(ratio), deg = ang * 180 / Math.PI, d0 = rnd(deg, 0), d1 = rnd(90 - deg, 0);
+      const Wd = 230, Hd = Math.max(60, Math.min(130, Wd * opp / adj)), Bx = 84, By = 170, Ax = Bx + Wd, Ay = By, Cx = Bx, Cy = By - Hd, ux = (Cx - Ax) / Math.hypot(Cx - Ax, Cy - Ay), uy = (Cy - Ay) / Math.hypot(Cx - Ax, Cy - Ay);
+      let g = `<polygon points="${Bx},${By} ${Ax},${Ay} ${Cx},${Cy}" fill="#EEF2FB" stroke="#1D2240" stroke-width="2.4" stroke-linejoin="round"/><path d="M ${Bx + 14} ${By} L ${Bx + 14} ${By - 14} L ${Bx} ${By - 14}" fill="none" stroke="#1D2240" stroke-width="1.8"/>`;
+      g += `<path d="M ${Ax - 34} ${Ay} A 34 34 0 0 1 ${Ax + 34 * ux} ${Ay + 34 * uy}" fill="none" stroke="#B4501E" stroke-width="2.4"/>` + T(Ax + 14, Ay - 12, 'Â = ?', { fs: 14, a: 'start' });
+      g += T(Bx - 14, By + 16, 'B', { fs: 15 }) + T(Ax + 14, Ay + 16, 'A', { fs: 15 }) + T(Cx - 14, Cy - 6, 'C', { fs: 15 });
+      if (cas !== 'sin') g += T((Bx + Ax) / 2, By + 20, `BA = ${adj} cm`, { fs: 12.5 });
+      if (cas !== 'cos') g += T(Bx - 10, (By + Cy) / 2, `BC = ${opp} cm`, { fs: 12.5, a: 'end' });
+      if (cas !== 'tan') { const nl = Math.hypot(Hd, Wd); g += T((Ax + Cx) / 2 + 17 * Hd / nl, (Ay + Cy) / 2 - 17 * Wd / nl + 4, `AC = ${hyp} cm`, { fs: 12.5, r: Math.round(Math.atan(Hd / Wd) * 180 / Math.PI) }); }
+      const pic = svg(400, 200, g, `Triangle ABC rectangle en B : ${cas === 'tan' ? 'BA et BC connus' : cas === 'sin' ? 'BC et AC connus' : 'BA et AC connus'}, angle en A à calculer`);
+      const nm = { tan: 'BC ÷ BA (opposé ÷ adjacent)', sin: 'BC ÷ AC (opposé ÷ hypoténuse)', cos: 'BA ÷ AC (adjacent ÷ hypoténuse)' }[cas];
+      const inv = { tan: 'tan⁻¹', sin: 'sin⁻¹', cos: 'cos⁻¹' }[cas];
+      return Q('Calculer un angle', 'ABC est rectangle en B. Calcule l’angle Â au degré près, avec la touche tan⁻¹, sin⁻¹ ou cos⁻¹ (mode degrés).', [
+        { lab: 'Quelle formule faut-il utiliser ?', qcm: ['cos(Â) = adjacent ÷ hypoténuse', 'sin(Â) = opposé ÷ hypoténuse', 'tan(Â) = opposé ÷ adjacent'], ok: ['cos', 'sin', 'tan'].indexOf(cas), x: `Pour l’angle Â, BC est le côté opposé, BA le côté adjacent et AC l’hypoténuse. Les côtés connus sont ${cas === 'tan' ? 'BC (opposé) et BA (adjacent) : on utilise la tangente' : cas === 'sin' ? 'BC (opposé) et AC (hypoténuse) : on utilise le sinus' : 'BA (adjacent) et AC (hypoténuse) : on utilise le cosinus'}.` },
+        { lab: `Calcule ${nm}, au centième`, v: rnd(ratio, 2), d: 2, x: `${num_} ÷ ${den_} = ${fr(ratio, 4)} ≈ ${fr(rnd(ratio, 2))}` },
+        { lab: 'Mesure de l’angle Â, au degré', v: d0, d: 0, w: 14, x: `${cas}(Â) = ${num_} ÷ ${den_}, donc Â = ${inv}(${fr(ratio, 4)}) ≈ ${fr(deg, 1)}° soit ${fr(d0, 0)}°`, err: [{ v: d1, m: 'Tu as peut-être calculé l’autre angle aigu : vérifie quels côtés touchent l’angle Â.' }, { v: rnd(ratio, 2), m: 'Le quotient n’est pas l’angle : utilise ensuite la touche ' + inv + '.' }] },
+        { lab: 'Mesure de l’angle Ĉ, au degré', v: d1, d: 0, w: 14, x: `Dans un triangle, la somme des angles vaut 180° : Ĉ = 180° − 90° − ${fr(deg, 1)}° ≈ ${fr(90 - deg, 1)}° soit ${fr(d1, 0)}°`, err: [{ v: d0, m: 'La somme des angles d’un triangle vaut 180° : 180 − 90 − Â.' }] }],
+        ['Repère le côté opposé à Â, le côté adjacent et l’hypoténuse.', 'Choisis cos, sin ou tan avec les deux côtés connus.', 'Pour trouver l’angle, utilise la touche cos⁻¹, sin⁻¹ ou tan⁻¹.'], pic);
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

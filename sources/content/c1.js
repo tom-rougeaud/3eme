@@ -136,5 +136,8 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais reconnaître un multiple et un diviseur, avec les critères.', ['e1', 'p1']], ['Je sais dire si un nombre est premier.', ['p3']], ['Je sais décomposer un nombre en facteurs premiers.', ['e2', 'p1', 'p2']], ['Je sais rendre une fraction irréductible.', ['p3']], ['Je sais partager en lots identiques.', ['e3', 'p2']]];
   c.words = require('./gl3')('c1');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c1e4', lc: 2 }); if (c.bilan[1]) c.bilan[1][1].push('e4');
+  c.entraine.push({ id: 'e5', gen: 'c1e5', lc: 4 }); if (c.bilan[3]) c.bilan[3][1].push('e5');
   return c;
 };

@@ -109,5 +109,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais lire une image et un antécédent.', ['e1', 'p2']], ['Je sais reconnaître une fonction linéaire.', ['e2', 'p3']], ['Je sais utiliser une fonction affine.', ['e1', 'e2', 'p1']], ['Je sais comparer deux formules.', ['e3', 'p3']]];
   c.words = require('./gl3')('c5');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c5e4', lc: 1 }); if (c.bilan[0]) c.bilan[0][1].push('e4');
   return c;
 };

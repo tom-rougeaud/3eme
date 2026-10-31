@@ -130,5 +130,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais calculer une probabilité.', ['e1', 'p1']], ['Je sais utiliser l’événement contraire.', ['e1', 'p1', 'p2']], ['Je sais étudier deux épreuves.', ['e2', 'p2', 'p3']], ['Je sais comparer fréquence et probabilité.', ['e3', 'p3']]];
   c.words = require('./gl3')('c7');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c7e4', lc: 2 }); if (c.bilan[1]) c.bilan[1][1].push('e4');
   return c;
 };

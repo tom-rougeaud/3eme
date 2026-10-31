@@ -54,4 +54,21 @@
       support: table(['Situation', 'Données', 'À trouver'], [['Un car roule', `${d} km en ${hm(m)}`, `a. vitesse moyenne : ${tb('a', fr(v), 14)} km/h`], ['Un scooter roule', `à ${v2} km/h pendant ${fr(t2)} h`, `b. distance : ${tb('b', fr(d2), 14)} km`], [`Un film en ${q}`, `${deb} Mbit/s pendant ${mn} min`, `c. données : ${tb('c', fr(go), 14)} Go`]]), items,
       hints: ['Vitesse = distance ÷ durée (en heures).', 'Distance = vitesse × durée.', 'Données (Mbit) = débit × durée en secondes ; ÷ 8 pour des Mo ; ÷ 1 000 pour des Go.'] };
   };
+  /* ===== exercice ajouté : notion 4 (partager selon un ratio) ===== */
+  {
+    const { Q, fr, pick, int, table, eur } = H;
+    TR.c4e4 = R => {
+      let a = int(R, 1, 4), b = int(R, 2, 6); while (a === b) b = int(R, 2, 6);
+      const per = pick(R, [5, 10, 12, 15, 20, 25, 50]), parts = a + b, S = per * parts, [n1, n2] = pick(R, [['Lou', 'Sam'], ['Inès', 'Karim'], ['Zoé', 'Malik'], ['Léa', 'Noa']]);
+      const [ra, rb, mat1, mat2] = pick(R, [[1, 3, 'ciment', 'sable'], [1, 4, 'ciment', 'sable'], [2, 3, 'peinture bleue', 'peinture blanche'], [2, 5, 'concentré', 'eau']]), k = int(R, 2, 8), blanc = rb * k, bleu = ra * k;
+      return Q('Partager selon un ratio', `${n1} et ${n2} se partagent une prime de ${eur(S)} dans le ratio ${a} : ${b} (${a} part${a > 1 ? 's' : ''} pour ${n1}, ${b} pour ${n2}).`, [
+        { lab: 'Nombre de parts au total', v: parts, d: 0, w: 12, x: `${a} + ${b} = ${parts} parts`, err: [{ v: a * b, m: 'On additionne les parts, on ne les multiplie pas.' }] },
+        { lab: 'Valeur d’une part, en €', v: per, d: 2, x: `${fr(S)} ÷ ${parts} = ${fr(per)}`, err: [{ v: S / a, m: 'Divise par le nombre total de parts.' }] },
+        { lab: `Part de ${n1}, en €`, v: a * per, d: 2, x: `${a} × ${fr(per)} = ${fr(a * per)}` },
+        { lab: `Part de ${n2}, en €`, v: b * per, d: 2, x: `${b} × ${fr(per)} = ${fr(b * per)} (contrôle : ${fr(a * per)} + ${fr(b * per)} = ${fr(S)})` },
+        { lab: `Un mélange associe ${mat1} et ${mat2} dans le ratio ${ra} : ${rb}. Avec ${blanc} mesures de ${mat2}, il faut de ${mat1} (en mesures)`, v: bleu, d: 0, w: 12, x: `${blanc} ÷ ${rb} = ${k} fois le ratio, donc ${ra} × ${k} = ${bleu} mesures`, err: [{ v: blanc, m: 'La quantité de ' + mat1 + ' se déduit du ratio : elle n’est pas égale à celle de ' + mat2 + '.' }] }],
+        ['Additionne les parts pour savoir en combien de morceaux on partage.', 'Une part vaut le total divisé par le nombre de parts.', 'Chaque personne reçoit son nombre de parts multiplié par la valeur d’une part.'],
+        table(['Prime à partager', 'Ratio'], [[eur(S), `${a} : ${b}`]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

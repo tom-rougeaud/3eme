@@ -56,4 +56,19 @@
       support: table(['Face', '1', '2', '3', '4', '5', '6'], [['Effectif', ...c.map(String)]]) + `<p class="tr-l">a. Fréquence de la face ${f}, au millième : ${tb('a', fr(fr1), 14)} · b. Probabilité de la face ${f} : ${tb('b', '1/6', 14)}</p><p class="tr-l">c. Fréquence d’un nombre pair, au millième : ${tb('c', fr(frp), 14)} · d. Nombre de ${f} attendu en théorie : ${tb('d', fr(N / 6), 12)}</p>`, items,
       hints: ['Fréquence = effectif ÷ nombre de lancers.', 'Probabilité : 1 issue favorable sur 6.', 'Plus il y a de lancers, plus la fréquence se rapproche de la probabilité.'] };
   };
+  /* ===== exercice ajouté : notion 2 (événement contraire, impossible, certain) ===== */
+  {
+    const { Q, fr, pick, int, table, rnd } = H;
+    TR.c7e4 = R => {
+      const N = pick(R, [20, 25, 50]), r = int(R, 3, Math.floor(N / 2)), v = int(R, 2, N - r - 3), b = N - r - v, pr = r / N, pv = v / N;
+      return Q('Événement contraire', `Un sac contient ${N} boules indiscernables au toucher : on tire une boule au hasard. R est l’événement « la boule est rouge ».`, [
+        { lab: 'P(R), probabilité de tirer une boule rouge', v: pr, d: 2, x: `${r} boules rouges sur ${N} : ${r} ÷ ${N} = ${fr(pr)}`, err: [{ v: rnd(r / (N - r), 2), m: 'Divise par le nombre total de boules.' }] },
+        { lab: 'P(non R), probabilité de ne pas tirer de boule rouge', v: 1 - pr, d: 2, x: `P(non R) = 1 − P(R) = 1 − ${fr(pr)} = ${fr(1 - pr)}`, err: [{ v: pr, m: 'La probabilité du contraire vaut 1 − P(R).' }] },
+        { lab: 'Probabilité de ne pas tirer de boule verte, en % (au dixième)', v: rnd((1 - pv) * 100, 1), d: 1, w: 14, x: `1 − ${v}/${N} = 1 − ${fr(pv)} = ${fr(1 - pv)} soit ${fr(rnd((1 - pv) * 100, 1), 1)} %`, err: [{ v: rnd(pv * 100, 1), m: 'On cherche la probabilité de ne pas tirer de verte : c’est 1 − P(verte).' }] },
+        { lab: 'Tirer une boule jaune (il n’y en a aucune) est un événement…', qcm: ['impossible', 'certain', 'ni l’un ni l’autre'], ok: 0, x: 'Aucune boule jaune dans le sac : l’événement ne peut pas se produire, sa probabilité est 0 (événement impossible).' },
+        { lab: 'Tirer une boule rouge, verte ou bleue est un événement…', qcm: ['impossible', 'certain', 'ni l’un ni l’autre'], ok: 1, x: `Toutes les boules sont rouges, vertes ou bleues (${r} + ${v} + ${b} = ${N}) : l’événement se produit toujours, sa probabilité est 1 (événement certain).` }],
+        ['La probabilité du contraire vaut 1 moins la probabilité de l’événement.', 'Un événement impossible a une probabilité de 0, un événement certain de 1.', 'Probabilité = nombre de cas favorables ÷ nombre de cas possibles.'],
+        table(['Couleur', 'rouge', 'verte', 'bleue'], [['Nombre de boules', r, v, b]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

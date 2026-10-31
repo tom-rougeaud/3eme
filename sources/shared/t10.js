@@ -64,4 +64,32 @@
       support: svg(600, 12 + 9 * cs + 10, s, 'Un sprite et trois images transformées sur une grille') + `<p class="tr-l">a. A est obtenu par : · b. B par : · c. C par :</p><p class="tr-l">d. Pour la translation, de combien de cases le sprite a-t-il avancé ? ${tb('d', String(tx), 10)}</p>`, items,
       hints: ['Translation : le sprite glisse, sans tourner ni se retourner.', 'Symétrie axiale : le sprite est retourné, comme dans un miroir.', 'Rotation : le sprite a tourné d’un quart de tour.'] };
   };
+  /* ===== exercices ajoutés : notions 2 (volume d’une boule) et 5 (boucle Scratch) ===== */
+  {
+    const { Q, fr, pick, int, table, svg, T, rnd, shuffle } = H, PI = Math.PI;
+    TR.c10e4 = R => {
+      const r = pick(R, [2, 3, 4, 5, 6, 7, 9, 10]), D = pick(R, [8, 10, 12, 14, 16, 18, 20]), r2 = D / 2;
+      const V = 4 / 3 * PI * r ** 3, A = 4 * PI * r * r, P = 2 * PI * r, V2 = 4 / 3 * PI * r2 ** 3;
+      const g = `<circle cx="150" cy="95" r="70" fill="#EEF2FB" stroke="#1D2240" stroke-width="2.4"/><ellipse cx="150" cy="95" rx="70" ry="18" fill="none" stroke="#1D2240" stroke-width="1.6" stroke-dasharray="5 4"/><line x1="150" y1="95" x2="220" y2="95" stroke="#B4501E" stroke-width="2.6"/><circle cx="150" cy="95" r="3.5" fill="#1D2240"/>` + T(186, 86, `r = ${r} cm`, { fs: 13, c: 'tx' }) + T(150, 186, 'une boule', { fs: 12, c: 'ts' });
+      return Q('Volume d’une boule', `Une boule métallique a un rayon de ${r} cm. Utilise la touche π de la calculatrice et arrondis au dixième.`, [
+        { lab: `r³ = ${r} × ${r} × ${r}`, v: r ** 3, d: 0, w: 14, x: `${r} × ${r} × ${r} = ${r ** 3}` },
+        { lab: 'Volume de la boule, en cm³', v: rnd(V, 1), d: 1, w: 18, x: `V = 4/3 × π × r³ = 4/3 × π × ${r ** 3} ≈ ${fr(V, 1)} cm³`, err: [{ v: rnd(PI * r ** 3, 1), m: 'N’oublie pas le facteur 4/3 dans la formule du volume.' }, { v: rnd(4 / 3 * PI * r * r, 1), m: 'Le rayon est élevé au cube (r × r × r), pas au carré.' }] },
+        { lab: 'Aire de la sphère (4 × π × r²), en cm²', v: rnd(A, 1), d: 1, w: 18, x: `4 × π × ${r}² = 4 × π × ${r * r} ≈ ${fr(A, 1)} cm²` },
+        { lab: 'Périmètre d’un grand cercle (2 × π × r), en cm', v: rnd(P, 1), d: 1, w: 18, x: `2 × π × ${r} ≈ ${fr(P, 1)} cm` },
+        { lab: `Une autre boule a un diamètre de ${D} cm : son rayon, en cm`, v: r2, d: 0, w: 14, x: `Le rayon est la moitié du diamètre : ${D} ÷ 2 = ${r2}`, err: [{ v: D, m: 'Le rayon est la moitié du diamètre.' }] },
+        { lab: 'Le volume de cette autre boule, en cm³', v: rnd(V2, 1), d: 1, w: 18, x: `4/3 × π × ${r2}³ = 4/3 × π × ${r2 ** 3} ≈ ${fr(V2, 1)} cm³`, err: [{ v: rnd(4 / 3 * PI * D ** 3, 1), m: 'Utilise le rayon (la moitié du diamètre) dans la formule.' }] }],
+        ['V = 4/3 × π × r × r × r.', 'L’aire de la sphère est 4 × π × r².', 'Le rayon est la moitié du diamètre.'], svg(300, 200, g, `Une boule de rayon ${r} cm`));
+    };
+    TR.c10e5 = R => {
+      const n = pick(R, [3, 4, 5, 6, 8, 9, 10, 12]), L = pick(R, [30, 40, 50, 60]), m = pick(R, [5, 6, 8, 9, 10, 12].filter(x => x !== n)), a2 = pick(R, [60, 72, 90, 120]), n2 = 360 / a2;
+      return Q('Une boucle Scratch', `Un script Scratch dessine une figure : « répéter ${n} fois : avancer de ${L} pas, tourner de ${rnd(360 / n, 2)} degrés ».`, [
+        { lab: 'Nombre de côtés de la figure tracée', v: n, d: 0, w: 12, x: `La boucle répète ${n} fois « avancer » : la figure a ${n} côtés.` },
+        { lab: 'Longueur totale parcourue par le lutin, en pas', v: n * L, d: 0, w: 14, x: `${n} × ${L} = ${n * L}`, err: [{ v: L, m: 'Le lutin avance de ' + L + ' pas à chaque répétition : multiplie par le nombre de répétitions.' }] },
+        { lab: `Pour tracer un polygone régulier à ${m} côtés, on tourne à chaque coin de (en °)`, v: 360 / m, d: 2, w: 14, x: `360 ÷ ${m} = ${fr(360 / m)}°`, err: [{ v: 180 - 360 / m, m: 'Le lutin tourne de 360 ÷ nombre de côtés, pas de l’angle intérieur du polygone.' }] },
+        { lab: `Un script fait tourner le lutin de ${a2}° à chaque coin : nombre de répétitions pour fermer la figure`, v: n2, d: 0, w: 12, x: `360 ÷ ${a2} = ${n2} répétitions`, err: [{ v: a2, m: 'Le nombre de répétitions est 360 divisé par l’angle de rotation.' }] },
+        { lab: `Pour tracer un carré, il faut tourner à chaque coin de (en °)`, v: 90, d: 0, w: 12, x: '360 ÷ 4 = 90°' }],
+        ['Une boucle « répéter n fois » répète n fois les mêmes blocs.', 'Pour un polygone régulier à n côtés, le lutin tourne de 360 ÷ n degrés à chaque coin.', 'La longueur totale = nombre de répétitions × longueur d’un côté.'],
+        table(['Script Scratch', 'Valeur'], [['répéter', `${n} fois`], ['avancer de', `${L} pas`], ['tourner de', `${rnd(360 / n, 2) === 360 / n ? fr(360 / n, 0) : fr(360 / n, 2)} degrés`]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

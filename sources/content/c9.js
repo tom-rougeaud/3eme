@@ -115,5 +115,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais utiliser une échelle.', ['e1', 'p1']], ['Je sais calculer un agrandissement ou une réduction.', ['e2', 'p1', 'p2']], ['Je sais utiliser k² et k³.', ['e2', 'p2', 'p3']], ['Je sais utiliser le théorème de Thalès.', ['e3', 'p3']]];
   c.words = require('./gl3')('c9');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c9e4', lc: 2 }); if (c.bilan[1]) c.bilan[1][1].push('e4');
   return c;
 };

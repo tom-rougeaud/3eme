@@ -140,5 +140,8 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais calculer le volume d’un cylindre, d’un cône, d’une pyramide.', ['e1', 'p2']], ['Je sais calculer le volume d’une boule.', ['e1', 'p1']], ['Je sais me repérer sur la Terre.', ['e2']], ['Je sais reconnaître une transformation.', ['e3', 'p3']], ['Je sais programmer une boucle.', ['p3']]];
   c.words = require('./gl3')('c10');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c10e4', lc: 2 }); if (c.bilan[1]) c.bilan[1][1].push('e4');
+  c.entraine.push({ id: 'e5', gen: 'c10e5', lc: 5 }); if (c.bilan[4]) c.bilan[4][1].push('e5');
   return c;
 };

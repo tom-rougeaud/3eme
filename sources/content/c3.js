@@ -112,5 +112,7 @@ module.exports = function (chk) {
 
   c.bilan = [['Je sais développer une expression.', ['e1', 'p2']], ['Je sais factoriser et prouver avec une lettre.', ['e3', 'p3']], ['Je sais résoudre une équation du premier degré.', ['e2', 'p1', 'p3']], ['Je sais résoudre une équation produit nul.', ['n4']]];
   c.words = require('./gl3')('c3');
+  /* ajout-e4 : un exercice d’entraînement pour chaque notion qui n’en avait pas */
+  c.entraine.push({ id: 'e4', gen: 'c3e4', lc: 4 }); if (c.bilan[3]) c.bilan[3][1].push('e4');
   return c;
 };

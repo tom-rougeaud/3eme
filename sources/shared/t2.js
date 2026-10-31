@@ -73,4 +73,21 @@
       support: table(['Ce qu’on mesure', 'Le nombre', 'a', 'n'], [[l1, fr(N1), tb('a', fr(m1), 14), tb('b', String(e1), 10)], [l2, fr(N2), tb('c', fr(m2), 14), tb('d', fr(e2), 10)]]) + `<p class="tr-l">e. Écris ${fr(m3)} × 10${sup(e3)} en écriture décimale : ${tb('e', fr(N3), 26)}</p>`, items,
       hints: ['a est entre 1 et 10 : un seul chiffre avant la virgule, et ce n’est pas 0.', 'n compte de combien de rangs la virgule s’est déplacée.', 'Pour un nombre plus petit que 1, n est négatif.'] };
   };
+  /* ===== exercice ajouté : notion 2 (prendre une fraction d’une quantité) ===== */
+  {
+    const { Q, fr, pick, int, table, eur } = H, MCF = H.MC.frac;
+    TR.c2e4 = R => {
+      const b = pick(R, [3, 4, 5, 6, 8]), a = int(R, 2, b - 1), k = int(R, 3, 11), Qn = b * k, [u, nom] = pick(R, [['kg', 'de farine'], ['L', 'de peinture'], ['m', 'de câble'], ['€', 'de budget']]);
+      const U = u === '€' ? ' €' : ' ' + u, par = Qn / b, tot = a * par;
+      const b2 = pick(R, [4, 5, 10]), a2 = pick(R, b2 === 4 ? [1, 3] : b2 === 5 ? [2, 3, 4] : [3, 7]), S = b2 * int(R, 6, 30), pS = S / b2 * a2;
+      return Q('Prendre une fraction d’une quantité', `On dispose de ${fr(Qn, 0)}${U} ${nom}. On en utilise ${MCF(a, b)}.`, [
+        { lab: `Un ${b === 3 ? 'tiers' : b === 4 ? 'quart' : b === 5 ? 'cinquième' : b === 6 ? 'sixième' : 'huitième'} de la quantité (${fr(Qn, 0)} ÷ ${b}), en ${u}`, v: par, d: 2, x: `${fr(Qn, 0)} ÷ ${b} = ${fr(par)}` },
+        { lab: `La quantité utilisée (${MCF(a, b)} de ${fr(Qn, 0)}), en ${u}`, v: tot, d: 2, x: `On divise par ${b}, puis on multiplie par ${a} : ${fr(par)} × ${a} = ${fr(tot)}`, err: [{ v: par, m: `Après avoir divisé par ${b}, multiplie par le numérateur ${a}.` }] },
+        { lab: `La quantité restante, en ${u}`, v: Qn - tot, d: 2, x: `${fr(Qn, 0)} − ${fr(tot)} = ${fr(Qn - tot)}`, err: [{ v: tot, m: 'Il faut soustraire la quantité utilisée à la quantité de départ.' }] },
+        { lab: `Prendre ${MCF(a, b)} d’une quantité, c’est la…`, qcm: [`multiplier par ${a}/${b}`, `diviser par ${a}/${b}`, `ajouter ${a}/${b}`], ok: 0, x: `Prendre une fraction d’une quantité, c’est multiplier la quantité par cette fraction : ${fr(Qn, 0)} × ${a}/${b} = ${fr(tot)}.` },
+        { lab: `${MCF(a2, b2)} d’un budget de ${eur(S)}, en €`, v: pS, d: 2, x: `${fr(S)} ÷ ${b2} × ${a2} = ${fr(S / b2)} × ${a2} = ${fr(pS)}` }],
+        ['Pour prendre une fraction d’une quantité, divise d’abord par le dénominateur.', 'Multiplie ensuite par le numérateur.', 'Le reste, c’est la quantité de départ moins la quantité utilisée.'],
+        table(['Quantité de départ', 'Fraction utilisée'], [[`${fr(Qn, 0)}${U}`, MCF(a, b)]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);
