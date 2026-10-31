@@ -36,8 +36,10 @@
     const items = rows.map((r, i) => { const k = L[i], d = r.d == null ? 2 : r.d; const it = r.qcm ? qcm(k, r.qcm, r.ok, r.a) : num(k, r.v, d, r.a != null ? r.a : (Number.isInteger(rnd(r.v, d)) ? fr(r.v, 0) : d === 2 ? fr(r.v, 2) : fr(rnd(r.v, d))), r.err || []); if (r.x) it.x = r.x; return it; });
     return { titre, consigne, support: pre + rows.map((r, i) => r.qcm ? `<p class="tr-l">${L[i]}. ${r.lab}</p>` : ln(L[i], r.lab, items[i].a, r.w || 16)).join(''), items, hints };
   };
+  /* ligne d’aide des exercices 🌱 guidés */
+  const AI = t => t ? `<p class="tr-l tr-ai">💡 Aide : ${t}</p>` : '';
   const sgn = (x, v = 'x') => `${x < 0 ? '−' : '+'} ${fr(Math.abs(x), 0)}`;
-  const H = { MC, P, fr, rnd, eur, pct, esc, TOL, L, tb, sb, T, svg, table, num, qcm, pick, int, shuffle, NB, xs, ln, Q };
+  const H = { MC, P, fr, rnd, eur, pct, esc, TOL, L, tb, sb, T, svg, table, num, qcm, pick, int, shuffle, NB, xs, ln, Q, AI };
 
   /* vérification d’une réponse, avec l’erreur fréquente reconnue */
   function verdict(it, s) {

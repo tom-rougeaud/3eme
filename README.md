@@ -8,6 +8,7 @@ L’appli et le manuel de mathématiques **3ème Série Pro**, pour la 3e Prépa
 - **Une notion, une page** : 🔎 Je découvre → 🧭 La méthode → ✅ La solution → 📌 Je retiens → ✏️ À moi ; la page « Je fais le point » porte **10 automatismes du brevet**
 - Situations de **pop culture avec des données réelles sourcées** (Les Simpson, One Piece, Pokémon, Netflix, Avengers, CNC…) ; un **métier par chapitre** avec ses formations (CAP, Bac pro)
 - Simulateur « Je manipule » avec un défi, exercices dont les nombres changent à chaque essai, programmes Scratch, problèmes « vers le brevet »
+- **Trois niveaux pour chaque exercice « Je m’entraîne »** : 🌱 guidé (même thème, nombres plus simples, début déjà fait), standard, 🚀 défi (même thème, une étape de plus) ; dans le manuel et dans l’appli, avec corrigé détaillé en version professeur
 - Chaque chapitre se termine par une **évaluation sur 20 au format du brevet** ; **trois sujets blancs complets** avec chrono dans l’appli, et en PDF
 - Progression enregistrée **uniquement sur l’appareil** (export / import / effacement), aucune donnée envoyée ; un seul fichier HTML, sans CDN ni police externe
 

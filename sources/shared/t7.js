@@ -71,4 +71,104 @@
         table(['Couleur', 'rouge', 'verte', 'bleue'], [['Nombre de boules', r, v, b]]));
     };
   }
+  /* ===== niveaux 🌱 guidé et 🚀 défi · chapitre 7 ===== */
+  {
+    const { Q, AI, shuffle } = H;
+    const sumTbl = (p, q) => `<table class="dt tcx dt-sm"><thead><tr><th>+</th>${Array.from({ length: q }, (_, j) => `<th>${j + 1}</th>`).join('')}</tr></thead><tbody>${Array.from({ length: p }, (_, i) => `<tr><th>${i + 1}</th>${Array.from({ length: q }, (_, j) => `<td>${i + j + 2}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    const blankTbl = (p, q) => `<table class="dt tcx dt-sm"><thead><tr><th>+</th>${Array.from({ length: q }, (_, j) => `<th>${j + 1}</th>`).join('')}</tr></thead><tbody>${Array.from({ length: p }, (_, i) => `<tr><th>${i + 1}</th>${Array.from({ length: q }, (_, j) => `<td>${i === 0 && j === 0 ? '2' : ''}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    /* e1 · issues d’un dé */
+    TR.c7e1a = R => {
+      const n = pick(R, [6, 8, 10, 12, 20]), k = n - pick(R, [1, 2, 3]), fav = n - k + 1;
+      return Q('Les issues d’un dé, pas à pas', `On lance un dé équilibré à ${n} faces, numérotées de 1 à ${n}. Toutes les faces ont la même chance.`, [
+        { lab: 'Nombre d’issues possibles', v: n, d: 0, w: 10, x: `Les faces 1 à ${n} : ${n} issues possibles.` },
+        { lab: `Issues favorables à « ${k} ou plus »`, v: fav, d: 0, w: 10, x: `${Array.from({ length: fav }, (_, i) => k + i).join(', ')} : ${fav} issues. (${n} − ${k} + 1 = ${fav})`, err: [{ v: n - k, m: 'N’oublie pas ' + k + ' lui-même : « ' + k + ' ou plus ».' }] },
+        { lab: `P(« ${k} ou plus »)`, v: fav / n, d: 3, w: 14, a: fx(fav, n), x: `${fav} issues favorables sur ${n} : ${fx(fav, n)}`, err: [{ v: n / fav, m: 'Probabilité = issues favorables ÷ issues possibles (et non l’inverse).' }] },
+        { lab: 'Issues favorables à « nombre pair »', v: n / 2, d: 0, w: 10, x: `Pairs : ${Array.from({ length: n / 2 }, (_, i) => 2 * (i + 1)).join(', ')} : ${n / 2} issues.` },
+        { lab: 'P(« nombre pair »)', v: .5, d: 3, w: 14, a: fx(n / 2, n), x: `${n / 2} issues favorables sur ${n} : ${fx(n / 2, n)}` }],
+        ['Compte les issues favorables une par une.', 'Probabilité = issues favorables ÷ issues possibles.', 'Une probabilité est toujours entre 0 et 1.'],
+        table(['Face', ...Array.from({ length: n }, (_, i) => String(i + 1))], [['Pair ?', ...Array.from({ length: n }, (_, i) => (i + 1) % 2 ? '' : '✓')]]) + AI(`dé à 6 faces, « 5 ou plus » : faces 5 et 6, soit 2 issues favorables sur 6 : P = 2/6 = 1/3.`));
+    };
+    TR.c7e1d = R => {
+      const [n, cnt, kk] = pick(R, [[12, [5, 3, 2, 2], 5], [12, [4, 3, 3, 2], 10], [12, [6, 3, 2, 1], 5], [12, [4, 4, 3, 1], 10], [20, [8, 6, 4, 2], 5], [20, [7, 5, 5, 3], 5], [20, [10, 5, 3, 2], 5], [20, [6, 6, 5, 3], 10]]), [r, b, v, j] = cnt, N = n * kk;
+      return Q('Un dé aux faces colorées', `Un dé équilibré à ${n} faces a ${r} faces rouges, ${b} bleues, ${v} vertes et ${j} jaunes. On le lance une fois.`, [
+        { lab: 'P(« rouge »)', v: r / n, d: 3, w: 14, a: fx(r, n), x: `${r} faces rouges sur ${n} : ${fx(r, n)}` },
+        { lab: 'P(« rouge ou verte »)', v: (r + v) / n, d: 3, w: 14, a: fx(r + v, n), x: `${r} + ${v} = ${r + v} faces favorables sur ${n} : ${fx(r + v, n)}`, err: [{ v: r / n, m: 'Compte aussi les faces vertes : « rouge ou verte ».' }] },
+        { lab: 'P(« ni rouge ni verte »)', v: (b + j) / n, d: 3, w: 14, a: fx(b + j, n), x: `Événement contraire de « rouge ou verte » : 1 − ${fx(r + v, n).split(' =')[0]} = ${fx(b + j, n)}`, err: [{ v: (r + v) / n, m: 'C’est l’événement contraire : 1 − P(« rouge ou verte »).' }] },
+        { lab: `Nombre de « rouge » attendu en ${N} lancers`, v: r * kk, d: 0, w: 12, x: `${N} ÷ ${n} = ${kk} ; ${kk} × ${r} = ${r * kk} (c’est ${N} × ${fx(r, n).split(' =')[0]})`, err: [{ v: r, m: 'Multiplie la probabilité par le nombre de lancers.' }] },
+        { lab: '« rouge, bleue, verte ou jaune » est un événement…', qcm: ['impossible', 'certain', 'ni l’un ni l’autre'], ok: 1, x: 'Toutes les faces sont rouges, bleues, vertes ou jaunes : l’événement se produit toujours, sa probabilité vaut 1 (certain).' }],
+        ['Probabilité = faces favorables ÷ faces possibles.', '« Ou » : on additionne les faces favorables (sans compter deux fois la même).', 'Le contraire d’un événement : 1 − sa probabilité.'],
+        table(['Couleur', 'rouge', 'bleue', 'verte', 'jaune'], [['Nombre de faces', r, b, v, j]]));
+    };
+    /* e2 · deux dés */
+    TR.c7e2a = R => {
+      const p = pick(R, [3, 4, 5]), N = p * p; const cnt = s => { let c = 0; for (let i = 1; i <= p; i++) for (let j = 1; j <= p; j++) if (i + j === s) c++; return c; };
+      const s = pick(R, Array.from({ length: 2 * p - 1 }, (_, i) => i + 2).filter(x => cnt(x) >= 2 && x !== p + 1)), c = cnt(s);
+      return Q('Deux dés, pas à pas', `Deux dés équilibrés à ${p} faces : on additionne les deux nombres. Le tableau donne toutes les sommes possibles.`, [
+        { lab: 'Nombre d’issues (nombre de cases)', v: N, d: 0, w: 10, x: `${p} × ${p} = ${N} cases, toutes équiprobables.`, err: [{ v: 2 * p, m: 'On multiplie : ' + p + ' lignes × ' + p + ' colonnes.' }] },
+        { lab: `Cases où la somme vaut ${s}`, v: c, d: 0, w: 10, x: `On compte les cases qui contiennent ${s} : ${c}.` },
+        { lab: `P(somme = ${s})`, v: c / N, d: 3, w: 14, a: fx(c, N), x: `${c} cases sur ${N} : ${fx(c, N)}`, err: [{ v: N / c, m: 'Cases favorables ÷ cases possibles.' }] },
+        { lab: 'Somme qui apparaît le plus souvent', v: p + 1, d: 0, w: 10, x: `La somme ${p + 1} apparaît ${p} fois : c’est celle qui apparaît le plus souvent.`, err: [{ v: 2, m: 'Compte les cases : la plus petite somme est la plus rare.' }] }],
+        ['Chaque case : numéro de la ligne + numéro de la colonne.', 'Nombre d’issues = nombre de cases du tableau.', 'Compte les cases qui contiennent la somme demandée.'],
+        sumTbl(p, p) + AI(`avec deux dés à 3 faces, la somme 4 apparaît 3 fois sur 9 cases : P = 3/9 = 1/3.`));
+    };
+    TR.c7e2d = R => {
+      const cnt = s => { let c = 0; for (let i = 1; i <= 6; i++) for (let j = 1; j <= 6; j++) if (i + j === s) c++; return c; };
+      const s = pick(R, [5, 6, 7, 8, 9]), c = cnt(s), t = pick(R, [9, 10, 11]); let ge = 0; for (let x = t; x <= 12; x++) ge += cnt(x);
+      return Q('Deux dés à six faces', 'On lance deux dés équilibrés à 6 faces et on additionne les résultats. Complète le tableau au brouillon si besoin.', [
+        { lab: `Nombre de cases où la somme vaut ${s}`, v: c, d: 0, w: 10, x: `Sur les 36 cases, ${c} contiennent ${s}.` },
+        { lab: `P(somme = ${s})`, v: c / 36, d: 3, w: 14, a: fx(c, 36), x: `${c} cases sur 36 : ${fx(c, 36)}` },
+        { lab: `P(somme ≠ ${s})`, v: 1 - c / 36, d: 3, w: 14, a: fx(36 - c, 36), x: `Événement contraire : 1 − ${c}/36 = ${fx(36 - c, 36)}`, err: [{ v: c / 36, m: 'C’est la probabilité de l’événement contraire : 1 − P(somme = ' + s + ').' }] },
+        { lab: `P(somme ≥ ${t})`, v: ge / 36, d: 3, w: 14, a: fx(ge, 36), x: `Sommes ${Array.from({ length: 13 - t }, (_, i) => t + i).join(', ')} : ${Array.from({ length: 13 - t }, (_, i) => cnt(t + i)).join(' + ')} = ${ge} cases sur 36 : ${fx(ge, 36)}`, err: [{ v: cnt(t) / 36, m: '« ' + t + ' ou plus » : compte aussi les sommes supérieures à ' + t + '.' }] },
+        { lab: `Nombre de fois où la somme vaut ${s}, attendu en 360 lancers`, v: c * 10, d: 0, w: 12, x: `360 × ${c}/36 = 10 × ${c} = ${c * 10}`, err: [{ v: c, m: 'Multiplie la probabilité par 360.' }] }],
+        ['Il y a 6 × 6 = 36 cases dans le tableau.', 'Probabilité = cases favorables ÷ 36.', 'Pour « ≥ », additionne les cases de chaque somme concernée.'], blankTbl(6, 6));
+    };
+    /* e3 · fréquence et probabilité */
+    TR.c7e3a = R => {
+      const N = pick(R, [100, 200, 500]), ratio = pick(R, [.44, .46, .47, .52, .53, .55]), P1 = Math.round(N * ratio), F1 = N - P1;
+      return Q('Fréquence et probabilité, pas à pas', `Une pièce équilibrée est lancée ${N} fois : on obtient ${P1} « pile » et ${F1} « face ».`, [
+        { lab: 'Fréquence de « pile » (effectif ÷ nombre de lancers)', v: P1 / N, d: 3, w: 14, a: fr(P1 / N), x: `${P1} ÷ ${N} = ${fr(P1 / N)}`, err: [{ v: rnd(N / P1, 3), m: 'Fréquence = effectif ÷ nombre total de lancers.' }] },
+        { lab: 'Fréquence de « face »', v: F1 / N, d: 3, w: 14, a: fr(F1 / N), x: `${F1} ÷ ${N} = ${fr(F1 / N)} (les deux fréquences ont pour somme 1)` },
+        { lab: 'Probabilité théorique de « pile »', v: .5, d: 3, w: 14, a: '1/2 = 0,5', x: 'La pièce est équilibrée : 1 issue favorable sur 2, soit 1/2 = 0,5.' },
+        { lab: 'Écart entre la fréquence de « pile » et 0,5', v: Math.abs(P1 / N - .5), d: 3, w: 14, a: fr(rnd(Math.abs(P1 / N - .5), 3)), x: `|${fr(P1 / N)} − 0,5| = ${fr(rnd(Math.abs(P1 / N - .5), 3))}` },
+        { lab: 'Avec 10 000 lancers, la fréquence de « pile » sera probablement…', qcm: ['plus proche de 0,5', 'exactement 0,5', 'plus éloignée de 0,5'], ok: 0, x: 'Quand le nombre de lancers augmente, la fréquence se rapproche de la probabilité, sans être forcément égale à elle.' }],
+        ['Fréquence = effectif ÷ nombre de lancers.', 'Pour une pièce équilibrée, la probabilité de « pile » est 1/2.', 'Plus on lance de fois, plus la fréquence se rapproche de la probabilité.'],
+        table(['Résultat', 'pile', 'face', 'total'], [['Effectif', P1, F1, N]]) + AI('pièce lancée 50 fois, 24 « pile » : fréquence 24 ÷ 50 = 0,48 ; la probabilité théorique est 0,5.'));
+    };
+    TR.c7e3d = R => {
+      const N = pick(R, [600, 1200]), u = N / 600, k = int(R, 1, 6), trucage = R() < .5; let c;
+      if (trucage) { c = Array(6).fill(88 * u); c[k - 1] = 160 * u; }
+      else { const L = pick(R, [[-6, 4, -2, 5, -4, 3], [3, -7, 6, -2, -4, 4]]), D = shuffle(R, L); c = D.map(d => 100 * u + d * u); }
+      const f = c[k - 1] / N, e = Math.abs(f - 1 / 6);
+      return Q('Ce dé est-il équilibré ?', `Un dé à 6 faces est lancé ${N} fois. Le tableau donne les effectifs. On examine la face ${k}.`, [
+        { lab: 'Nombre total de lancers (somme des effectifs)', v: N, d: 0, w: 12, x: `${c.join(' + ')} = ${N}`, err: [{ v: 6, m: 'Additionne les six effectifs.' }] },
+        { lab: `Fréquence de la face ${k}, au millième`, v: f, d: 3, w: 12, a: fr(rnd(f, 3)), x: `${c[k - 1]} ÷ ${N} ${Number.isInteger(f * 1000) ? '=' : '≈'} ${fr(rnd(f, 3))}`, err: [{ v: rnd(N / c[k - 1], 3), m: 'Fréquence = effectif ÷ nombre total de lancers.' }] },
+        { lab: 'Probabilité théorique de la face avec un dé équilibré', v: 1 / 6, d: 3, w: 14, a: '1/6 ≈ 0,167', x: '6 faces équiprobables : 1/6 ≈ 0,167' },
+        { lab: 'Écart entre la fréquence et 1/6, au millième', v: e, d: 3, w: 12, a: fr(rnd(e, 3)), x: `|${fr(rnd(f, 3))} − 0,167| ≈ ${fr(rnd(e, 3))}`, err: [{ v: rnd(f, 3), m: 'Soustrais la probabilité 0,167 à la fréquence.' }] },
+        { lab: 'D’après la face ' + k + ', ce dé semble…', qcm: ['équilibré', 'truqué'], ok: trucage ? 1 : 0, x: trucage ? `L’écart est de ${fr(rnd(e, 3))} : c’est très grand pour ${N} lancers. Ce dé semble truqué.` : `L’écart est de ${fr(rnd(e, 3))} : il est petit, compatible avec un dé équilibré.` }],
+        ['Fréquence = effectif ÷ nombre total de lancers.', 'Probabilité théorique d’une face : 1/6 ≈ 0,167.', 'Avec beaucoup de lancers, un grand écart entre fréquence et probabilité est suspect.'],
+        table(['Face', '1', '2', '3', '4', '5', '6'], [['Effectif', ...c.map(String)]]));
+    };
+    /* e4 · événement contraire */
+    TR.c7e4a = R => {
+      const N = pick(R, [10, 20]), r = int(R, 2, N / 2 - 1), v = int(R, 2, N - r - 2), b = N - r - v, pr = r / N;
+      return Q('Événement contraire, pas à pas', `Un sac contient ${N} boules indiscernables au toucher. On tire une boule au hasard. R est l’événement « la boule est rouge ».`, [
+        { lab: 'Nombre de boules qui ne sont pas rouges', v: N - r, d: 0, w: 10, x: `${N} − ${r} = ${N - r} boules`, err: [{ v: r, m: 'On cherche les boules qui ne sont pas rouges : total − rouges.' }] },
+        { lab: 'P(R)', v: pr, d: 2, w: 12, a: fr(pr), x: `${r} boules rouges sur ${N} : ${r} ÷ ${N} = ${fr(pr)}`, err: [{ v: rnd(r / (N - r), 2), m: 'Divise par le nombre total de boules.' }] },
+        { lab: 'P(non R) = 1 − P(R)', v: 1 - pr, d: 2, w: 12, a: fr(1 - pr), x: `1 − ${fr(pr)} = ${fr(1 - pr)} (contrôle : ${N - r} ÷ ${N} = ${fr(1 - pr)})`, err: [{ v: pr, m: 'La probabilité du contraire vaut 1 − P(R).' }] },
+        { lab: 'Tirer une boule jaune (il n’y en a aucune) est un événement…', qcm: ['impossible', 'certain', 'ni l’un ni l’autre'], ok: 0, x: 'Aucune boule jaune : l’événement ne peut pas se produire, sa probabilité est 0 (impossible).' }],
+        ['Le contraire de « rouge » : toutes les autres couleurs.', 'P(contraire) = 1 − P(événement).', 'Un événement impossible a une probabilité 0, un événement certain une probabilité 1.'],
+        table(['Couleur', 'rouge', 'verte', 'bleue'], [['Nombre de boules', r, v, b]]) + AI('sac de 10 boules dont 3 rouges : P(R) = 3/10 = 0,3 ; P(non R) = 1 − 0,3 = 0,7.'));
+    };
+    TR.c7e4d = R => {
+      const N = 10, r = pick(R, [3, 4, 5]), v = int(R, 1, N - r - 1), b = N - r - v, pr = r / N, pp = pr * pr, M = 200;
+      return Q('Deux tirages avec remise', `Un sac contient ${N} boules : ${r} rouges, ${v} verte${v > 1 ? 's' : ''} et ${b} bleues. On tire une boule, on la remet, puis on tire encore.`, [
+        { lab: 'Nombre de couples de tirages possibles', v: N * N, d: 0, w: 10, x: `${N} choix pour la première boule, ${N} pour la seconde : ${N} × ${N} = ${N * N}.`, err: [{ v: 2 * N, m: 'On multiplie les possibilités : ' + N + ' × ' + N + '.' }] },
+        { lab: 'P(« rouge » au premier tirage)', v: pr, d: 2, w: 12, a: fr(pr), x: `${r} ÷ ${N} = ${fr(pr)}` },
+        { lab: 'P(« rouge puis rouge »)', v: pp, d: 2, w: 12, a: fr(rnd(pp, 2)), x: `${fr(pr)} × ${fr(pr)} = ${fr(rnd(pp, 2))} (${r} × ${r} = ${r * r} couples sur ${N * N})`, err: [{ v: pr, m: 'On multiplie : P(rouge) × P(rouge).' }, { v: 2 * pr, m: 'On multiplie les probabilités, on ne les additionne pas.' }] },
+        { lab: 'P(« au moins une boule non rouge »)', v: 1 - pp, d: 2, w: 12, a: fr(rnd(1 - pp, 2)), x: `C’est le contraire de « deux rouges » : 1 − ${fr(rnd(pp, 2))} = ${fr(rnd(1 - pp, 2))}`, err: [{ v: 1 - pr, m: 'Le contraire de « deux rouges » : 1 − P(rouge puis rouge).' }] },
+        { lab: `Nombre de « deux rouges » attendu en ${M} doubles tirages`, v: M * pp, d: 0, w: 12, x: `${M} × ${fr(rnd(pp, 2))} = ${fr(M * pp)}`, err: [{ v: M * pr, m: 'Utilise la probabilité de « deux rouges », pas celle d’une seule rouge.' }] }],
+        ['Avec remise, les deux tirages sont indépendants : on multiplie les probabilités.', '« Au moins une non rouge » est le contraire de « deux rouges ».', 'Nombre attendu = nombre d’essais × probabilité.'],
+        table(['Couleur', 'rouge', 'verte', 'bleue'], [['Nombre de boules', r, v, b]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

@@ -86,4 +86,106 @@
         ['L’image se lit sur l’axe vertical, l’antécédent sur l’axe horizontal.', 'Pour une image : pars de x, monte ou descends jusqu’à la courbe.', 'Pour un antécédent : pars de la valeur sur l’axe vertical, va jusqu’à la courbe, puis descends.'], pic);
     };
   }
+  /* ===== niveaux 🌱 guidé et 🚀 défi · chapitre 5 ===== */
+  {
+    const { Q, AI, fr, pick, int, shuffle, table } = H;
+    const plotLine = (a, b, x1, dots) => {
+      const f = x => a * x + b, lo = Math.min(f(0), f(5), 0), hi = Math.max(f(0), f(5), 0), y0 = Math.floor(lo / 2) * 2, y1 = Math.ceil(hi / 2) * 2 + 2;
+      const g = P.plot({ W: 560, H: 230, x: [0, 5, 1], y: [y0, y1, 2], ml: 46, mr: 16, mt: 12, mb: 28, fs: 12, xl: 'x', yl: 'f(x)', zeroAxes: true, cls: 'pic vis trs' });
+      return g.wrap(g.base + g.line(a, b) + dots(g));
+    };
+    /* e1 · lire une droite */
+    TR.c5e1a = R => {
+      const a = pick(R, [1, 2, 3]), b = int(R, 1, 4), x1 = pick(R, [2, 3]), f = x => a * x + b;
+      const pic = plotLine(a, b, x1, g => g.dot(0, b, { lab: 'A', dy: -10 }) + g.dot(x1, f(x1), { lab: 'B', dy: -10 }));
+      return Q('Lire une droite, pas à pas', 'La droite représente une fonction affine f : f(x) = ax + b. A et B sont deux points de la droite.', [
+        { lab: 'Ordonnée du point A, c’est f(0) =', v: b, d: 0, w: 10, x: `A est sur l’axe vertical : A(0 ; ${b}), donc f(0) = ${b} (c’est le nombre b).`, err: [{ v: a, m: 'On lit l’ordonnée du point A, là où la droite coupe l’axe vertical.' }] },
+        { lab: `Ordonnée du point B, c’est f(${x1}) =`, v: f(x1), d: 0, w: 10, x: `B(${x1} ; ${f(x1)}) : f(${x1}) = ${f(x1)}`, err: [{ v: x1, m: 'L’image se lit sur l’axe vertical, pas sur l’axe horizontal.' }] },
+        { lab: `De A à B, x augmente de ${x1}. De combien f(x) augmente-t-il ?`, v: f(x1) - b, d: 0, w: 10, x: `${f(x1)} − ${b} = ${f(x1) - b}`, err: [{ v: f(x1), m: 'Calcule la différence entre les ordonnées de B et de A.' }] },
+        { lab: 'Quand x augmente de 1, f(x) augmente de (c’est a)', v: a, d: 0, w: 10, x: `${f(x1) - b} ÷ ${x1} = ${a} : a = ${a}`, err: [{ v: f(x1) - b, m: 'Divise cette augmentation par ' + x1 + ' pour passer à « x augmente de 1 ».' }] },
+        { lab: 'Image de 10 par f (utilise a et b)', v: 10 * a + b, d: 0, w: 10, x: `f(x) = ${a}x + ${b} : f(10) = ${a} × 10 + ${b} = ${10 * a + b}`, err: [{ v: 10 * a, m: 'N’oublie pas d’ajouter b.' }] }],
+        ['f(0) se lit là où la droite coupe l’axe vertical.', 'Pour a, compte de combien la droite monte quand x augmente de 1.', 'Une fois a et b connus : f(x) = ax + b, remplace x.'],
+        pic + AI('la droite passe par (0 ; 1) et (2 ; 5) : b = 1 ; de 1 à 5, elle monte de 4 pour 2 de plus en x : a = 4 ÷ 2 = 2.'));
+    };
+    TR.c5e1d = R => {
+      const a = -pick(R, [2, 3, 4]), x0 = pick(R, [3, 4, 5]), b = -a * x0, x2 = int(R, 1, x0 - 1), f = x => a * x + b, x1 = pick(R, [1, 2].filter(v => v !== x2));
+      const pic = plotLine(a, b, x1, g => g.dot(0, b, { lab: 'A', dy: -10 }) + g.dot(x1, f(x1), { lab: 'B', dy: -10 }));
+      return Q('Une droite qui descend', 'La droite représente la fonction affine f. Elle coupe l’axe horizontal en un point à trouver.', [
+        { lab: 'f(0) =', v: b, d: 0, w: 10, x: `La droite coupe l’axe vertical en A(0 ; ${b}) : f(0) = ${b}.` },
+        { lab: 'Coefficient a (de combien f(x) varie quand x augmente de 1)', v: a, d: 0, w: 10, x: `De A(0 ; ${b}) à B(${x1} ; ${f(x1)}) : (${f(x1)} − ${b}) ÷ ${x1} = ${rel(a)}. La droite descend : a est négatif.`, err: [{ v: -a, m: 'La droite descend : le coefficient a est négatif.' }] },
+        { lab: `Antécédent de ${f(x2)} par f`, v: x2, d: 0, w: 10, x: `On part de ${f(x2)} sur l’axe vertical, on rejoint la droite, puis on lit l’axe horizontal : x = ${x2}.`, err: [{ v: f(x2), m: 'Un antécédent se lit sur l’axe horizontal.' }] },
+        { lab: 'Valeur de x pour laquelle f(x) = 0', v: x0, d: 0, w: 10, x: `${rel(a)}x + ${b} = 0 donne ${rel(a)}x = ${rel(-b)}, donc x = ${rel(-b)} ÷ ${par(a)} = ${x0} : la droite coupe l’axe horizontal en x = ${x0}.`, err: [{ v: b, m: 'On cherche la valeur de x (axe horizontal) où la droite touche l’axe horizontal.' }] },
+        { lab: 'Image de 10 par f', v: 10 * a + b, d: 0, w: 12, x: `f(10) = ${rel(a)} × 10 + ${b} = ${rel(10 * a)} + ${b} = ${rel(10 * a + b)}`, err: [{ v: -10 * a + b, m: 'Le coefficient a est négatif : ' + rel(a) + ' × 10 = ' + rel(10 * a) + '.' }] }],
+        ['f(0), c’est l’ordonnée du point où la droite coupe l’axe vertical.', 'Si la droite descend, a est négatif.', 'Pour f(x) = 0, cherche le point où la droite touche l’axe horizontal.'], pic);
+    };
+    /* e2 · tableau de valeurs */
+    TR.c5e2a = R => {
+      const a = pick(R, [2, 3, 4, 5]), b = pick(R, [5, 10, 20]), [x1, x2, x3] = [int(R, 1, 3), int(R, 4, 6), int(R, 7, 9)], f = x => a * x + b;
+      return Q('Un tableau de valeurs, pas à pas', `Un service facture ${fr(b)} € plus ${fr(a)} € par unité : f(x) = ${a}x + ${b}, en euros, pour x unités.`, [
+        { lab: `${a} × ${x1} =`, v: a * x1, d: 0, w: 10, x: `${a} × ${x1} = ${a * x1}`, err: [{ v: a + x1, m: 'Le prix des unités se calcule en multipliant.' }] },
+        { lab: `f(${x1}) = ${a * x1} + ${b} =`, v: f(x1), d: 0, w: 10, x: `${a * x1} + ${b} = ${f(x1)}` },
+        { lab: `f(${x2}) =`, v: f(x2), d: 0, w: 10, x: `${a} × ${x2} + ${b} = ${a * x2} + ${b} = ${f(x2)}`, err: [{ v: a * x2, m: 'N’oublie pas d’ajouter ' + b + '.' }] },
+        { lab: `f(${x3}) =`, v: f(x3), d: 0, w: 10, x: `${a} × ${x3} + ${b} = ${a * x3} + ${b} = ${f(x3)}` },
+        { lab: 'De x = 1 à x = 2, f(x) augmente de', v: a, d: 0, w: 10, x: `f(2) − f(1) = ${f(2)} − ${f(1)} = ${a} : c’est le coefficient a`, err: [{ v: b, m: 'f(x) augmente du coefficient a quand x augmente de 1.' }] }],
+        ['Remplace x par le nombre, multiplie d’abord, ajoute ensuite.', 'Le forfait b ne se multiplie pas : on l’ajoute une seule fois.', 'Quand x augmente de 1, f(x) augmente de a.'],
+        table(['x', String(x1), String(x2), String(x3)], [['f(x)', '?', '?', '?']]) + AI('f(x) = 3x + 2 pour x = 4 : 3 × 4 = 12, puis 12 + 2 = 14.'));
+    };
+    TR.c5e2d = R => {
+      const a = pick(R, [2, 3, 4, 5, 6]), b = int(R, 2, 12), xA = pick(R, [1, 2]), xB = xA + pick(R, [3, 4]), f = x => a * x + b, k = int(R, 6, 12);
+      return Q('Retrouver la fonction', `Une fonction affine f vérifie f(${xA}) = ${f(xA)} et f(${xB}) = ${f(xB)}. On cherche f(x) = ax + b.`, [
+        { lab: 'Coefficient a', v: a, d: 0, w: 10, x: `a = (${f(xB)} − ${f(xA)}) ÷ (${xB} − ${xA}) = ${f(xB) - f(xA)} ÷ ${xB - xA} = ${a}`, err: [{ v: f(xB) - f(xA), m: 'Divise la variation de f(x) par la variation de x.' }] },
+        { lab: 'Nombre b', v: b, d: 0, w: 10, x: `f(${xA}) = ${a} × ${xA} + b = ${f(xA)} donc b = ${f(xA)} − ${a * xA} = ${b}`, err: [{ v: f(xA), m: 'f(' + xA + ') = a × ' + xA + ' + b : retire a × ' + xA + '.' }] },
+        { lab: 'Image de 10 par f', v: f(10), d: 0, w: 12, x: `f(10) = ${a} × 10 + ${b} = ${f(10)}` },
+        { lab: `Antécédent de ${f(k)} par f`, v: k, d: 0, w: 10, x: `${a}x + ${b} = ${f(k)} ; ${a}x = ${f(k) - b} ; x = ${k}`, err: [{ v: a * f(k) + b, m: 'On cherche x tel que f(x) = ' + f(k) + ' : écris et résous l’équation.' }] },
+        { lab: 'La fonction f est-elle linéaire ?', qcm: ['oui', 'non'], ok: 1, x: `f(x) = ${a}x + ${b} avec b = ${b} ≠ 0 : elle est affine, pas linéaire.` }],
+        ['a = (variation de f(x)) ÷ (variation de x).', 'Remplace dans f(x) = ax + b pour trouver b.', 'Pour un antécédent, résous l’équation ax + b = y.']);
+    };
+    /* e3 · comparer deux formules */
+    TR.c5e3a = R => {
+      let p, q, r, X;
+      do { p = pick(R, [8, 9, 10, 11, 12]); q = pick(R, [3, 4, 5, 6]); X = int(R, 3, 8); r = (p - q) * X; } while (r > 60);
+      const n = pick(R, [X - 2, X - 1, X + 2, X + 3].filter(v => v > 0)), A = p * n, B = q * n + r, ok = A < B ? 0 : 1;
+      return Q('Deux formules, pas à pas', `Sans carte, une séance coûte ${p} €. Avec une carte de ${r} €, la séance coûte ${q} €. On va ${n} fois au cinéma.`, [
+        { lab: `Prix sans carte (${p} × ${n}), en €`, v: A, d: 0, w: 10, x: `${p} × ${n} = ${A} €` },
+        { lab: `Prix avec carte (${q} × ${n} + ${r}), en €`, v: B, d: 0, w: 10, x: `${q} × ${n} = ${q * n} puis ${q * n} + ${r} = ${B} €`, err: [{ v: q * n, m: 'N’oublie pas le prix de la carte : ' + r + ' €.' }] },
+        { lab: 'La formule la moins chère est…', qcm: ['sans carte', 'avec la carte'], ok, x: `${A} € sans carte contre ${B} € avec la carte : la moins chère est « ${ok === 0 ? 'sans carte' : 'avec la carte'} ».` },
+        { lab: 'Économie réalisée avec la meilleure formule, en €', v: Math.abs(A - B), d: 0, w: 10, x: `${Math.max(A, B)} − ${Math.min(A, B)} = ${Math.abs(A - B)} €` }],
+        ['Sans carte : prix d’une séance × nombre de séances.', 'Avec carte : prix de la carte + prix d’une séance × nombre de séances.', 'La formule la moins chère est celle qui donne le plus petit prix.'],
+        AI('5 séances, 10 € la séance ou 6 € avec une carte de 20 € : sans carte 10 × 5 = 50 € ; avec carte 6 × 5 + 20 = 50 €.'));
+    };
+    TR.c5e3d = R => {
+      let p, q, r, X;
+      do { p = pick(R, [8, 9, 10, 11, 12]); q = pick(R, [3, 4, 5, 6]); X = int(R, 3, 8); r = (p - q) * X; } while (r > 60);
+      const N = pick(R, [15, 20, 25]);
+      return Q('Quand la carte devient-elle rentable ?', `f(x) = ${p}x sans carte ; g(x) = ${q}x + ${r} avec une carte de ${r} €. Quand la carte est-elle avantageuse ?`, [
+        { lab: 'f(x) = g(x) donne ?x = ' + r + '. Le nombre est', v: p - q, d: 0, w: 10, x: `${p}x = ${q}x + ${r} ; ${p}x − ${q}x = ${r} ; ${p - q}x = ${r}`, err: [{ v: p + q, m: 'On enlève ' + q + 'x des deux côtés : ' + p + 'x − ' + q + 'x.' }] },
+        { lab: 'Nombre de séances pour lequel les deux prix sont égaux', v: X, d: 0, w: 10, x: `${r} ÷ ${p - q} = ${X}`, err: [{ v: r / p, m: 'Divise par ' + (p - q) + ', le coefficient de x après regroupement.' }] },
+        { lab: 'Nombre minimal de séances pour que la carte coûte moins cher', v: X + 1, d: 0, w: 10, x: `À ${X} séances les prix sont égaux ; à ${X + 1} séances, la carte devient moins chère : ${q} × ${X + 1} + ${r} = ${q * (X + 1) + r} € contre ${p} × ${X + 1} = ${p * (X + 1)} €.`, err: [{ v: X, m: 'À ' + X + ' séances les prix sont égaux : la carte n’est pas encore moins chère.' }] },
+        { lab: `Économie avec la carte pour ${N} séances, en €`, v: p * N - (q * N + r), d: 0, w: 10, x: `${p} × ${N} = ${p * N} € ; ${q} × ${N} + ${r} = ${q * N + r} € ; ${p * N} − ${q * N + r} = ${p * N - (q * N + r)} €` },
+        { lab: 'Pour 2 séances, la formule la moins chère est…', qcm: ['sans carte', 'avec la carte'], ok: 0, x: `2 séances : ${p * 2} € sans carte contre ${q * 2 + r} € avec la carte. 2 est plus petit que ${X} : la carte n’est pas encore rentable.` }],
+        ['Écris l’équation f(x) = g(x) et regroupe les x d’un côté.', 'Avant ce nombre de séances, la carte n’est pas rentable ; après, elle l’est.', 'Pour comparer, calcule le prix de chaque formule.']);
+    };
+    /* e4 · image et antécédent */
+    TR.c5e4a = R => {
+      const X = [0, 2, 4, 6, 8], Y = shuffle(R, [0, 2, 4, 6, 8, 10, 12]).slice(0, 5).sort((a, b) => a - b), i = int(R, 1, 4); let j = int(R, 1, 4); while (j === i) j = int(R, 1, 4);
+      return Q('Image et antécédent, pas à pas', 'Voici le tableau de valeurs d’une fonction f. La première ligne donne x, la seconde donne f(x).', [
+        { lab: `Image de ${X[i]} par f`, v: Y[i], d: 0, w: 10, x: `Dans la colonne de x = ${X[i]}, on lit f(${X[i]}) = ${Y[i]}.`, err: [{ v: X[i], m: 'L’image est dans la seconde ligne, celle de f(x).' }] },
+        { lab: `Antécédent de ${Y[j]} par f`, v: X[j], d: 0, w: 10, x: `${Y[j]} est dans la colonne de x = ${X[j]} : l’antécédent de ${Y[j]} est ${X[j]}.`, err: [{ v: Y[j], m: 'L’antécédent est dans la première ligne, celle de x.' }] },
+        { lab: `Dans f(${X[i]}) = ${Y[i]}, le nombre ${X[i]} est…`, qcm: [`l’image de ${Y[i]}`, `un antécédent de ${Y[i]}`], ok: 1, x: `Dans f(a) = b : b est l’image de a, et a est un antécédent de b. Donc ${X[i]} est un antécédent de ${Y[i]}.` },
+        { lab: `f(${X[i]}) + f(${X[j]}) =`, v: Y[i] + Y[j], d: 0, w: 10, x: `${Y[i]} + ${Y[j]} = ${Y[i] + Y[j]}`, err: [{ v: X[i] + X[j], m: 'Additionne les images (deuxième ligne), pas les valeurs de x.' }] }],
+        ['L’image de x se lit dans la ligne de f(x).', 'L’antécédent de y se lit dans la ligne de x, dans la colonne de y.', 'Dans f(a) = b, a est un antécédent de b.'],
+        table(['x', ...X.map(String)], [['f(x)', ...Y.map(String)]]) + AI('si f(3) = 7 : 7 est l’image de 3, et 3 est un antécédent de 7.'));
+    };
+    TR.c5e4d = R => {
+      const L = pick(R, [8, 10]), k = .5, h = t => k * t * (L - t), ts = Array.from({ length: L + 1 }, (_, i) => i), t1 = int(R, 1, L / 2 - 1), ta = int(R, 1, L - 1), tm = L / 2;
+      return Q('Le saut : plusieurs antécédents', `La hauteur h(t) d’un personnage qui saute est donnée par ce tableau (t en dixièmes de seconde, h en cases).`, [
+        { lab: `Image de ${ta} par h`, v: h(ta), d: 1, w: 10, x: `On lit la colonne t = ${ta} : h(${ta}) = ${fr(h(ta))}.` },
+        { lab: `Plus petit antécédent de ${fr(h(t1))} par h`, v: t1, d: 0, w: 10, x: `${fr(h(t1))} apparaît pour t = ${t1} et pour t = ${L - t1} : le plus petit est ${t1}.`, err: [{ v: L - t1, m: 'Il y a deux antécédents : donne le plus petit.' }] },
+        { lab: `Plus grand antécédent de ${fr(h(t1))} par h`, v: L - t1, d: 0, w: 10, x: `${fr(h(t1))} apparaît pour t = ${t1} et pour t = ${L - t1} : le plus grand est ${L - t1}.`, err: [{ v: t1, m: 'Il y a deux antécédents : donne le plus grand.' }] },
+        { lab: 'Hauteur maximale, en cases', v: h(tm), d: 1, w: 10, x: `La plus grande valeur du tableau est ${fr(h(tm))}, pour t = ${tm}.` },
+        { lab: 'Durée totale du saut, en dixièmes de seconde', v: L, d: 0, w: 10, x: `Le personnage retombe au sol (h = 0) pour t = ${L} : le saut dure ${L} dixièmes de seconde.`, err: [{ v: tm, m: 'À t = ' + tm + ', c’est le sommet. Cherche quand h revient à 0.' }] }],
+        ['Un même nombre peut avoir deux antécédents : cherche-le deux fois dans le tableau.', 'La hauteur maximale est la plus grande valeur de la deuxième ligne.', 'Le saut est fini quand h revient à 0.'],
+        table(['t', ...ts.map(String)], [['h(t)', ...ts.map(t => fr(h(t)))]]));
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

@@ -81,4 +81,95 @@
         table(['Équation'], [[`${fac(m1, r1)} × ${fac(m2, r2)} = 0`]]));
     };
   }
+  /* ===== niveaux 🌱 guidé et 🚀 défi · chapitre 3 ===== */
+  {
+    const { Q, AI, fr, pick, int, table } = H;
+    /* e1 · développer */
+    TR.c3e1a = R => {
+      let a = int(R, 2, 5), b = int(R, 1, 4); if (a === b) b = a === 4 ? 1 : a + 1;
+      const t = int(R, 2, 6), v = (t + a) * (t + b);
+      return Q('Développer, pas à pas', `Un poster mesure (x + ${a}) sur (x + ${b}). On multiplie chaque morceau d’une longueur par chaque morceau de l’autre.`, [
+        { lab: `Le morceau x sur ${a} a pour aire ? × x. Le nombre est`, v: a, d: 0, w: 10, x: `x × ${a} = ${a}x : le morceau a pour aire ${a}x.`, err: [{ v: a * b, m: 'Ce morceau mesure x sur ' + a + ' : x × ' + a + ' = ' + a + 'x.' }] },
+        { lab: `Le morceau ${b} sur x a pour aire ? × x. Le nombre est`, v: b, d: 0, w: 10, x: `${b} × x = ${b}x` },
+        { lab: `Le petit rectangle ${a} sur ${b} a pour aire`, v: a * b, d: 0, w: 10, x: `${a} × ${b} = ${a * b}`, err: [{ v: a + b, m: 'Pour une aire, on multiplie.' }] },
+        { lab: `Après réduction : (x + ${a})(x + ${b}) = x² + ? x + ${a * b}. Le nombre est`, v: a + b, d: 0, w: 10, x: `${b}x + ${a}x = ${a + b}x : (x + ${a})(x + ${b}) = x² + ${a + b}x + ${a * b}`, err: [{ v: a * b, m: 'On additionne les termes en x : ' + b + 'x + ' + a + 'x.' }] },
+        { lab: `Aire pour x = ${t}`, v, d: 0, w: 12, x: `${t * t} + ${(a + b) * t} + ${a * b} = ${v} ; et (${t} + ${a})(${t} + ${b}) = ${t + a} × ${t + b} = ${v}` }],
+        ['L’aire d’un rectangle : longueur × largeur.', 'Additionne les quatre morceaux : x², ' + a + 'x, ' + b + 'x et ' + a * b + '.', 'Pour vérifier, remplace x par ' + t + ' dans les deux écritures.'],
+        table(['×', 'x', String(a)], [['x', 'x²', '?x'], [String(b), '?x', String(a * b)]]) + AI('(x + 2)(x + 3) : x² + 3x + 2x + 6 = x² + 5x + 6.'));
+    };
+    TR.c3e1d = R => {
+      const m = pick(R, [2, 3, 4]), p = int(R, 1, 5), n = pick(R, [1, 2, 3]), q = int(R, 1, 6), t = int(R, 2, 5), k = int(R, 3, 8);
+      return Q('Développer (mx + p)(nx + q)', `Développe et réduis l’expression (${m}x + ${p})(${n === 1 ? '' : n}x + ${q}).`, [
+        { lab: 'Coefficient de x² dans le développement', v: m * n, d: 0, w: 10, x: `${m}x × ${n === 1 ? '' : n}x = ${m * n}x²`, err: [{ v: m + n, m: 'On multiplie les deux coefficients de x.' }] },
+        { lab: 'Coefficient de x après réduction', v: m * q + p * n, d: 0, w: 10, x: `${m}x × ${q} = ${m * q}x et ${p} × ${n === 1 ? '' : n}x = ${p * n}x ; ${m * q} + ${p * n} = ${m * q + p * n}`, err: [{ v: m * q, m: 'Il y a un deuxième terme en x : ' + p + ' × ' + (n === 1 ? '' : n) + 'x.' }] },
+        { lab: 'Terme constant', v: p * q, d: 0, w: 10, x: `${p} × ${q} = ${p * q}`, err: [{ v: p + q, m: 'Les deux nombres se multiplient.' }] },
+        { lab: `Valeur de l’expression pour x = ${t}`, v: (m * t + p) * (n * t + q), d: 0, w: 12, x: `(${m} × ${t} + ${p})(${n} × ${t} + ${q}) = ${m * t + p} × ${n * t + q} = ${(m * t + p) * (n * t + q)}`, err: [{ v: m * t * n * t + p * q, m: 'N’oublie pas les deux termes en x : remplace x par ' + t + ' dans chaque facteur.' }] },
+        { lab: `(x + ${k})² est égal à`, qcm: [`x² + ${k * k}`, `x² + ${2 * k}x + ${k * k}`, `x² + ${2 * k}x + ${2 * k}`], ok: 1, x: `(x + ${k})² = (x + ${k})(x + ${k}) = x² + ${k}x + ${k}x + ${k * k} = x² + ${2 * k}x + ${k * k}. Le double produit ${2 * k}x ne disparaît jamais.` }],
+        ['Chaque terme de la première parenthèse multiplie chaque terme de la seconde.', 'Il y a deux termes en x à regrouper.', 'Pour vérifier, remplace x par un nombre dans les deux écritures.']);
+    };
+    /* e2 · équations */
+    TR.c3e2a = R => {
+      const a = pick(R, [2, 3, 4, 5]), x = int(R, 2, 9), b = int(R, 1, 9), d = a * x + b;
+      return Q('Résoudre une équation, pas à pas', `Résous l’équation ${a}x + ${b} = ${d}. On garde l’égalité en faisant la même opération des deux côtés.`, [
+        { lab: `Pour isoler ${a}x, on…`, qcm: [`soustrait ${b}`, `ajoute ${b}`, `divise par ${b}`], ok: 0, x: `${a}x + ${b} : pour faire disparaître le + ${b}, on soustrait ${b} des deux côtés.` },
+        { lab: `Après l’avoir fait : ${a}x = ?`, v: d - b, d: 0, w: 10, x: `${d} − ${b} = ${d - b}`, err: [{ v: d + b, m: 'On soustrait ' + b + ' des deux côtés, on ne l’ajoute pas.' }] },
+        { lab: `On divise par ${a} : x =`, v: x, d: 0, w: 10, x: `${d - b} ÷ ${a} = ${x}`, err: [{ v: (d - b) * a, m: 'On divise par ' + a + ', on ne multiplie pas.' }] },
+        { lab: `Vérification : ${a} × ${x} + ${b} =`, v: d, d: 0, w: 10, x: `${a * x} + ${b} = ${d} : l’égalité est vraie, x = ${x} est la solution.` }],
+        ['Pour supprimer un « + nombre », on soustrait ce nombre des deux côtés.', 'Ensuite, on divise les deux côtés par le nombre devant x.', 'Vérifie en remplaçant x par ta solution.'],
+        AI('2x + 3 = 11 : on soustrait 3 des deux côtés, 2x = 8 ; on divise par 2, x = 4. Vérification : 2 × 4 + 3 = 11.'));
+    };
+    TR.c3e2d = R => {
+      const g = pick(R, [2, 3, 4, 5]), xs0 = int(R, 3, 9), pa = int(R, 2, 5), pb = pa + g, fb = int(R, 3, 12), fa = fb + g * xs0, N = pick(R, [xs0 - 1, xs0 + 2, xs0 + 3]), cA = fa + pa * N, cB = fb + pb * N;
+      return Q('Quel forfait choisir ?', `Forfait A : ${fa} € puis ${pa} € la séance. Forfait B : ${fb} € puis ${pb} € la séance. Prix égaux pour x séances.`, [
+        { lab: `Coefficient de x après regroupement : ${fa} + ${pa}x = ${fb} + ${pb}x donne ${fa - fb} = ?x`, v: g, d: 0, w: 10, x: `${pb}x − ${pa}x = ${g}x : on obtient ${fa - fb} = ${g}x`, err: [{ v: pa + pb, m: 'On enlève ' + pa + 'x des deux côtés : ' + pb + 'x − ' + pa + 'x.' }] },
+        { lab: 'Nombre de séances pour lequel les prix sont égaux', v: xs0, d: 0, w: 10, x: `${fa - fb} ÷ ${g} = ${xs0}`, err: [{ v: (fa - fb) * g, m: 'On divise par le coefficient de x.' }] },
+        { lab: 'Prix commun pour ce nombre de séances, en €', v: fa + pa * xs0, d: 0, w: 12, x: `${fa} + ${pa} × ${xs0} = ${fa + pa * xs0} et ${fb} + ${pb} × ${xs0} = ${fb + pb * xs0}` },
+        { lab: `Pour ${N} séances, le forfait le moins cher est`, qcm: ['A', 'B', 'les deux pareil'], ok: cA < cB ? 0 : 1, x: `Forfait A : ${fa} + ${pa} × ${N} = ${cA} € ; forfait B : ${fb} + ${pb} × ${N} = ${cB} €. Le moins cher est ${cA < cB ? 'A' : 'B'}.` },
+        { lab: `Prix de ce forfait pour ${N} séances, en €`, v: Math.min(cA, cB), d: 0, w: 12, x: `${cA < cB ? `${fa} + ${pa} × ${N}` : `${fb} + ${pb} × ${N}`} = ${Math.min(cA, cB)} €` }],
+        ['Écris l’équation « prix de A = prix de B », puis regroupe les x d’un côté.', 'Divise par le coefficient de x pour trouver le nombre de séances.', 'Pour comparer, calcule le prix de chaque forfait pour le nombre de séances demandé.']);
+    };
+    /* e3 · programmes de calcul */
+    TR.c3e3a = R => {
+      const p = int(R, 2, 6), m = pick(R, [2, 3, 4]), q = int(R, 1, 8), n1 = int(R, 2, 7), n2 = int(R, 8, 12), f = n => (n + p) * m - q;
+      return Q('Le programme de calcul, pas à pas', `Programme : choisir un nombre, lui ajouter ${p}, multiplier par ${m}, puis soustraire ${q}. On part de ${n1}.`, [
+        { lab: `On ajoute ${p} à ${n1}`, v: n1 + p, d: 0, w: 10, x: `${n1} + ${p} = ${n1 + p}` },
+        { lab: `On multiplie par ${m}`, v: (n1 + p) * m, d: 0, w: 10, x: `${n1 + p} × ${m} = ${(n1 + p) * m}`, err: [{ v: n1 + p + m, m: 'Il faut multiplier par ' + m + ', pas ajouter.' }] },
+        { lab: `On soustrait ${q} : résultat final`, v: f(n1), d: 0, w: 10, x: `${(n1 + p) * m} − ${q} = ${f(n1)}`, err: [{ v: (n1 + p) * m, m: 'N’oublie pas la dernière étape : soustraire ' + q + '.' }] },
+        { lab: `Résultat si on part de ${n2}`, v: f(n2), d: 0, w: 10, x: `${n2} + ${p} = ${n2 + p} ; × ${m} = ${(n2 + p) * m} ; − ${q} = ${f(n2)}`, err: [{ v: n2 * m + p - q, m: 'Respecte l’ordre des étapes : d’abord + ' + p + ', ensuite × ' + m + '.' }] }],
+        ['Fais les étapes dans l’ordre du programme.', 'Écris le résultat de chaque étape avant de passer à la suivante.', 'Pour un autre nombre de départ, recommence les trois étapes.'],
+        table(['Départ', '+ ' + p, '× ' + m, '− ' + q], [[String(n1), '?', '?', '?']]) + AI('avec 4, + 2, × 3, − 1 : 4 + 2 = 6 ; 6 × 3 = 18 ; 18 − 1 = 17.'));
+    };
+    TR.c3e3d = R => {
+      const m = pick(R, [4, 5, 6]), k = int(R, 2, m - 2), p = int(R, 2, 5), q = int(R, 1, 5), x0 = int(R, 2, 9), s = (m - k) * x0 + m * p - q, A = x => (x + p) * m - q, B = x => k * x + s;
+      return Q('Deux programmes qui se rencontrent', `A : ajouter ${p}, multiplier par ${m}, soustraire ${q}. B : multiplier par ${k}, ajouter ${s}. Quel départ donne le même résultat ?`, [
+        { lab: `Le programme A donne ${m}x + ?. Le nombre est`, v: m * p - q, d: 0, w: 10, x: `${m}(x + ${p}) − ${q} = ${m}x + ${m * p} − ${q} = ${m}x + ${m * p - q}`, err: [{ v: p - q, m: 'Développe : ' + m + ' × ' + p + ' = ' + m * p + '.' }] },
+        { lab: `A = B s’écrit ${m}x + ${m * p - q} = ${k}x + ${s}. Après regroupement, ?x = ${s - (m * p - q)}. Le nombre est`, v: m - k, d: 0, w: 10, x: `${m}x − ${k}x = ${m - k}x et ${s} − ${m * p - q} = ${s - (m * p - q)}`, err: [{ v: m + k, m: 'On enlève ' + k + 'x des deux côtés.' }] },
+        { lab: 'Nombre de départ qui donne le même résultat', v: x0, d: 0, w: 10, x: `${s - (m * p - q)} ÷ ${m - k} = ${x0}`, err: [{ v: s - (m * p - q), m: 'Divise par le coefficient de x.' }] },
+        { lab: 'Résultat commun des deux programmes', v: A(x0), d: 0, w: 10, x: `A : (${x0} + ${p}) × ${m} − ${q} = ${A(x0)} et B : ${k} × ${x0} + ${s} = ${B(x0)}` }],
+        ['Écris chaque programme avec la lettre x, puis développe.', 'Écris l’équation « résultat de A = résultat de B » et regroupe les x d’un côté.', 'Vérifie avec le nombre trouvé dans les deux programmes.']);
+    };
+    /* e4 · produit nul */
+    TR.c3e4a = R => {
+      let r1 = 0, r2 = 0; while (!r1 || !r2 || r1 === r2) { r1 = int(R, -8, 8); r2 = int(R, -8, 8); }
+      const fac = r => `(x ${r < 0 ? '+' : '−'} ${Math.abs(r)})`;
+      return Q('Un produit nul, pas à pas', `Résous ${fac(r1)}${fac(r2)} = 0. Un produit est nul quand un de ses facteurs est nul.`, [
+        { lab: 'Un produit est nul si…', qcm: ['un de ses facteurs est nul', 'tous ses facteurs sont égaux', 'la somme des facteurs est nulle'], ok: 0, x: 'Un produit de facteurs est nul si au moins un des facteurs est nul.' },
+        { lab: `${fac(r1)} = 0 donne x =`, v: r1, d: 0, w: 10, x: `x ${r1 < 0 ? '+' : '−'} ${Math.abs(r1)} = 0 donc x = ${r1 < 0 ? '−' : ''}${Math.abs(r1)}`, err: [{ v: -r1, m: 'Attention au signe : x ' + (r1 < 0 ? '+' : '−') + ' ' + Math.abs(r1) + ' = 0 donne x = ' + fr(r1, 0) + '.' }] },
+        { lab: `${fac(r2)} = 0 donne x =`, v: r2, d: 0, w: 10, x: `x ${r2 < 0 ? '+' : '−'} ${Math.abs(r2)} = 0 donc x = ${r2 < 0 ? '−' : ''}${Math.abs(r2)}`, err: [{ v: -r2, m: 'Attention au signe.' }] },
+        { lab: 'Nombre de solutions de l’équation', v: 2, d: 0, w: 10, x: `x = ${fr(r1, 0)} ou x = ${fr(r2, 0)} : deux solutions.`, err: [{ v: 1, m: 'Chaque facteur donne une solution.' }] }],
+        ['Écris « premier facteur = 0 », puis « second facteur = 0 ».', 'Résous chaque petite équation séparément.', 'Attention au signe : x + 4 = 0 donne x = −4.'],
+        AI('(x − 2)(x + 5) = 0 : x − 2 = 0 donne x = 2 ; x + 5 = 0 donne x = −5.'));
+    };
+    TR.c3e4d = R => {
+      const m = pick(R, [2, 3, 4]); let r = 0; while (!r) r = int(R, -9, 9);
+      const E = `${m}x² ${r > 0 ? '−' : '+'} ${m * Math.abs(r)}x`, F = `${m}x(x ${r > 0 ? '−' : '+'} ${Math.abs(r)})`;
+      return Q('Factoriser pour résoudre', `Résous ${E} = 0. On factorise d’abord : ${E} = ${m}x(x ${r > 0 ? '−' : '+'} ?).`, [
+        { lab: 'Nombre qui manque dans la parenthèse', v: Math.abs(r), d: 0, w: 10, x: `${m}x × x = ${m}x² et ${m}x × ${Math.abs(r)} = ${m * Math.abs(r)}x : ${E} = ${F}`, err: [{ v: m * Math.abs(r), m: 'Le facteur commun ' + m + 'x est déjà sorti : divise ' + m * Math.abs(r) + 'x par ' + m + 'x.' }] },
+        { lab: `Première solution (de ${m}x = 0)`, v: 0, d: 0, w: 10, x: `${m}x = 0 donne x = 0.` },
+        { lab: `Seconde solution (de x ${r > 0 ? '−' : '+'} ${Math.abs(r)} = 0)`, v: r, d: 0, w: 10, x: `x ${r > 0 ? '−' : '+'} ${Math.abs(r)} = 0 donne x = ${fr(r, 0)}`, err: [{ v: -r, m: 'Attention au signe.' }] },
+        { lab: `Valeur de ${E} pour x = ${fr(r, 0)}`, v: 0, d: 0, w: 10, x: `${m} × ${fr(r * r, 0)} ${r > 0 ? '−' : '+'} ${m * Math.abs(r)} × ${r < 0 ? '(' + fr(r, 0) + ')' : fr(r, 0)} = ${fr(m * r * r, 0)} − ${fr(m * r * r, 0)} = 0 : la solution est bonne.` },
+        { lab: `Valeur de ${E} pour x = 1`, v: m - m * r, d: 0, w: 10, x: `${m} × 1 ${r > 0 ? '−' : '+'} ${m * Math.abs(r)} × 1 = ${fr(m - m * r, 0)} : ce n’est pas 0, donc 1 n’est pas une solution.` }],
+        ['Cherche le facteur commun à ' + m + 'x² et ' + m * Math.abs(r) + 'x.', 'Ensuite, un produit est nul si un de ses facteurs est nul.', 'Pour vérifier une solution, remplace x par sa valeur.']);
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);

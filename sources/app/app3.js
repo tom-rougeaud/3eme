@@ -149,11 +149,13 @@
   /* ---------- 4. s’entraîner : supports visuels générés ---------- */
   const SEEDS = {};
   const genOf = (c, e) => { const k = c.id + e.id; if (!SEEDS[k]) SEEDS[k] = rnd9(); return TR.tr(e.gen, SEEDS[k]); };
+  const nivB = e => e.niv ? `<span class="niv niv-${e.niv > 0 ? 'd' : 'a'}">${e.niv > 0 ? '🚀 Défi' : '🌱 Guidé'}</span>` : '';
+  const nivNote = (e, n) => `<p class="niv-n">${e.niv > 0 ? `Tu as réussi l’exercice ${n} ? Voici le même thème, avec un défi en plus.` : `Si l’exercice ${n} te résiste, commence ici : même thème, nombres plus simples, début déjà fait.`}</p>`;
   function trCard(c, e, i) {
     const g = genOf(c, e), best = ((prog()[c.id] || {})[e.id] || {}).best;
     const inline = new Set(g.items.filter(it => g.support.includes(`data-k="${it.k}"`)).map(it => it.k));
     const below = g.items.filter(it => !inline.has(it.k));
-    return `<article class="ex2 tr c-${c.col}" id="ex-${e.id}" data-c="${c.id}" data-e="${e.id}" data-h="0"><div class="ex-h"><span class="num2">${i + 1}</span><span class="ex-t">${g.titre}</span><span class="lcref">notion ${e.lc}</span>${best != null ? `<span class="best">★ ${best}/${g.items.length}</span>` : ''}</div><p class="cons">${g.consigne}</p>
+    return `<article class="ex2 tr c-${c.col}" id="ex-${e.id}" data-c="${c.id}" data-e="${e.id}" data-h="0"><div class="ex-h"><span class="num2">${i + 1}</span>${nivB(e)}<span class="ex-t">${g.titre}</span><span class="lcref">notion ${e.lc}</span>${best != null ? `<span class="best">★ ${best}/${g.items.length}</span>` : ''}</div>${e.niv ? nivNote(e, trAll(c).findIndex(x => x.id === e.base) + 1) : ''}<p class="cons">${g.consigne}</p>
       <div class="sup">${g.support}</div>${below.length ? `<div class="its3">${below.map(it => `<div class="it3" data-k="${it.k}"><b>${it.k}.</b>${it.qcm ? `<span class="chs">${it.qcm.choices.map((ch, k) => `<button class="ch" data-k="${k}">${ch}</button>`).join('')}</span>` : `<input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${it.k}">`}<span class="itfb" aria-live="polite"></span></div>`).join('')}</div>` : ''}
       <div class="ex-act"><button class="btn" data-check>Vérifier</button><button class="btn ghost" data-hint>💡 Indice 1</button><button class="btn ghost" data-new>🔄 Nouveaux nombres</button><span class="score"></span></div><div class="hints"></div><div class="fbs" aria-live="polite"></div></article>`;
   }

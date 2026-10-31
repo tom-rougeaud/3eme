@@ -90,4 +90,96 @@
         table(['Quantité de départ', 'Fraction utilisée'], [[`${fr(Qn, 0)}${U}`, MCF(a, b)]]));
     };
   }
+  /* ===== niveaux 🌱 guidé et 🚀 défi · chapitre 2 ===== */
+  {
+    const { Q, AI, fr, pick, int, shuffle, table, eur } = H, MCF = H.MC.frac;
+    /* e1 · additionner des fractions */
+    TR.c2e1a = R => {
+      const [a, b, c, d] = pick(R, [[1, 2, 1, 3], [1, 3, 1, 4], [1, 4, 1, 6], [1, 2, 1, 5], [2, 3, 1, 6], [1, 2, 1, 4], [3, 4, 1, 6], [2, 5, 1, 4], [1, 6, 1, 4], [3, 10, 1, 4], [1, 3, 1, 5], [1, 2, 3, 10]]), D = lcm(b, d), n1 = a * D / b, n2 = c * D / d, S = n1 + n2;
+      const mult = n => [1, 2, 3, 4, 5, 6].map(k => n * k).join(' · '), [x, y] = pick(R, [['de jus', 'de lait'], ['de peinture bleue', 'de peinture blanche'], ['de sirop', 'd’eau']]);
+      return Q('Additionner deux fractions, pas à pas', `Un mélange contient ${MCF(a, b)} L ${x} et ${MCF(c, d)} L ${y}. Calcule ${MCF(a, b)} + ${MCF(c, d)}.`, [
+        { lab: `Plus petit multiple commun de ${b} et ${d}`, v: D, d: 0, w: 12, x: `Multiples de ${b} : ${mult(b)} ; multiples de ${d} : ${mult(d)} ; le premier en commun est ${D}.`, err: [{ v: b + d, m: 'On additionne les fractions, pas les dénominateurs. Cherche un multiple commun.' }] },
+        { lab: `${MCF(a, b)} s’écrit ?/${D}. Quel est le numérateur`, v: n1, d: 0, w: 12, x: `${a} × ${D / b} = ${n1} : ${MCF(a, b)} = ${MCF(n1, D)}`, err: [{ v: a, m: 'Multiplie le numérateur par le même nombre que le dénominateur.' }] },
+        { lab: `${MCF(c, d)} s’écrit ?/${D}. Quel est le numérateur`, v: n2, d: 0, w: 12, x: `${c} × ${D / d} = ${n2} : ${MCF(c, d)} = ${MCF(n2, D)}`, err: [{ v: c, m: 'Multiplie le numérateur par le même nombre que le dénominateur.' }] },
+        { lab: `Numérateur de la somme ${MCF(n1, D)} + ${MCF(n2, D)}, en litres`, v: S, d: 0, w: 12, x: `${n1} + ${n2} = ${S} : le dénominateur ne change pas, ${MCF(a, b)} + ${MCF(c, d)} = ${MCF(S, D)}`, err: [{ v: a + c, m: 'Additionne les numérateurs qui ont le même dénominateur ' + D + '.' }] }],
+        ['Cherche un nombre qui est dans la table de ' + b + ' et dans la table de ' + d + '.', 'Pour changer de dénominateur, multiplie le haut et le bas par le même nombre.', 'Quand les dénominateurs sont égaux, on additionne les numérateurs.'],
+        AI(`${MCF(1, 2)} + ${MCF(1, 3)} : multiples de 2 : 2, 4, 6 ; multiples de 3 : 3, 6 ; dénominateur commun 6 ; ${MCF(1, 2)} = ${MCF(3, 6)} et ${MCF(1, 3)} = ${MCF(2, 6)} ; la somme est ${MCF(5, 6)}.`));
+    };
+    TR.c2e1d = R => {
+      const [[a, b], [c, d], [e, f], D] = pick(R, [[[1, 2], [1, 3], [1, 12], 12], [[1, 4], [1, 3], [1, 6], 12], [[1, 2], [1, 4], [1, 5], 20], [[1, 3], [1, 4], [1, 5], 60], [[1, 2], [1, 5], [1, 10], 10], [[2, 5], [1, 4], [1, 10], 20]]);
+      const n = [a * D / b, c * D / d, e * D / f], S = n[0] + n[1] + n[2], rest = D - S, k = int(R, 2, 5), N = D * k;
+      const nom = pick(R, [['cartes', 'rares', 'brillantes', 'communes'], ['épisodes', 'd’action', 'comiques', 'dramatiques'], ['morceaux', 'rap', 'pop', 'rock']]);
+      return Q('Trois fractions et le reste', `Sur ${N} ${nom[0]}, ${MCF(a, b)} sont ${nom[1]}, ${MCF(c, d)} ${nom[2]} et ${MCF(e, f)} ${nom[3]}. Les autres sont neutres.`, [
+        { lab: `Dénominateur commun aux trois fractions`, v: D, d: 0, w: 12, x: `${D} est le plus petit multiple commun de ${b}, ${d} et ${f}.`, err: [{ v: b * d * f, m: 'Ce nombre convient, mais il y en a un plus petit : cherche le plus petit multiple commun.' }] },
+        { lab: `Numérateur de la somme des trois fractions, sur ${D}`, v: S, d: 0, w: 12, x: `${MCF(a, b)} = ${MCF(n[0], D)}, ${MCF(c, d)} = ${MCF(n[1], D)}, ${MCF(e, f)} = ${MCF(n[2], D)} ; ${n[0]} + ${n[1]} + ${n[2]} = ${S}.`, err: [{ v: a + c + e, m: 'Remplace d’abord chaque fraction par une fraction de dénominateur ' + D + '.' }] },
+        { lab: `Numérateur des neutres, sur ${D}`, v: rest, d: 0, w: 12, x: `Le tout vaut ${D}/${D} : ${D} − ${S} = ${rest}.`, err: [{ v: S, m: 'C’est la part des trois autres types. Le reste : ' + D + ' − ' + S + '.' }] },
+        { lab: `Nombre de ${nom[0]} neutres`, v: rest * k, d: 0, w: 12, x: `Une part de ${D} vaut ${N} ÷ ${D} = ${k} ${nom[0]} ; ${rest} × ${k} = ${rest * k} ${nom[0]}.`, err: [{ v: rest, m: 'Une part vaut ' + k + ' ' + nom[0] + '. Multiplie le nombre de parts par ' + k + '.' }] }],
+        ['Cherche le plus petit nombre qui est dans les trois tables.', 'Passe les trois fractions au même dénominateur, puis additionne les numérateurs.', 'Le reste, c’est le tout (D/D) moins la somme. Une part vaut N ÷ D.']);
+    };
+    /* e2 · puissances de 10 et préfixes */
+    TR.c2e2a = R => {
+      const p = int(R, 2, 4), q = int(R, 2, 4), u = int(R, 5, 8), v = int(R, 2, 4), pre = pick(R, [['kilo', 'ko', 'octets', 3], ['méga', 'Mo', 'octets', 6], ['giga', 'Go', 'octets', 9]]);
+      return Q('Puissances de 10, pas à pas', '10 puissance n s’écrit avec un 1 suivi de n zéros. Complète.', [
+        { lab: `Nombre de zéros dans 10${sup(p)}`, v: p, d: 0, w: 10, x: `10${sup(p)} = ${fr(10 ** p)} : ${p} zéros.`, err: [{ v: 10 ** p, m: 'On demande le nombre de zéros, pas la valeur.' }] },
+        { lab: `10${sup(p)} × 10${sup(q)} = 10 puissance`, v: p + q, d: 0, w: 10, x: `${fr(10 ** p)} × ${fr(10 ** q)} = ${fr(10 ** (p + q))} = 10${sup(p + q)} : ${p} + ${q} = ${p + q}`, err: [{ v: p * q, m: 'Pour une multiplication, on additionne les exposants.' }] },
+        { lab: `10${sup(u)} ÷ 10${sup(v)} = 10 puissance`, v: u - v, d: 0, w: 10, x: `On soustrait les exposants : ${u} − ${v} = ${u - v}`, err: [{ v: u + v, m: 'Pour une division, on soustrait les exposants.' }] },
+        { lab: `Un ${pre[1]} contient 10 puissance ? ${pre[2]} (préfixe ${pre[0]})`, v: pre[3], d: 0, w: 10, x: `${pre[0]} signifie 10${sup(pre[3])} : 1 ${pre[1]} = ${fr(10 ** pre[3])} ${pre[2]}.` }],
+        ['Compte les zéros : 10 puissance 3 = 1 000, il y a trois zéros.', 'Multiplication : on additionne les exposants.', 'Division : on soustrait les exposants.'],
+        table(['Préfixe', 'Puissance de 10', 'En nombre'], [['kilo', '10³', '1 000'], ['méga', '10⁶', '1 000 000'], ['giga', '10⁹', '1 000 000 000']]) + AI('10² × 10³ = 100 × 1 000 = 100 000 = 10⁵ ; on a bien 2 + 3 = 5.'));
+    };
+    TR.c2e2d = R => {
+      const a = int(R, 3, 7), b = int(R, 2, 6), c = int(R, 1, a + b - 1), p = int(R, 2, 5), q = int(R, p + 1, p + 4), k = pick(R, [2, 3, 4, 5, 8]);
+      return Q('Puissances de 10 : conversions et calculs', `Un fichier pèse ${k} Mo. On rappelle : 1 Mo = 10${sup(6)} octets, 1 ko = 10${sup(3)} octets et 1 Go = 10${sup(9)} octets.`, [
+        { lab: `10${sup(a)} × 10${sup(b)} ÷ 10${sup(c)} = 10 puissance`, v: a + b - c, d: 0, w: 10, x: `D’abord ${a} + ${b} = ${a + b}, puis ${a + b} − ${c} = ${a + b - c}`, err: [{ v: a + b + c, m: 'On soustrait l’exposant du diviseur.' }] },
+        { lab: `10${sup(-p)} × 10${sup(q)} = 10 puissance`, v: q - p, d: 0, w: 10, x: `On additionne les exposants : −${p} + ${q} = ${q - p}`, err: [{ v: -(p + q), m: 'Additionne −' + p + ' et ' + q + ' : c’est une soustraction.' }] },
+        { lab: `Le fichier de ${k} Mo en octets : ${k} × 10 puissance`, v: 6, d: 0, w: 10, x: `1 Mo = 10${sup(6)} octets : ${k} Mo = ${k} × 10${sup(6)} octets = ${fr(k * 10 ** 6)} octets.`, err: [{ v: 3, m: 'Le préfixe méga correspond à 10 puissance 6.' }] },
+        { lab: 'Le même fichier en ko', v: k * 1000, d: 0, w: 14, x: `${k} × 10${sup(6)} ÷ 10${sup(3)} = ${k} × 10${sup(3)} = ${fr(k * 1000)} ko`, err: [{ v: k, m: 'Un ko est beaucoup plus petit qu’un Mo : il y a 1 000 ko dans 1 Mo.' }] },
+        { lab: 'Combien de fichiers de ce type dans 1 Go ?', v: 1000 / k, d: 1, w: 12, x: `1 Go = 10${sup(9)} octets ; ${k} Mo = ${k} × 10${sup(6)} octets ; 10${sup(9)} ÷ (${k} × 10${sup(6)}) = 1 000 ÷ ${k} = ${fr(1000 / k)}`, err: [{ v: 1000 * k, m: 'Divise le contenu du Go par la taille d’un fichier.' }] }],
+        ['Multiplier : on additionne les exposants ; diviser : on les soustrait.', 'Un exposant négatif se traite comme un nombre négatif dans l’addition.', '1 Go = 1 000 Mo = 1 000 000 ko.']);
+    };
+    /* e3 · écriture scientifique */
+    TR.c2e3a = R => {
+      const [N, lab] = pick(R, [[4500000, 'vues d’une vidéo'], [32000000, 'joueurs d’un jeu'], [870000, 'abonnés d’une chaîne'], [6200000, 'écoutes d’un titre'], [91000, 'spectateurs d’un concert']]), [m, e] = sci(N), [m2, e2] = pick(R, [[3.2, 5], [7.5, 4], [1.8, 6], [6.4, 3]]), big = Math.round(m2 * 10 ** e2);
+      const bad = pick(R, [[45, 5], [32, 6], [68, 4], [12, 7]]);
+      return Q('L’écriture scientifique, pas à pas', `Écriture scientifique : a × 10 puissance n, avec a entre 1 et 10. Écris ${fr(N)} (${lab}) sous cette forme.`, [
+        { lab: `On place la virgule après le premier chiffre non nul : a =`, v: m, d: 1, w: 12, x: `${fr(N)} : le premier chiffre est ${String(N)[0]}, donc a = ${fr(m)}`, err: [{ v: N, m: 'a doit être entre 1 et 10 : un seul chiffre avant la virgule.' }] },
+        { lab: 'La virgule s’est déplacée de combien de rangs ? n =', v: e, d: 0, w: 10, x: `${fr(N)} = ${fr(m)} × 10${sup(e)} : la virgule s’est déplacée de ${e} rangs.`, err: [{ v: e + 1, m: 'Compte bien les rangs entre la virgule d’origine et sa nouvelle place.' }] },
+        { lab: `${fr(m2)} × 10${sup(e2)} en écriture décimale`, v: big, d: 0, w: 16, x: `On décale la virgule de ${e2} rangs vers la droite : ${fr(big)}`, err: [{ v: m2 * e2, m: '10 puissance ' + e2 + ' n’est pas 10 × ' + e2 + '.' }] },
+        { lab: `${bad[0]} × 10${sup(bad[1])} est-elle une écriture scientifique ?`, qcm: ['oui', 'non'], ok: 1, x: `${bad[0]} n’est pas entre 1 et 10 : ce n’est pas une écriture scientifique (${bad[0]} × 10${sup(bad[1])} = ${fr(bad[0] / 10)} × 10${sup(bad[1] + 1)}).` }],
+        ['Dans a × 10 puissance n, a est entre 1 et 10 : un seul chiffre non nul avant la virgule.', 'n est le nombre de rangs dont la virgule se déplace.', 'Pour revenir à l’écriture décimale, décale la virgule de n rangs vers la droite.'],
+        AI(`pour 530 000 : la virgule se place après le 5, donc a = 5,3 ; elle s’est déplacée de 5 rangs, donc 530 000 = 5,3 × 10⁵.`));
+    };
+    TR.c2e3d = R => {
+      const [m1, e1] = pick(R, [[4, 3], [5, 2], [2, 4], [6, 3], [8, 2]]), [m2, e2] = pick(R, [[5, 2], [4, 5], [3, 4], [2, 3], [7, 2]]), M = m1 * m2, mm = M >= 10 ? M / 10 : M, ee = e1 + e2 + (M >= 10 ? 1 : 0);
+      const [c1, f1] = [pick(R, [3.2, 4.8, 5.5, 2.4]), pick(R, [5, 6, 7])], [c2, f2] = [pick(R, [7.1, 9.1, 8.4, 6.5]), f1 - 1];
+      return Q('Calculer avec l’écriture scientifique', `On multiplie deux grands nombres : (${m1} × 10${sup(e1)}) × (${m2} × 10${sup(e2)}).`, [
+        { lab: `On multiplie d’abord ${m1} × ${m2} =`, v: M, d: 0, w: 10, x: `${m1} × ${m2} = ${M}`, err: [{ v: m1 + m2, m: 'Multiplie les deux nombres, ne les additionne pas.' }] },
+        { lab: `Puis les puissances de 10 : 10${sup(e1)} × 10${sup(e2)} = 10 puissance`, v: e1 + e2, d: 0, w: 10, x: `On additionne les exposants : ${e1} + ${e2} = ${e1 + e2}`, err: [{ v: e1 * e2, m: 'Multiplication de puissances de 10 : on additionne les exposants.' }] },
+        { lab: 'Exposant dans l’écriture scientifique finale', v: ee, d: 0, w: 10, x: M >= 10 ? `${M} × 10${sup(e1 + e2)} = ${fr(mm)} × 10${sup(1)} × 10${sup(e1 + e2)} = ${fr(mm)} × 10${sup(ee)}` : `${M} est déjà entre 1 et 10 : l’exposant reste ${ee}.`, err: [{ v: e1 + e2 + (M >= 10 ? 0 : 1), m: M >= 10 ? 'a vaut ' + M + ', plus grand que 10 : il faut l’ajuster.' : 'a est déjà entre 1 et 10.' }] },
+        { lab: `Plus grand nombre : ${fr(c1)} × 10${sup(f1)} ou ${fr(c2)} × 10${sup(f2)} ?`, qcm: [`${fr(c1)} × 10${sup(f1)}`, `${fr(c2)} × 10${sup(f2)}`], ok: 0, x: `Les exposants se comparent d’abord : ${f1} > ${f2}, donc ${fr(c1)} × 10${sup(f1)} est le plus grand, même si ${fr(c1)} < ${fr(c2)}.` }],
+        ['Multiplie séparément les nombres, puis les puissances de 10.', 'Si a dépasse 10, décale la virgule d’un rang et ajoute 1 à l’exposant.', 'Pour comparer deux écritures scientifiques, regarde d’abord les exposants.']);
+    };
+    /* e4 · fraction d’une quantité */
+    TR.c2e4a = R => {
+      const b = pick(R, [3, 4, 5, 6]), a = int(R, 2, b - 1), k = int(R, 3, 9), Qn = b * k * 2, par = Qn / b, tot = par * a, [u, nom] = pick(R, [['L', 'de peinture'], ['m', 'de câble'], ['kg', 'de farine']]);
+      return Q('Prendre une fraction d’une quantité, pas à pas', `On dispose de ${fr(Qn, 0)} ${u} ${nom}. On en utilise ${MCF(a, b)}.`, [
+        { lab: `En combien de parts égales partage-t-on la quantité ?`, v: b, d: 0, w: 10, x: `Le dénominateur est ${b} : on partage en ${b} parts.`, err: [{ v: a, m: 'Le nombre de parts est le dénominateur, en bas de la fraction.' }] },
+        { lab: `Valeur d’une part (${fr(Qn, 0)} ÷ ${b}), en ${u}`, v: par, d: 2, w: 12, x: `${fr(Qn, 0)} ÷ ${b} = ${fr(par)}`, err: [{ v: Qn * b, m: 'Pour partager en ' + b + ', on divise.' }] },
+        { lab: `Valeur de ${a} parts, en ${u}`, v: tot, d: 2, w: 12, x: `${fr(par)} × ${a} = ${fr(tot)}`, err: [{ v: par, m: 'Il faut ' + a + ' parts, pas une seule : multiplie par ' + a + '.' }] },
+        { lab: `Quantité qui reste, en ${u}`, v: Qn - tot, d: 2, w: 12, x: `${fr(Qn, 0)} − ${fr(tot)} = ${fr(Qn - tot)}`, err: [{ v: tot, m: 'Soustrais la quantité utilisée à la quantité de départ.' }] }],
+        ['Le dénominateur donne le nombre de parts égales.', 'Pour une part, on divise la quantité par le dénominateur.', 'On multiplie ensuite la valeur d’une part par le numérateur.'],
+        AI(`les ${MCF(3, 4)} de 20 € : 20 ÷ 4 = 5 € pour une part ; 5 × 3 = 15 €.`));
+    };
+    TR.c2e4d = R => {
+      const [Q0, a1, b1, a2, b2] = pick(R, [[120, 1, 4, 1, 3], [240, 1, 3, 1, 4], [360, 1, 3, 3, 8], [180, 2, 5, 1, 4], [300, 1, 5, 3, 4], [200, 3, 10, 2, 5]]), Qn = Q0 * pick(R, [1, 2, 3, 5]);
+      const u1 = Qn / b1 * a1, r1 = Qn - u1, u2 = r1 / b2 * a2, r2 = r1 - u2;
+      return Q('Deux fractions à la suite', `Un budget de ${eur(Qn)} est dépensé en deux fois : d’abord ${MCF(a1, b1)} du budget, puis ${MCF(a2, b2)} de ce qui reste.`, [
+        { lab: 'Première dépense, en €', v: u1, d: 2, w: 12, x: `${fr(Qn)} ÷ ${b1} × ${a1} = ${fr(u1)}` },
+        { lab: 'Budget restant après la première dépense, en €', v: r1, d: 2, w: 12, x: `${fr(Qn)} − ${fr(u1)} = ${fr(r1)}`, err: [{ v: u1, m: 'C’est la dépense. Le reste : budget − dépense.' }] },
+        { lab: 'Deuxième dépense, en €', v: u2, d: 2, w: 12, x: `${MCF(a2, b2)} de ${fr(r1)} : ${fr(r1)} ÷ ${b2} × ${a2} = ${fr(u2)}`, err: [{ v: Qn / b2 * a2, m: 'La deuxième fraction s’applique à ce qui reste, pas au budget de départ.' }] },
+        { lab: 'Budget restant à la fin, en €', v: r2, d: 2, w: 12, x: `${fr(r1)} − ${fr(u2)} = ${fr(r2)}` },
+        { lab: 'Total dépensé, en €', v: u1 + u2, d: 2, w: 12, x: `${fr(u1)} + ${fr(u2)} = ${fr(u1 + u2)}, soit ${fr(Qn)} − ${fr(r2)}`, err: [{ v: u1, m: 'Ajoute aussi la deuxième dépense.' }] }],
+        ['Première dépense : budget ÷ dénominateur × numérateur.', 'La deuxième fraction se calcule sur le reste, pas sur le budget de départ.', 'Total dépensé = première dépense + deuxième dépense.']);
+    };
+  }
 })(typeof module !== 'undefined' ? module.exports : window);
