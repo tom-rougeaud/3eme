@@ -12,24 +12,24 @@ const mini = (o, f) => { const g = MCVP.plot({ W: 200, H: 130, ml: 30, mr: 8, mt
 const D = {
   /* Les Simpson : épisodes par saison, saisons 1 à 36 (terminées). 800e épisode diffusé le 7 décembre 2025 (saison 37). */
   simpsons: [13, 22, 24, 22, 22, 25, 25, 25, 25, 23, 22, 21, 22, 22, 22, 21, 22, 22, 20, 21, 23, 22, 22, 22, 22, 22, 22, 22, 21, 23, 22, 22, 22, 22, 18, 22],
-  srcSimpsons: 'Source : Wikipédia (en), « List of The Simpsons episodes », consultée en octobre 2026.',
+  srcSimpsons: 'Source : Wikipédia, liste des épisodes des Simpson (2026).',
   /* One Piece : tome 114 sorti au Japon le 4 mars 2026 ; 600 millions d’exemplaires en circulation dans le monde (Shueisha). */
-  srcOnePiece: 'Source : éditeur Shueisha, annonce du tome 114 (sorti au Japon le 4 mars 2026), relayée par Outlook Respawn le 15 avril 2026.',
-  srcOnePiece2022: 'Source : Livres Hebdo, 4 août 2022 (annonce de Shueisha, tome 103).',
+  srcOnePiece: 'Source : Shueisha, tome 114 (mars 2026).',
+  srcOnePiece2022: 'Source : Shueisha, tome 103 (2022).',
   /* cartes Pokémon : plus de 85 milliards produites au 31 mars 2026, environ 10 milliards en un an (The Pokémon Company). */
-  srcPokemon: 'Source : The Pokémon Company, chiffres de l’entreprise au 31 mars 2026, relayés par PokéGuardian.',
+  srcPokemon: 'Source : The Pokémon Company (mars 2026).',
   /* Netflix France : tarifs mensuels depuis la hausse du 18 avril 2025 (avant : 5,99 €, 13,49 €, 19,99 €). */
   netflix: [['Standard avec pub', 7.99, 5.99], ['Standard', 14.99, 13.49], ['Premium', 21.99, 19.99]],
-  srcNetflix: 'Source : JeChange, « Tarifs Netflix », page mise à jour le 30 septembre 2026 (hausse du 18 avril 2025).',
-  srcNetflixDebit: 'Source : centre d’aide Netflix, « Débits Internet recommandés » (consulté en octobre 2026).',
+  srcNetflix: 'Source : JeChange, tarifs Netflix (2026).',
+  srcNetflixDebit: 'Source : centre d’aide Netflix (2026).',
   /* cinéma en France : entrées par mois en 2025 (millions), CNC */
   cnc2025: [13.83, 14.30, 12.72, 11.83, 11.23, 11.37, 14.29, 9.94, 9.46, 12.84, 14.12, 20.73],
   cnc2024: [13.71, 15.06, 15.19, 11.92, 15.71, 14.14, 17.90, 14.13, 10.07, 15.34, 17.83, 20.54],
-  srcCnc: 'Source : CNC, communiqués du 3 novembre, du 4 décembre et du 30 décembre 2025 (estimations).',
+  srcCnc: 'Source : CNC (2025, estimations).',
   top2025: [['Zootopie 2', 6.18], ['Lilo & Stitch', 5.10], ['Avatar : De feu et de cendres', 4.58], ['F1 le film', 3.31], ['Jurassic World : Renaissance', 2.97], ['God save the Tuche', 2.95], ['Minecraft, le film', 2.66], ['Mufasa : Le roi lion', 2.64], ['Dragons', 2.55], ['Mission : Impossible – The Final Reckoning', 2.46]],
-  srcTop: 'Source : CNC (données Comscore), communiqué du 30 décembre 2025, entrées en millions.',
-  srcEndgame: 'Source : CNC, visa d’exploitation n° 150633 (23 avril 2019) : durée 181 minutes, tous publics.',
-  srcGundam: 'Source : Wikipédia (en), « Statue of Unicorn Gundam », consultée en octobre 2026.'
+  srcTop: 'Source : CNC, données Comscore (2025).',
+  srcEndgame: 'Source : CNC, visa n° 150633 (2019).',
+  srcGundam: 'Source : Wikipédia, Unicorn Gundam (2026).'
 };
 
 const SK = {

@@ -72,28 +72,40 @@ const M = {
   star: () => P(line(-20, 0, 20, 0) + line(0, -20, 0, 20) + line(-12, -12, 12, 12, 1) + line(-12, 12, 12, -12, 1), { w: 3 })
 };
 
+/* version « spécimen enseignant » : fond rouge brique sombre, bandeau discret, pastille aux couleurs du niveau */
+const PR = { bg: '#9B2335', ink: '#3B0F18', cream: '#FFF1DC', rose: '#F6CFC6' };
+function profLayer(book) {
+  /* discret : un bandeau fin en haut, une pastille aux couleurs du niveau sous le titre */
+  let s = `<rect x="0" y="0" width="840" height="62" fill="${PR.ink}"/><text x="420" y="40" font-family="Inter" font-size="22" font-weight="800" fill="${PR.cream}" text-anchor="middle" letter-spacing="7">SPÉCIMEN ENSEIGNANT</text>`;
+  s += `<rect x="70" y="788" width="480" height="52" rx="26" fill="${book}"/><text x="310" y="822" font-family="Inter" font-size="22" font-weight="800" fill="#1D2240" text-anchor="middle">Livre du professeur · corrigés détaillés</text>`;
+  return s;
+}
+
 function cover(o = {}) {
   R = rng(7);
   const qr = o.qr || '';
-  let s = `<svg viewBox="0 0 840 1188" xmlns="http://www.w3.org/2000/svg" class="cvsvg"><rect width="840" height="1188" fill="#F5A300"/>`;
+  const NAVY = o.prof ? PR.ink : '#1D2240';
+  let s = `<svg viewBox="0 0 840 1188" xmlns="http://www.w3.org/2000/svg" class="cvsvg"><rect width="840" height="1188" fill="${o.prof ? PR.bg : '#F5A300'}"/>`;
   // motifs : [nom, x, y, rotation, échelle, opacité]
   const L = [['card', 140, 160, -8, .95, .24], ['ecran', 640, 150, 5, .95, .22], ['facto', 400, 120, -4, .7, .18], ['star', 290, 50, 0, 1, .3],
     ['d20', 130, 360, 6, .85, .22], ['clap', 720, 370, -6, .9, .22], ['sqrt', 330, 320, -6, .7, .16], ['pct', 560, 300, 10, .8, .16],
     ['bulle', 120, 830, 6, .85, .22], ['figurine', 720, 830, -4, .95, .22], ['pixel', 330, 880, 0, .8, .2], ['tree', 500, 960, 6, .75, .18],
     ['bars', 200, 1000, -3, .7, .16], ['star', 760, 270, 0, .8, .3], ['star', 60, 560, 0, .7, .26], ['star', 560, 800, 0, .9, .24]];
   L.forEach(([k, x, y, r, sc, op]) => { s += G(x, y, r, sc, op, M[k]()); });
+  if (o.prof && typeof MOT !== 'undefined') s = s.split(MOT).join(PR.rose);
   // titre
   s += `<g font-family="Inter">`;
-  s += `<rect x="70" y="420" width="700" height="300" rx="40" fill="#1D2240" opacity=".92"/>`;
+  s += `<rect x="70" y="420" width="700" height="300" rx="40" fill="${NAVY}" opacity=".92"/>`;
   s += `<text x="110" y="492" font-size="24" font-weight="800" fill="${YEL}" letter-spacing="3" textLength="620" lengthAdjust="spacingAndGlyphs">MATHÉMATIQUES · 3E PRÉPA-MÉTIERS</text>`;
   s += `<text x="106" y="596" font-size="92" font-weight="800" fill="${W}" letter-spacing="-2" textLength="620" lengthAdjust="spacingAndGlyphs">3ème Série Pro</text>`;
   s += `</g>` + `<path d="${line(110, 628, 470, 622, 2.5)}" fill="none" stroke="${YEL}" stroke-width="9" stroke-linecap="round"/>`;
   s += `<g font-family="Inter"><text x="110" y="690" font-size="38" font-weight="700" fill="${W}">Brevet série professionnelle</text></g>`;
   // bas de page : auteur et QR code
-  s += `<rect x="0" y="1040" width="840" height="148" fill="#1D2240" opacity=".9"/>`;
-  s += `<g font-family="Inter"><text x="70" y="1108" font-size="26" font-weight="800" fill="${W}">Tom Rougeaud</text>`;
-  s += `<text x="70" y="1140" font-size="20" font-weight="700" fill="#FCE7A0">Manuel de l’élève et appli en ligne</text></g>`;
+  s += `<rect x="0" y="1040" width="840" height="148" fill="${NAVY}" opacity=".9"/>`;
+  s += `<g font-family="Inter">` + (o.prof ? '' : `<text x="70" y="1108" font-size="26" font-weight="800" fill="${W}">Tom Rougeaud</text>`);
+  s += `<text x="70" y="${o.prof ? 1124 : 1140}" font-size="${o.prof ? 22 : 20}" font-weight="700" fill="#FCE7A0">${o.prof ? 'Exemplaire de l’enseignant · ne pas distribuer' : 'Manuel de l’élève et appli en ligne'}</text></g>`;
   if (qr) { s += `<rect x="636" y="958" width="152" height="182" rx="18" fill="${W}"/><g transform="translate(648 970) scale(${(128 / +qr.vb.split(' ')[2]).toFixed(4)})">${qr.body}</g><text x="712" y="1124" font-family="Inter" font-size="17" font-weight="800" fill="#1D2240" text-anchor="middle">L’appli · 3e</text>`; }
+  if (o.prof) s += profLayer('#F5A300');
   return s + '</svg>';
 }
 module.exports = { cover, M };

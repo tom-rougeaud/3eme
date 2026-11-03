@@ -52,11 +52,27 @@
       if (tooWide()) res.warnings.push('Texte trop long : ' + el.textContent.slice(0, 40));
     });
   }
+  let curFlash = null; const flashPool = {};
+  /* place libre en bas de page : des questions flash (calcul mental) du chapitre, sinon des lignes de notes */
+  function addFlash(el) {
+    const t = curFlash && document.getElementById('flash-' + curFlash); if (!t) return false;
+    const q = flashPool[curFlash] || (flashPool[curFlash] = [...t.content.querySelectorAll('li')]);
+    if (q.length < 2) return false;
+    const col = (el.closest('.page').className.match(/\bc-[a-z]+/) || ['c-brand'])[0];
+    const b = document.createElement('div'); b.className = 'blk flash ' + col; b.innerHTML = '<div class="fl-h">⚡ Pour garder la forme <span>calcul mental · sans calculatrice</span></div><ol class="fl-q"></ol>';
+    el.appendChild(b); const ol = b.querySelector('ol'); let n = 0;
+    while (q.length && n < 10) { const li = q[0].cloneNode(true); ol.appendChild(li); if (over(el)) { ol.removeChild(li); break; } q.shift(); n++; }
+    if (n < 2) { q.unshift(...[]); el.removeChild(b); return false; }
+    res.flash = (res.flash || 0) + 1; return true;
+  }
+  /* plus de remplissage : s’il reste de la place en bas de page, on aère (on écarte les contenus) au lieu d’ajouter des zones */
   function addNotes(p) {
-    const el = inner(p); if (el.classList.contains('cols2')) return; const f = free(el) / MM; (res.gaps = res.gaps || []).push([out.children.length, Math.round(f), Math.round(el.clientHeight / MM)]);
-    if (f < 34) return;
-    const n = tpl('notesTpl'); n.querySelector('.lines').innerHTML = '<i></i>'.repeat(Math.floor((f - 24) / 10));
-    el.appendChild(n); if (over(el)) el.removeChild(n); else res.notes++;
+    const el = inner(p); if (el.classList.contains('cols2') || !el.children.length) return; const f = free(el) / MM; (res.gaps = res.gaps || []).push([out.children.length, Math.round(f), Math.round(el.clientHeight / MM)]);
+    if (f < 4) return;
+    el.classList.add('aired'); el.style.setProperty('--air', '0mm');
+    if (over(el)) { el.classList.remove('aired'); el.style.removeProperty('--air'); return; }
+    let lo = 0, hi = 10; for (let k = 0; k < 8; k++) { const m = (lo + hi) / 2; el.style.setProperty('--air', m + 'mm'); if (over(el)) hi = m; else lo = m; }
+    el.style.setProperty('--air', Math.max(0, lo - .25) + 'mm'); res.aired = (res.aired || 0) + 1;
   }
   // une page de notes, pour qu’un chapitre commence toujours sur une page de droite (page impaire)
   const fillPage = () => { const pg = document.createElement('div'); pg.className = 'page filler'; pg.innerHTML = '<div class="inner"><div class="blk notes"><h3>📝 Mes notes</h3><div class="lines">' + '<i></i>'.repeat(24) + '</div></div></div><div class="foot"></div>'; out.appendChild(pg); res.fillers = (res.fillers || 0) + 1; };
@@ -65,25 +81,27 @@
     if (node.classList.contains('page')) { out.appendChild(node); fitAll(node); continue; }
     if (node.dataset.key === 'rep') { const placed = new Set([...out.querySelectorAll('.ex[data-eid]')].map(e => e.dataset.eid)); node.querySelectorAll('[data-optrep]').forEach(e => { if (!placed.has(e.dataset.optrep)) e.remove(); }); }
     const run = node.dataset.run, col = node.dataset.col, fill = node.dataset.fill === '1', cols = node.dataset.cols === '2';
+    curFlash = (node.dataset.key.match(/^c\d+/) || [null])[0];
     let p = newPage(null, col, false);
     res.secs[node.dataset.key] = out.children.length;
     const kids = [...node.children]; const fixed = [], queue = [];
-    kids.forEach(k => (k.classList.contains('ex') ? queue : fixed).push(k));
-    const pool = queue.filter(b => b.classList.contains('opt')); pool.forEach(b => queue.splice(queue.indexOf(b), 1));
+    const opts = kids.filter(k => k.dataset.opt === '1');
+    kids.filter(k => k.dataset.opt !== '1').forEach(k => (k.classList.contains('ex') && !k.dataset.inl ? queue : fixed).push(k));
+    const pool = queue.filter(b => b.classList.contains('pool')); pool.forEach(b => queue.splice(queue.indexOf(b), 1));
     const place = blk => { const el = inner(p); el.appendChild(blk); fitAll(blk); if (over(el)) { el.removeChild(blk); return false; } return true; };
     let first = true;
     let curLc = 0;
     /* réserve d’exercices : posés seulement dans la place restée vide d’une page, jamais sur une page en plus */
     const usedSrc = {};
-    const topUp = (lc, dep) => { if (!fill || !pool.length) return; const el = inner(p); if (el.classList.contains('cols2')) return;
-      const here = new Set([...el.querySelectorAll(':scope > .opt')].map(b => b.dataset.src));
+    let topOn = false; const topUp = (lc, dep) => { if (!topOn || !fill || !pool.length) return; const el = inner(p); if (el.classList.contains('cols2')) return;
+      const here = new Set([...el.querySelectorAll(':scope > .pool')].map(b => b.dataset.src));
       const pickc = (test, same) => pool.filter(b => test(b) && (b.dataset.free || (lc ? +b.dataset.lc === lc : (!b.dataset.src || out.querySelector('.ex[data-eid="' + b.dataset.src + '"]')))) && (same || (!here.has(b.dataset.src) && !(b.dataset.src && el.querySelector('[data-eid="' + b.dataset.src + '"]')))))
         .sort((a, b) => (usedSrc[a.dataset.src] || 0) - (usedSrc[b.dataset.src] || 0));
       const put1 = (b, same) => {
-        if (lc) b.classList.add('inl'); if (same) b.classList.add('again');
+        if (lc) b.classList.add('vinl'); if (same) b.classList.add('again');
         const sais = lc ? null : el.querySelector(':scope > .sais3, :scope > .sais'); let ok = false;
         if (sais) { el.insertBefore(b, sais); fitAll(b); ok = !over(el); if (!ok) el.removeChild(b); } else ok = place(b);
-        if (!ok) { b.classList.remove('inl'); b.classList.remove('again'); }
+        if (!ok) { b.classList.remove('vinl'); b.classList.remove('again'); }
         return ok; };
       const first = (cand, same) => { for (const b of cand) if (put1(b, same)) return b; return null; };
       /* rappel : on choisit l’exercice qui remplit le mieux la place restante */
@@ -95,8 +113,9 @@
         if (!put && !lc) put = best(pickc(b => b.dataset.rap && (dep ? !b.dataset.dep : true), false));
         if (!put) return;
         pool.splice(pool.indexOf(put), 1); here.add(put.dataset.src); usedSrc[put.dataset.src] = (usedSrc[put.dataset.src] || 0) + 1; } };
-    const lessonTop = () => { const el = inner(p), last = el.lastElementChild; if (last && last.classList.contains('nt3r') && last.dataset.lc) topUp(+last.dataset.lc); else if (last && (last.classList.contains('dep3') || last.classList.contains('auto3'))) topUp(0, true); };
-    for (const blk of fixed) {
+    const lessonTop = () => { const el = inner(p), last = el.lastElementChild; if (last && last.dataset.lcn && fill) { topOn = true; topUp(+last.dataset.lcn); topOn = false; if (free(inner(p)) / MM > 45) addFlash(inner(p)); return; } if (last && last.classList.contains('nt3r') && last.dataset.lc) topUp(+last.dataset.lc); else if (last && (last.classList.contains('dep3') || last.classList.contains('auto3'))) { topUp(0, true); if (last.classList.contains('dep3') && fill && free(el) / MM > 60) addFlash(el); } };
+    for (let fi = 0; fi < fixed.length; fi++) {
+      const blk = fixed[fi];
       if (cols && first && !blk.classList.contains('span')) { p = out.lastElementChild; }
       if (cols && !blk.classList.contains('span') && !inner(p).classList.contains('cols2') && !p._colbox) {
         // après l’en-tête pleine largeur : la suite en deux colonnes sur la même page
@@ -114,7 +133,12 @@
         p = newPage(run, col, true); carry.forEach(c => inner(p).appendChild(c)); inner(p).appendChild(blk); continue; }
       // une notion commence toujours en haut d’une page (sa méthode et sa solution restent ensemble)
       if (blk.classList.contains('pgb') && inner(p).children.length) { lessonTop(); if (fill) addNotes(p); p = newPage(run, col, false); }
-      if (!place(blk)) { const el = inner(p), carry = [];
+      let okb = place(blk);
+      /* un exercice qui ne tient pas : on essaie les suivants de la même notion avant de changer de page */
+      if (!okb && blk.dataset.inl) { let mv = false;
+        for (let j = fi + 1; j < Math.min(fi + 5, fixed.length); j++) { const b2 = fixed[j]; if (!b2.dataset.inl || b2.dataset.lcn !== blk.dataset.lcn) break; if (place(b2)) { fixed.splice(j, 1); mv = true; break; } }
+        if (mv) { fi--; continue; } }
+      if (!okb) { const el = inner(p), carry = [];
         while (el.lastElementChild && el.lastElementChild.classList.contains('kwn') && el.children.length > 1) carry.unshift(el.removeChild(el.lastElementChild));
         lessonTop(); if (fill) addNotes(p);
         p = newPage(run, col, false); carry.forEach(c => inner(p).appendChild(c)); inner(p).appendChild(blk); fitAll(blk); if (over(inner(p))) res.errors.push('Débordement : ' + blk.textContent.slice(0, 50)); }
@@ -124,15 +148,18 @@
       let done = false;
       const lim = queue.findIndex((x, i) => i > 0 && x.classList.contains('palh'));
       for (let j = 0; j < Math.min(WIN, lim > 0 ? lim : queue.length); j++) {
-        const b = queue[j]; if (j > 0 && (b.classList.contains('sais') || b.classList.contains('keep') || queue[0].classList.contains('keep')) && queue.length > 1) continue;
-        // on ne remonte jamais un exercice d’une étape plus avancée (comprendre → mots → calculer → problèmes → rédiger)
-        if (j > 0 && (+b.dataset.stage || 0) > (+queue[0].dataset.stage || 0)) continue;
+        const b = queue[j]; const bigGap = fill && free(inner(p)) / MM > 85 && inner(p).children.length > 0;
+        if (j > 0 && (b.classList.contains('sais') || b.classList.contains('sais3') || ((b.classList.contains('keep') || queue[0].classList.contains('keep')) && !bigGap)) && queue.length > 1) continue;
+        // on ne remonte jamais un exercice d’une étape plus avancée (comprendre → mots → calculer → problèmes → rédiger), sauf pour combler une grande place vide
+        if (j > 0 && !bigGap && (+b.dataset.stage || 0) > (+queue[0].dataset.stage || 0)) continue;
+        if (j > 0 && bigGap && (+b.dataset.stage || 0) >= 9) continue;
         if (place(b)) {
           if (b.classList.contains('kwn') && queue[j + 1]) { const nx = queue[j + 1]; if (!place(nx)) { inner(p).removeChild(b); break; } inner(p).removeChild(nx); }
           queue.splice(j, 1); if (queue[j] && queue[j].classList.contains('keep') && !queue[j].classList.contains('palh')) queue.unshift(queue.splice(j, 1)[0]); done = true; break; }
       }
       if (done) continue;
       const el = inner(p);
+      if (free(el)/MM > 150 && el.children.length) (res.dbg = res.dbg || []).push([out.children.length, Math.round(free(el)/MM), queue.slice(0,4).map(q => q.className.replace(/c-\w+/,'') + '|' + (q.dataset.stage||'') + '|' + Math.round(q.getBoundingClientRect().height/MM))]);
       if (!el.children.length) { const b = queue.shift(); el.appendChild(b);
         // un problème trop long pour une page : la fin passe sur la page suivante (« suite »)
         const box = b.querySelector('.pbm') || (b.querySelector(':scope > .exb > .pq') ? b.querySelector(':scope > .exb') : null);
@@ -154,7 +181,7 @@
         lead.forEach(x => el.appendChild(x)); el.appendChild(b); fitAll(b);
         const au = b.querySelector(':scope > .autr'); if (au) b.removeChild(au);
         const dzi = b.querySelector(':scope > .dz-in'); if (dzi) b.removeChild(dzi);
-        const moved = []; while (over(el) && units().length > 2) { const u = units().pop(); moved.unshift(u); u.remove(); }
+        const moved = []; while ((over(el) || !moved.length) && units().length > 2) { const u = units().pop(); moved.unshift(u); u.remove(); }
         if (over(el) || !moved.length) { const box = b.querySelector(':scope > .exb'); moved.forEach(u => box.appendChild(u)); if (au) b.appendChild(au); if (dzi) b.appendChild(dzi); el.removeChild(b); lead.forEach(x => el.removeChild(x)); return false; }
         const cont = document.createElement('div'); cont.className = b.className.replace(/\bpb3\b/, 'pb3c') + ' keep cont';
         const t = b.querySelector('.ext'); cont.innerHTML = `<div class="exh"><span class="ext">${t ? t.innerHTML : ''} <span class="suite">(suite)</span></span></div><div class="exb"></div>`;
@@ -164,10 +191,11 @@
       if (el.children.length && half()) continue;
       // un titre (« Les exercices ») ne reste jamais seul en bas de page
       const carry = []; while (el.lastElementChild && el.lastElementChild.classList.contains('kwn') && el.children.length > 1) carry.unshift(el.removeChild(el.lastElementChild));
-      topUp(0); if (fill) addNotes(p);
+      topUp(0); if (fill && queue[0] && queue[0].classList.contains('sais3') && free(el) / MM > 60) addFlash(el); if (fill) addNotes(p);
       p = newPage(run, col, false); carry.forEach(c => inner(p).appendChild(c));
     }
-    topUp(0); if (fill) addNotes(p);
+    topUp(0); opts.forEach(o => { if (place(o)) res.opt = (res.opt || 0) + 1; });
+    if (fill) addNotes(p);
     if (fill && pool.length) { const el = inner(p); (res.poolLeft = res.poolLeft || {})[node.dataset.key] = pool.map(b => { el.appendChild(b); const h = Math.round(b.getBoundingClientRect().height / MM); el.removeChild(b); return (b.dataset.src || '?') + (b.dataset.dep ? '/dep' : '') + (b.dataset.lc ? '/lc' + b.dataset.lc : '') + ':' + h; }); }
   }
   if (out.children.length % 2 === 1) { const last = document.createElement('div'); last.className = 'page'; last.innerHTML = '<div class="inner"><div class="blk notes"><h3>📝 Mes notes</h3><div class="lines">' + '<i></i>'.repeat(24) + '</div></div></div><div class="foot"></div>'; out.appendChild(last); }

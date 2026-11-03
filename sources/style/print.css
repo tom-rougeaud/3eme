@@ -15,8 +15,8 @@ p{margin:1.2mm 0}
 .fr .fd{padding:.04em .18em 0}
 /* ---------- pages ---------- */
 .page{width:210mm;height:297mm;position:relative;overflow:hidden;display:flex;flex-direction:column;page-break-after:always;break-after:page;background:#fff}
-.page .inner{flex:1;overflow:hidden;padding:11mm 13mm 15mm}
-.page.cont .inner{padding-top:4mm}
+.page>.inner{flex:1;overflow:hidden;padding:11mm 13mm 15mm}
+.page.cont>.inner{padding-top:4mm}
 .run{margin:7mm 13mm 0;padding:1.4mm 4mm;border-radius:99px;background:var(--tt);color:var(--cc);font-weight:800;font-size:9.5pt}
 .foot{position:absolute;left:13mm;right:13mm;bottom:6.5mm;display:flex;justify-content:space-between;align-items:center;font-size:8.5pt;color:#7d84a6}
 .foot b{display:inline-grid;place-items:center;min-width:8mm;height:8mm;border-radius:99px;background:var(--tt,#FFEFD1);color:var(--cc,#9A5B00);font-size:10pt}
@@ -242,7 +242,7 @@ table.nw td{height:14mm;border:1.5px solid #C9D1EA}
 .fb.span{grid-column:1/-1}
 .fb p{margin:.6mm 0;font-size:10.4pt}
 /* ---------- couverture ---------- */
-.cover .inner{padding:12mm 13mm 12mm;display:flex;flex-direction:column;gap:6mm}
+.cover>.inner{padding:12mm 13mm 12mm;display:flex;flex-direction:column;gap:6mm}
 .author{position:absolute;top:6.5mm;right:13mm;font-family:'Inter';font-weight:800;font-size:9pt;color:#545B7A;letter-spacing:.03em}
 .cv-panel{position:relative;background:#9A5B00;border-radius:11mm;height:168mm;overflow:hidden;color:#fff;padding:18mm 14mm 0;margin-top:3mm}
 .cv-panel::before{content:"";position:absolute;width:120mm;height:120mm;border-radius:50%;background:#4446B8;right:-42mm;top:-38mm}

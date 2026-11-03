@@ -43,7 +43,7 @@
     xs(items, { a: `${String(n1).split('').join(' + ')} = ${s1}` });
     return { titre: 'Les critères de divisibilité', consigne: 'Sans poser de division, utilise les critères pour répondre.',
       support: table(['Critère', 'Le nombre est divisible si…'], [['par 2', 'son dernier chiffre est pair (0, 2, 4, 6, 8)'], ['par 5', 'son dernier chiffre est 0 ou 5'], ['par 10', 'son dernier chiffre est 0'], ['par 3', 'la somme de ses chiffres est dans la table de 3'], ['par 9', 'la somme de ses chiffres est dans la table de 9']])
-        + `<p class="tr-l">a. Somme des chiffres de ${n1} : ${tb('a', String(s1), 12)}</p><p class="tr-l">b. ${n1} est-il divisible par 3 ? · c. par 9 ?</p><p class="tr-l">d. ${n2} est-il divisible par 2 ? · e. par 5 ?</p><p class="tr-l">f. ${n3} est-il divisible par 10 ?</p>`, items,
+        + `<p class="tr-l">a. Somme des chiffres de ${n1} : ${tb('a', String(s1), 12)}</p><p class="tr-l">b. ${n1} est-il divisible par 3 ?</p><p class="tr-l">c. ${n1} est-il divisible par 9 ?</p><p class="tr-l">d. ${n2} est-il divisible par 2 ?</p><p class="tr-l">e. ${n2} est-il divisible par 5 ?</p><p class="tr-l">f. ${n3} est-il divisible par 10 ?</p>`, items,
       hints: ['Pour 3 et 9, additionne tous les chiffres du nombre.', 'Pour 2, 5 et 10, regarde seulement le dernier chiffre.', 'Un nombre divisible par 9 est aussi divisible par 3.'] };
   };
 

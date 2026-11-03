@@ -8,7 +8,7 @@
    vig     : points de vigilance (version professeur) */
 'use strict';
 const d = (niv, titre, sais) => ({ niv, titre, sais });
-module.exports = {
+const BASE = {
   c1: { de: [d('5e', 'Multiples et diviseurs', 'tu reconnaissais un multiple ou un diviseur, et tu utilisais les critères de divisibilité par 2, 3, 5, 9 et 10.'), d('4e', 'Nombres premiers', 'tu as rencontré les nombres premiers et tu as commencé à décomposer de petits nombres.')],
     fil: 'Des tables de multiplication aux nombres premiers : la décomposition sert à simplifier et à partager.',
     ex2: 'En 4e : 360 cartes, 9 par page. 3 + 6 + 0 = 9, donc 360 est divisible par 9 : 40 pages pleines.',
@@ -110,3 +110,6 @@ c10: { de: [d('5e', 'Solides et transformations', 'tu reconnaissais les solides 
     reac: ['Conversions de volumes et contenances (automatisme du brevet).', 'Reconnaître un solide (automatisme du brevet).', 'Déplacements d’un lutin (automatisme du brevet).'],
     vig: ['Rayon et diamètre.', 'Boule (solide) et sphère (surface).', 'Latitude d’abord, puis longitude.', 'Angle de rotation du lutin : 360 ÷ n.'] }
 };
+const TXT = require('./pont3-txt');
+Object.keys(TXT).forEach(k => Object.assign(BASE[k], TXT[k]));
+module.exports = BASE;

@@ -1,6 +1,6 @@
 /* 3ème Série Pro — « S’évaluer au format du brevet » : une évaluation par chapitre, sur le modèle de l’épreuve de mathématiques
    du DNB, série professionnelle (note de service du 2 septembre 2025) : partie 1 automatismes sans calculatrice (6 points),
-   partie 2 problèmes avec la calculatrice (12 points), 2 points de rédaction. 45 minutes, sur 20.
+   partie 2 problèmes avec la calculatrice (12 points), 2 points de rédaction. 55 minutes (une séance), sur 20.
    La grille reprend les 6 compétences du cycle 4, écrites en phrases d’élève. */
 'use strict';
 const K = require('./kit3e');
@@ -28,7 +28,7 @@ const yn = ['oui', 'non'];
 {
   chk0.push(180 / 30 === 6 && 150 / 30 === 5 && 150 % 12 !== 0 && 800 / 16 === 50 && 2 ** 3 * 5 === 40 && 47 % 5 === 2 && 108 % 9 === 0 && 135 % 9 === 0 && 125 % 9 && 145 % 9);
   doc.c1 = `<div class="evdoc">${tab(['Saisons des Simpson', '1', '6', '7', '8', '9'], [['Épisodes', '13', '25', '25', '25', '25']])}<p class="srcl">${D.srcSimpsons} Le 800e épisode a été diffusé le 7 décembre 2025.</p></div>`;
-  E.c1 = { lieu: 'Club de jeux et soirée séries', duree: '45 min', grille: GR.c1, redac: 2,
+  E.c1 = { lieu: 'Club de jeux et soirée séries', duree: '55 min', grille: GR.c1, redac: 2,
     auto: [
       { t: 'Lequel de ces nombres est divisible par 9 ?', comp: 'cal', pts: 1, choices: ['125', '135', '145'], ok: 1, a: '135 (1 + 3 + 5 = 9)', v: null },
       { t: '35 est-il un nombre premier ?', comp: 'rai', pts: 1, choices: yn, ok: 1, a: 'non : 35 = 5 × 7', v: null },
@@ -53,7 +53,7 @@ const yn = ['oui', 'non'];
 {
   chk0.push(Math.abs(1 / 2 + 1 / 4 - 3 / 4) < 1e-12 && 4.2e3 === 4200 && 30 * 2 / 3 === 20 && Math.round(85e9 / 1e9) === 85 && Math.abs(10 / 85 - 2 / 17) < 1e-12 && Math.round(1e10 / 365 / 1e6) === 27 && Math.round(1e10 / 6e8 * 10) / 10 === 16.7);
   chk0.push(20 * 3 / 5 === 12 && 20 / 4 === 5 && 20 - 12 - 5 === 3 && Math.abs(3 / 5 + 1 / 4 - 17 / 20) < 1e-12 && 8 * 3 === 24);
-  E.c2 = { lieu: 'Club manga et cartes à collectionner', duree: '45 min', grille: GR.c2, redac: 2,
+  E.c2 = { lieu: 'Club manga et cartes à collectionner', duree: '55 min', grille: GR.c2, redac: 2,
     auto: [
       { t: 'Combien vaut 1/2 + 1/4 ?', comp: 'cal', pts: 1, choices: ['3/4', '2/6', '1/8'], ok: 0, a: '3/4', v: null },
       { t: '10³ × 10² est égal à :', comp: 'cal', pts: 1, choices: ['10⁵', '10⁶', '100⁵'], ok: 0, a: '10⁵', v: null },
@@ -64,8 +64,8 @@ const yn = ['oui', 'non'];
     exos: [
       { t: 'Les cartes produites', intro: `<p>Plus de ${H('85 milliards')} de cartes Pokémon ont été produites depuis le début, dont environ ${H('10 milliards')} entre avril 2025 et mars 2026. One Piece compte, lui, plus de ${H('600 millions')} d’exemplaires.</p><p class="srcl">${D.srcPokemon} ${D.srcOnePiece}</p>`, qs: [
         { t: 'Écrire 85 milliards en écriture scientifique.', comp: 'cal', pts: 1.5, a: '85 000 000 000 = 8,5 × 10¹⁰', v: null, w: 40 },
-        { t: 'Quelle fraction des 85 milliards a été produite en un an ? Donner une fraction irréductible.', comp: 'cal', pts: 1.5, a: '10/85 = 2/17', v: 2 / 17, tol: .001, w: 26 },
-        { t: 'Calculer le nombre moyen de cartes produites par jour, en millions, arrondi à l’unité.', comp: 'mod', pts: 1.5, a: '10 000 millions ÷ 365 ≈ 27 millions', v: 27, tol: .5, w: 24, lab: 'en millions :' },
+        { t: 'Quelle fraction des 85 milliards a été produite avant avril 2025 ? Donner une fraction irréductible.', comp: 'cal', pts: 1.5, a: '85 − 10 = 75 milliards ; 75/85 = 15/17', v: 15 / 17, tol: .001, w: 26 },
+        { t: 'Calculer le nombre moyen de cartes produites par semaine entre avril 2025 et mars 2026 (1 an = 52 semaines), en millions, arrondi à l’unité.', comp: 'mod', pts: 1.5, a: '10 000 millions ÷ 52 ≈ 192 millions', v: 192, tol: .5, w: 24, lab: 'en millions :' },
         { t: 'Combien de fois 10 milliards est-il plus grand que 600 millions ? Arrondir au dixième.', comp: 'che', pts: 1.5, a: '10¹⁰ ÷ (6 × 10⁸) ≈ 16,7 fois', v: 16.7, tol: .05, w: 24 }] },
       { t: 'Le booster de 20 cartes', intro: `<p>Un booster contient ${H('20 cartes')} : ${H('3/5')} sont communes, ${H('1/4')} sont peu communes, les autres sont rares.</p>`, qs: [
         { t: 'Calculer le nombre de cartes communes.', comp: 'cal', pts: 1, a: '20 ÷ 5 × 3 = 12 cartes', v: 12, tol: .01, w: 22 },
@@ -77,7 +77,7 @@ const yn = ['oui', 'non'];
 /* ---------- chapitre 3 · calcul littéral et équations ---------- */
 {
   chk0.push(3 * 4 - 1 === 11 && (-2) * (-3) === 6 && Math.abs(14.99 * 12 - 179.88) < 1e-9 && 56 / 7 === 8 && Math.abs(14.99 * 8 - (7.99 * 8 + 56)) < 1e-9 && (7 + 5) * 2 - 10 === 14 && 2 * 4 === 3 * 4 - 4);
-  E.c3 = { lieu: 'Soirée jeux et séries', duree: '45 min', grille: GR.c3, redac: 2,
+  E.c3 = { lieu: 'Soirée jeux et séries', duree: '55 min', grille: GR.c3, redac: 2,
     auto: [
       { t: 'Le développement de 2(x + 3) est :', comp: 'cal', pts: 1, choices: ['2x + 6', '2x + 3', 'x + 6'], ok: 0, a: '2x + 6', v: null },
       { t: 'Résous 2x = 10.', comp: 'cal', pts: 1, a: 'x = 5', v: 5, tol: .01, w: 20, lab: 'x =' },
@@ -103,7 +103,7 @@ const yn = ['oui', 'non'];
 {
   chk0.push(24 / 3 * 5 === 40 && 50 * .2 === 10 && 120 / 2 === 60 && 300 / 4 * 10 === 750 && 1.5 / 5 * 4 === 1.2 && Math.abs(2.4 / 500 * 750 - 3.6) < 1e-9);
   chk0.push(Math.round(1.5 / 13.49 * 1000) === 111 && Math.abs(14.99 / 13.49 - 1.111) < .001 && Math.round(19.99 * 1.1 * 100) === 2199 && 2 * 12 === 24);
-  E.c4 = { lieu: 'Cuisine pédagogique et soirée ciné', duree: '45 min', grille: GR.c4, redac: 2,
+  E.c4 = { lieu: 'Cuisine pédagogique et soirée ciné', duree: '55 min', grille: GR.c4, redac: 2,
     auto: [
       { t: '3 places coûtent 24 €. Combien coûtent 5 places ?', comp: 'cal', pts: 1, a: '40 €', v: 40, tol: .01, w: 20, lab: 'en € :' },
       { t: 'Calcule 20 % de 50.', comp: 'cal', pts: 1, a: '10', v: 10, tol: .01, w: 20 },
@@ -120,7 +120,7 @@ const yn = ['oui', 'non'];
       { t: 'La hausse des abonnements', intro: `<p>Le 18 avril 2025, Netflix est passé de ${H('13,49 €')} à ${H('14,99 €')} par mois en Standard, et de ${H('19,99 €')} à ${H('21,99 €')} en Premium.</p><p class="srcl">${D.srcNetflix}</p>`, qs: [
         { t: 'Calculer le taux d’évolution du Standard, arrondi au dixième de pourcent.', comp: 'cal', pts: 2, a: '1,50 ÷ 13,49 × 100 ≈ + 11,1 %', v: 11.1, tol: .05, w: 22, lab: 'en % :' },
         { t: 'Quel est le coefficient multiplicateur correspondant, arrondi au millième ?', comp: 'mod', pts: 1, a: '14,99 ÷ 13,49 ≈ 1,111', v: 1.111, tol: .0006, w: 22 },
-        { t: 'Montrer que le Premium a augmenté d’environ 10 %.', comp: 'rai', pts: 1.5, a: '19,99 × 1,1 = 21,989 ≈ 21,99 €', v: null, lines: 1 },
+        { t: 'Léa affirme : « Une hausse de 10 % suivie d’une baisse de 10 % ramène au prix de départ. » Vérifier avec le prix Premium de 21,99 €.', comp: 'rai', pts: 1.5, a: 'Non : 21,99 × 1,1 ≈ 24,19 puis 24,19 × 0,9 ≈ 21,77 €, ce n’est pas 21,99 €.', v: null, lines: 2 },
         { t: 'Combien un abonné Premium paie-t-il de plus sur une année ? Répondre par une phrase.', comp: 'com', pts: 1.5, a: '2 × 12 = 24 : il paie 24 € de plus par an.', v: null, lines: 1 }] }] };
 }
 
@@ -130,7 +130,7 @@ const yn = ['oui', 'non'];
   const hh = t => 4 * t - .5 * t * t;
   chk0.push(2 * 4 + 3 === 11 && 35 / 5 === 7 && hh(2) === 6 && hh(3) === 7.5 && hh(5) === 7.5 && hh(4) === 8 && hh(1.5) === 4.875 && 11 * 4 === 44 && 5 * 4 + 30 === 50);
   const g = MCVP.plot({ W: 560, H: 220, x: [0, 8, 1], y: [0, 9, 1], ml: 40, mr: 16, mt: 12, mb: 30, fs: 11, xl: 't (dixièmes de s)', yl: 'h(t) (cases)' });
-  E.c5 = { lieu: 'Atelier jeu vidéo et ciné-club', duree: '45 min', grille: GR.c5, redac: 2,
+  E.c5 = { lieu: 'Atelier jeu vidéo et ciné-club', duree: '55 min', grille: GR.c5, redac: 2,
     auto: [
       { t: 'f(x) = 2x + 3. Calcule f(4).', comp: 'cal', pts: 1, a: '11', v: 11, tol: .01, w: 20 },
       { t: 'Si f(5) = 12, alors :', comp: 'rai', pts: 1, choices: ['12 est l’image de 5', '5 est l’image de 12', '12 est un antécédent de 5'], ok: 0, a: '12 est l’image de 5', v: null },
@@ -157,7 +157,7 @@ const yn = ['oui', 'non'];
   const tb6 = D.cnc2025.map(v => String(v).replace('.', ','));
   chk0.push((10 + 12 + 14 + 16) / 4 === 13 && 15 - 2 === 13 && 9 / 36 === .25 && Math.abs(13.83 + 14.30 + 12.72 - 40.85) < 1e-9 && Math.abs(156.66 / 12 - 13.055) < 1e-9 && Math.round(6.18 / 35.4 * 1000) === 175);
   doc.c6 = `<div class="evdoc">${K.tab2(['Film', 'Entrées (M)'], D.top2025.map(([f, v]) => [f, String(v).replace('.', ',')]))}<p class="srcl">${D.srcTop}</p></div>`;
-  E.c6 = { lieu: 'Club ciné et séries', duree: '45 min', grille: GR.c6, redac: 2,
+  E.c6 = { lieu: 'Club ciné et séries', duree: '55 min', grille: GR.c6, redac: 2,
     auto: [
       { t: 'Moyenne de 10 ; 12 ; 14 ; 16 ?', comp: 'cal', pts: 1, a: '13', v: 13, tol: .01, w: 20 },
       { t: 'Médiane de 3 ; 8 ; 5 ; 9 ; 1 ?', comp: 'cal', pts: 1, a: '5', v: 5, tol: .01, w: 20 },
@@ -168,20 +168,20 @@ const yn = ['oui', 'non'];
     exos: [
       { t: 'Une année de cinéma', intro: `<p>Entrées au cinéma en France en 2025, en millions :</p>${tab(['Mois', 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'], [['2025', ...tb6]])}<p class="srcl">${D.srcCnc}</p>`, qs: [
         { t: 'Calculer le total des entrées du premier trimestre (janvier à mars).', comp: 'cal', pts: 1.5, a: '13,83 + 14,30 + 12,72 = 40,85 millions', v: 40.85, tol: .006, w: 24 },
-        { t: 'Sachant que le total de l’année est 156,66 millions, calculer la moyenne mensuelle au centième.', comp: 'cal', pts: 1.5, a: '156,66 ÷ 12 ≈ 13,06 millions', v: 13.06, tol: .006, w: 24 },
-        { t: 'Déterminer la médiane des 12 valeurs.', comp: 'cal', pts: 1.5, a: '(12,72 + 12,84) ÷ 2 = 12,78 millions', v: 12.78, tol: .006, w: 24 },
+        { t: 'Sachant que le total des six derniers mois (juillet à décembre) est 81,38 millions, calculer leur moyenne mensuelle au centième.', comp: 'cal', pts: 1.5, a: '81,38 ÷ 6 ≈ 13,56 millions', v: 13.56, tol: .006, w: 24 },
+        { t: 'Déterminer la médiane des entrées des six derniers mois (juillet à décembre).', comp: 'cal', pts: 1.5, a: '9,46 ; 9,94 ; 12,84 ; 14,12 ; 14,29 ; 20,73 → (12,84 + 14,12) ÷ 2 = 13,48 millions', v: 13.48, tol: .006, w: 24 },
         { t: 'Quel est le meilleur mois de l’année ? Combien d’entrées de plus que le mois le plus faible ?', comp: 'che', pts: 1.5, a: 'Décembre : 20,73 − 9,46 = 11,27 millions de plus qu’en septembre.', v: null, lines: 1 }] },
       { t: 'Le top 10 de l’année 2025', intro: '', qs: [
-        { t: 'Calculer l’étendue de la série.', comp: 'cal', pts: 1, a: '6,18 − 2,46 = 3,72 millions', v: 3.72, tol: .006, w: 24 },
-        { t: 'Déterminer la médiane de la série.', comp: 'cal', pts: 1.5, a: '(2,95 + 2,97) ÷ 2 = 2,96 millions', v: 2.96, tol: .006, w: 24 },
-        { t: 'Le total des entrées du top 10 est 35,40 millions. Quelle part le film n° 1 représente-t-il, en % au dixième ?', comp: 'mod', pts: 1.5, a: '6,18 ÷ 35,40 × 100 ≈ 17,5 %', v: 17.5, tol: .05, w: 22, lab: 'en % :' },
-        { t: 'La moyenne vaut 3,54 millions. Expliquer pourquoi elle est plus grande que la médiane.', comp: 'rai', pts: 2, a: 'Les deux premiers films (6,18 et 5,10) ont des valeurs très élevées qui tirent la moyenne vers le haut ; la médiane n’en dépend pas.', v: null, lines: 2 }] }] };
+        { t: 'Calculer le total des entrées des trois premiers films.', comp: 'cal', pts: 1, a: '6,18 + 5,10 + 4,58 = 15,86 millions', v: 15.86, tol: .006, w: 24 },
+        { t: 'Le total des entrées du top 10 est 35,40 millions. Quelle part les trois premiers films représentent-ils, en % au dixième ?', comp: 'mod', pts: 1.5, a: '15,86 ÷ 35,40 × 100 ≈ 44,8 %', v: 44.8, tol: .05, w: 22, lab: 'en % :' },
+        { t: 'Déterminer la médiane des cinq derniers films du classement.', comp: 'cal', pts: 1.5, a: '2,46 ; 2,55 ; 2,64 ; 2,66 ; 2,95 → la médiane est la 3e valeur : 2,64 millions', v: 2.64, tol: .006, w: 24 },
+        { t: 'Pour comparer les entrées de ces 10 films, un élève propose un diagramme circulaire. Quel diagramme est plus adapté ? Justifier.', comp: 'rai', pts: 2, a: 'Un diagramme en barres : il permet de comparer facilement 10 valeurs ; un diagramme circulaire à 10 parts serait peu lisible.', v: null, lines: 2 }] }] };
 }
 
 /* ---------- chapitre 7 · probabilités ---------- */
 {
   chk0.push(1 / 20 === .05 && 5 / 20 === .25 && 1 - .25 === .75 && 47 / 1000 === .047 && 3 / 36 === 1 / 12 && 11 / 36 > .3);
-  E.c7 = { lieu: 'Club de jeux de rôle', duree: '45 min', grille: GR.c7, redac: 2,
+  E.c7 = { lieu: 'Club de jeux de rôle', duree: '55 min', grille: GR.c7, redac: 2,
     auto: [
       { t: 'Avec un dé équilibré à 6 faces, P(obtenir 6) =', comp: 'cal', pts: 1, choices: ['1/6', '6', '1/2'], ok: 0, a: '1/6', v: null },
       { t: 'Avec un dé équilibré à 6 faces, P(obtenir un nombre pair) ?', comp: 'cal', pts: 1, a: '0,5', v: .5, tol: .002, w: 20 },
@@ -207,7 +207,7 @@ const yn = ['oui', 'non'];
 {
   const rd = d => d * Math.PI / 180, dg = x => x * 180 / Math.PI, r1 = x => Math.round(x * 10) / 10;
   chk0.push(Math.sqrt(9 + 16) === 5 && Math.sqrt(81) === 9 && 36 + 64 === 100 && r1(55 * 2.54) === 139.7 && r1(Math.sqrt(139.7 ** 2 - 121.8 ** 2)) === 68.4 && r1(dg(Math.atan(19.7 / 40))) === 26.2 && r1(19.7 / Math.tan(rd(50))) === 16.5);
-  E.c8 = { lieu: 'Atelier bois et sortie à Tokyo', duree: '45 min', grille: GR.c8, redac: 2,
+  E.c8 = { lieu: 'Atelier bois et sortie à Tokyo', duree: '55 min', grille: GR.c8, redac: 2,
     auto: [
       { t: 'Triangle rectangle de côtés de l’angle droit 3 et 4. Hypoténuse ?', comp: 'cal', pts: 1, a: '5', v: 5, tol: .01, w: 20 },
       { t: 'Calcule √81.', comp: 'cal', pts: 1, a: '9', v: 9, tol: .01, w: 20 },
@@ -231,7 +231,7 @@ const yn = ['oui', 'non'];
 /* ---------- chapitre 9 · échelles et Thalès ---------- */
 {
   chk0.push(2 * 100 === 200 && 3 ** 2 === 9 && 2 ** 3 === 8 && 288 / 144 === 2 && 6 * 1.5 === 9 && 12 * 8 === 96 && 24 * 16 === 384 && 96 * 40000 / 10000 === 384 && 1.2 * 7.5 / 3 === 3 && 2.5 ** 2 === 6.25);
-  E.c9 = { lieu: 'Atelier décors et ciné-club', duree: '45 min', grille: GR.c9, redac: 2,
+  E.c9 = { lieu: 'Atelier décors et ciné-club', duree: '55 min', grille: GR.c9, redac: 2,
     auto: [
       { t: 'Plan au 1/100 : 2 cm sur le plan font combien de cm en vrai ?', comp: 'cal', pts: 1, a: '200 cm', v: 200, tol: .01, w: 20 },
       { t: 'Si les longueurs sont multipliées par 3, l’aire est multipliée par :', comp: 'cal', pts: 1, choices: ['9', '3', '27'], ok: 0, a: '9', v: null },
@@ -255,7 +255,7 @@ const yn = ['oui', 'non'];
 /* ---------- chapitre 10 · espace, transformations, programmes ---------- */
 {
   chk0.push(2 * 3 * 4 === 24 && Math.round(Math.PI * 100 * 25) === 7854 && Math.round(Math.PI * 100 * 25 / 3) === 2618 && 360 / 6 === 60 && 6 * 50 === 300 && 360 / 3 === 120);
-  E.c10 = { lieu: 'Snack du cinéma et atelier code', duree: '45 min', grille: GR.c10, redac: 2,
+  E.c10 = { lieu: 'Snack du cinéma et atelier code', duree: '55 min', grille: GR.c10, redac: 2,
     auto: [
       { t: 'Volume d’un pavé de 2 cm × 3 cm × 4 cm ?', comp: 'cal', pts: 1, a: '24 cm³', v: 24, tol: .01, w: 20 },
       { t: 'Combien de cm³ dans 1 L ?', comp: 'cal', pts: 1, a: '1 000', v: 1000, tol: .01, w: 20 },
@@ -277,14 +277,14 @@ const yn = ['oui', 'non'];
         { t: 'On agrandit la figure par une homothétie de rapport 2. Quel est le nouveau périmètre ?', comp: 'cal', pts: 1, a: '300 × 2 = 600 pas', v: 600, tol: .01, w: 20 }] }] };
 }
 
-/* vérification du format : 45 min, partie 1 de 6 questions sur 6 points, partie 2 sur 12 points (1 ou 2 exercices), 2 points de rédaction */
+/* vérification du format : 55 min, partie 1 de 6 questions sur 6 points, partie 2 sur 12 points (1 ou 2 exercices), 2 points de rédaction */
 module.exports = (chk, extra = {}) => {
   Object.assign(E, extra);
   chk(chk0.every(Boolean), 'S’évaluer : contrôles de calcul');
   for (const [id, e] of Object.entries(E)) {
     if (doc[id]) { const ix = e.exos.length > 1 ? 1 : 0; if (!String(e.exos[ix].intro).startsWith(doc[id])) e.exos[ix].intro = doc[id] + (e.exos[ix].intro || ''); }
     const pa = e.auto.reduce((a, q) => a + q.pts, 0), pe = e.exos.reduce((a, x) => a + x.qs.reduce((b, q) => b + q.pts, 0), 0), n = e.exos.reduce((a, x) => a + x.qs.length, 0);
-    chk(e.duree === '45 min' && e.auto.length === 6 && Math.abs(pa - 6) < 1e-9 && e.exos.length >= 1 && e.exos.length <= 2 && n >= 4 && n <= 10 && Math.abs(pe - 12) < 1e-9 && e.redac === 2, `S’évaluer ${id} : partie 1 ${e.auto.length} questions / ${pa} pts, partie 2 ${n} questions / ${pe} pts, rédaction ${e.redac}`);
+    chk(e.duree === '55 min' && e.auto.length === 6 && Math.abs(pa - 6) < 1e-9 && e.exos.length >= 1 && e.exos.length <= 2 && n >= 4 && n <= 10 && Math.abs(pe - 12) < 1e-9 && e.redac === 2, `S’évaluer ${id} : partie 1 ${e.auto.length} questions / ${pa} pts, partie 2 ${n} questions / ${pe} pts, rédaction ${e.redac}`);
     [...e.auto, ...e.exos.flatMap(x => x.qs)].forEach((q, i) => chk(!!GR[id] && !!GR[id][q.comp], `S’évaluer ${id} : compétence ${q.comp} sans phrase de grille`));
   }
   return E;

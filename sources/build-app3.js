@@ -28,7 +28,14 @@ const DECO = `<svg viewBox="0 0 840 300" preserveAspectRatio="xMidYMid slice" xm
 const DNB = require('./content/dnb3')(chk).map(sj => ({ id: sj.id, titre: sj.titre, grille: sj.grille, redac: sj.redac, lieu: '', auto: sj.auto.map(qv), exos: sj.exos.map(x => ({ t: x.t, intro: x.intro, qs: x.qs.map(qv) })) }));
 if (errs) { console.error(errs + ' erreur(s) dans les sujets blancs'); process.exit(1); }
 const PDFDNB = 'pdf/chapitres/maths-3e-serie-pro-sujets-brevet.pdf', HASDNB = fs.existsSync(path.join(path.dirname(OUT), PDFDNB));
-const DATA = { version: '1.0 · octobre 2026', pdf: HASPDF ? PDF : '', pdfch: HASCH ? PDFCH : '', pdfdnb: HASDNB ? PDFDNB : '', deco: DECO, chapitres: CH.map(slim), dnb: DNB };
+/* pages du manuel imprimé : relevées pendant la pagination du PDF (make3.py) */
+const PAGES = (() => { try {
+  const R = JSON.parse(rd('build/eleve.result.json')), st = CH.map(c => R.secs[c.id]); const out = {};
+  CH.forEach(c => { out[c.id] = { n: {}, x: {} }; });
+  (R._blocks || []).forEach(([pg, k, id]) => { let ci = -1; st.forEach((s, i) => { if (s && pg >= s) ci = i; }); if (ci < 0) return; const o = out[CH[ci].id];
+    if (k === 'n') o.n[id] = o.n[id] || pg; else if (k === 'x') { const m = id.match(/^c\d+-(.+)$/); if (m && !o.x[m[1]]) o.x[m[1]] = pg; } else if (!o[k]) o[k] = pg; });
+  return out; } catch (e) { return {}; } })();
+const DATA = { version: '1.0 · octobre 2026', pdf: HASPDF ? PDF : '', pdfch: HASCH ? PDFCH : '', pdfdnb: HASDNB ? PDFDNB : '', deco: DECO, pages: PAGES, chapitres: CH.map(slim), dnb: DNB };
 
 /* l’appli n’affiche pas les réponses dans les pointillés : on vide les attributs data-a */
 const nb = t => t.replace(/>([^<]*)</g, (m, x) => '>' + x.replace(/(\d) (%|€)/g, '$1 $2') + '<');
@@ -75,10 +82,15 @@ const html = `<!doctype html>
 <script>${js(rd('shared/train.js'))}</script>
 <script>${js(rd('shared/auto3.js'))}</script>
 ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter(n => fs.existsSync(path.join(HERE, 'shared/t' + n + '.js'))).map(n => `<script>${js(rd('shared/t' + n + '.js'))}</script>`).join('\n')}
+<script>${js(rd('shared/mech.js'))}</script>
 <script>${js(rd('app/widgets.js'))}</script>
 <script type="application/json" id="mcv-data">${json}</script>
 <script>${js(rd('app/app3.js'))}</script>
 <script>${js(rd('lib/svgfit.js'))}</script>
+<script>${js(fs.readFileSync(path.join(HERE, 'node_modules/katex/dist/katex.min.js'), 'utf8'))}</script>
+<script>${js(rd('lib/mathify.js'))}</script>
+<script>${js(rd('lib/mathrun.js'))}</script>
+<script>try { MCmathrun.watch(document.getElementById('main')); } catch (e) { }</script>
 <script>try { MCVfit.watch(document.getElementById('main')); } catch (e) { }</script>
 <script>window.MCVPWA={"name": "3ème Série Pro", "short": "3ème Série Pro", "key": "mcv3e.v1", "color": "#F5A300", "ink": "#1D2240"};</script>
 <script>${js(rd('pwa/pwa.js'))}</script>

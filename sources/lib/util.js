@@ -30,7 +30,7 @@ const lines = (n, a = '') => `<div class="lines">${Array.from({ length: n }, (_,
 /* zone de calcul (cadre pointillé) */
 const work = (h = 13, a = '') => `<div class="work" style="height:${h}mm"${a ? ` data-a="${esc(a)}"` : ''}></div>`;
 /* case à cocher (ok = bonne réponse) */
-const opt = (t, ok = false) => `<span class="opt${ok ? ' ok' : ''}"><span class="box"></span>${t}</span>`;
+const opt = (t, ok = false) => `<span class="opt${ok ? ' ok' : ''}"><span class="box"></span><span class="ot">${t}</span></span>`;
 /* fraction sur deux étages */
 const frac = (n, d) => `<span class="fr"><span class="fn">${n}</span><span class="fd">${d}</span></span>`;
 /* verbe de consigne souligné */

@@ -23,3 +23,13 @@ console.log(`${Object.keys(MCVT.TR).length} exercices visuels · ${Object.keys(M
   console.log(`automatismes : ${Object.keys(AU.A).length} chapitres · ${n2} questions tirées · erreurs : ${b2}`);
   if (b2) process.exitCode = 1;
 }
+
+/* mécanique : dix calculs par notion, réponses finies, énoncés distincts */
+{
+  require('./shared/mech.js'); let nm = 0, bm = 0;
+  for (const key of Object.keys(MCVT.MECH)) { const [c, k] = key.split('.');
+    for (let s = 1; s <= 200; s++) { const g = MCVT.mech(c, +k, s * 7919); nm++;
+      if (g.items.length !== 10 || g.items.some(it => !it.t || it.a === undefined || /NaN|undefined|Infinity/.test(it.t + it.a) || (it.v !== undefined && !Number.isFinite(it.v)) || (it.vs && it.vs.some(x => !Number.isFinite(x))))) { bm++; if (bm < 5) console.log('mécanique en échec', key, s); }
+      else if (new Set(g.items.map(it => it.t)).size < 9 && s < 30) { bm++; console.log('énoncés répétés', key, s); } } }
+  console.log(`mécanique : ${Object.keys(MCVT.MECH).length} séries · ${nm} tirages · erreurs : ${bm}`); if (bm) process.exit(1);
+}

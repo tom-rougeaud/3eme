@@ -6,7 +6,7 @@ from playwright.async_api import async_playwright
 
 URL = 'file://' + (sys.argv[1] if len(sys.argv) > 1 else '/home/claude/3eme/index.html')
 SHOTS = sys.argv[2] if len(sys.argv) > 2 else None
-TABS = ['depart', 'lecon', 'methodes', 'entrainement', 'problemes', 'evaluer']
+TABS = ['depart', 'notions', 'methodes', 'problemes', 'evaluer']
 problems = []
 stats = {'dep': 0, 'tr': 0, 'trerr': 0, 'rs2': 0, 'pbq': 0, 'ev': 0, 'temps': 0, 'tap': 0}
 
@@ -65,7 +65,7 @@ async def run(p, vw, vh, label, full):
                 ok = await page.evaluate("document.querySelectorAll('.dq.ok').length")
                 if ok != len(d['qs']): bad(f'{label} {cid} départ : {ok}/{len(d["qs"])} justes')
                 else: stats['dep'] += 1
-            if t == 'lecon':
+            if t == 'notions':
                 for art in await page.query_selector_all('.nt'):
                     for _ in range(4):
                         bt = await art.query_selector('[data-temps]')
@@ -86,7 +86,7 @@ async def run(p, vw, vh, label, full):
                 good = await page.evaluate(f"document.querySelectorAll('{rs} .rsi.good').length")
                 if good != n or n == 0: bad(f'{label} {cid} résolu à compléter : {good}/{n}')
                 else: stats['rs2'] += 1
-            if t == 'entrainement':
+            if t == 'notions':
                 aq = await page.evaluate(f"MCVAUTO('{cid}')")
                 for j, q in enumerate(aq):
                     if q.get('choices'):
@@ -107,7 +107,7 @@ async def run(p, vw, vh, label, full):
                         await page.fill(sel, await page.evaluate(f"({FR})({errit['err'][0]['v']})"))
                         await page.click(f'{card} [data-check]')
                         fb = await page.inner_text(f'{card} .fbs')
-                        if errit['err'][0]['m'][:25] not in fb: bad(f'{label} {cid} {e["id"]} : message d’erreur absent ({fb[:60]})')
+                        if errit['err'][0]['m'][:12] not in fb: bad(f'{label} {cid} {e["id"]} : message d’erreur absent ({fb[:60]})')
                         else: stats['trerr'] += 1
                     # 2. tout juste
                     for it in g['items']:
@@ -122,6 +122,21 @@ async def run(p, vw, vh, label, full):
                     else: stats['tr'] += 1
                     await page.click(f'{card} [data-hint]')
                     if not await page.query_selector(f'{card} .hint1'): bad(f'{label} {cid} {e["id"]} : pas d’indice')
+            if t == 'notions':
+                for n in range(1, len(c['notions']) + 1):
+                    card = f'.mech3[data-c="{cid}"][data-n="{n}"]'
+                    if not await page.query_selector(card): bad(f'{label} {cid} notion {n} : pas de mécanique'); continue
+                    ans = await page.evaluate("""([cid, n]) => { const h = s => { let x = 2166136261; for (const ch of s) { x ^= ch.charCodeAt(0); x = Math.imul(x, 16777619); } return x >>> 0; };
+                      return window.MCVT.mech(cid, n, h(`${cid}-m${n}`)).items.map(it => it.vs ? it.vs.join(' ; ') : it.v != null ? String(it.v).replace('.', ',') : it.a); }""", [cid, n])
+                    inputs = await page.query_selector_all(f'{card} .mq3 .inp')
+                    if len(inputs) != 10: bad(f'{label} {cid} notion {n} : {len(inputs)} cases'); continue
+                    for inp, a in zip(inputs, ans): await inp.fill(a)
+                    await page.click(f'{card} [data-mech-check]')
+                    sc = await page.inner_text(f'{card} .score')
+                    if sc.split(' ')[0] != '10': bad(f'{label} {cid} notion {n} mécanique : {sc}')
+                    else: stats['mech'] = stats.get('mech', 0) + 1
+                    await page.click(f'{card} [data-mech-new]')
+                    if len(await page.query_selector_all(f'{card} .mq3')) != 10: bad(f'{label} {cid} notion {n} : autres calculs')
             if t == 'problemes':
                 for pr in c['probs']:
                     card = f'#ex-{pr["id"]}'

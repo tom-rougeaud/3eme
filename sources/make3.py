@@ -18,6 +18,13 @@ async def render(name, pdf):
         await pg.goto((B / f'{name}.html').as_uri())
         await pg.wait_for_function('window.__result', timeout=900000)
         res = await pg.evaluate('window.__result')
+        if name == 'eleve':
+            res['_blocks'] = await pg.evaluate('''() => { const o = []; [...document.querySelectorAll('#out .page')].forEach((p, i) => { p.querySelectorAll('.blk').forEach(b => {
+                if (b.classList.contains('nt4') && b.dataset.lcn) o.push([i + 1, 'n', b.dataset.lcn]);
+                if (b.dataset.eid) o.push([i + 1, 'x', b.dataset.eid]);
+                if (b.classList.contains('evh')) o.push([i + 1, 'ev', '']);
+                if (b.classList.contains('dep3')) o.push([i + 1, 'dep', '']);
+            }); }); return o; }''')
         await pg.pdf(path=str(pdf), prefer_css_page_size=True, print_background=True, tagged=True)
         await b.close()
     return res
@@ -51,7 +58,7 @@ def split(pdf, res, log):
     out = B / 'chapitres'; out.mkdir(exist_ok=True)
     r = PdfReader(str(pdf)); S = res['secs']; ids = [c['id'] for c in log['chapitres']]
     for i, c in enumerate(log['chapitres']):
-        a = S[c['id']]; b = (S[ids[i + 1]] - 1) if i + 1 < len(ids) else S.get('dnb', S['rep']) - 1
+        a = S[c['id']]; b = (S[ids[i + 1]] - 1) if i + 1 < len(ids) else (S.get('dnb') or S['rep']) - 1
         w = PdfWriter()
         for k in range(a - 1, b): w.add_page(r.pages[k])
         w.add_metadata({'/Title': f"Maths · 3ème Série Pro — chapitre {c['n']} · {c['titre']}", '/Author': 'Tom Rougeaud', '/Subject': 'CC BY-NC 4.0'})
@@ -60,15 +67,6 @@ def split(pdf, res, log):
         dst = out / f"maths-3e-serie-pro-chapitre-{c['n']}.pdf"
         with open(dst, 'wb') as f: w.write(f)
         print(f"  chapitre {c['n']} : pages {a} à {b} → {dst.name}")
-    if 'dnb' in S:
-        a, b = S['dnb'], S['rep'] - 1
-        w = PdfWriter()
-        for k in range(a - 1, b): w.add_page(r.pages[k])
-        w.add_metadata({'/Title': 'Maths · 3ème Série Pro — trois sujets blancs du brevet', '/Author': 'Tom Rougeaud', '/Subject': 'CC BY-NC 4.0'})
-        w._root_object[NameObject('/Lang')] = TextStringObject('fr-FR')
-        dst = out / 'maths-3e-serie-pro-sujets-brevet.pdf'
-        with open(dst, 'wb') as f: w.write(f)
-        print(f"  sujets du brevet : pages {a} à {b} → {dst.name}")
 
 async def main():
     subprocess.run(['node', 'gen3.js'], check=True, cwd=HERE)
@@ -85,6 +83,19 @@ async def main():
         for e in res['warnings'][:20]: print('  ⚠', e)
         meta(pdf, title, res, log, kind == 'prof')
         if kind == 'eleve': split(pdf, res, log)
+    if '--eleve' not in sys.argv or True:
+        for name, dst, title, prof in [('sujets', B / 'chapitres' / 'maths-3e-serie-pro-sujets-brevet.pdf', 'Trois sujets blancs du brevet', False),
+                                       ('glossaire', B / 'glossaire-3e-serie-pro.pdf', 'Glossaire visuel', False),
+                                       ('sujets-prof', B / 'maths-3e-serie-pro-sujets-brevet-professeur.pdf', 'Sujets blancs · version professeur', True)]:
+            if prof and '--eleve' in sys.argv: continue
+            (B / 'chapitres').mkdir(exist_ok=True)
+            res = await render(name, dst)
+            print(f"{name} : {res['pages']} pages")
+            for e in res['errors'][:20]: print('  ✗', e); ok = False
+            r = PdfReader(str(dst)); w = PdfWriter(clone_from=r)
+            w.add_metadata({'/Title': f'Maths · 3ème Série Pro — {title}', '/Author': 'Tom Rougeaud', '/Subject': 'CC BY-NC 4.0'})
+            w._root_object[NameObject('/Lang')] = TextStringObject('fr-FR')
+            with open(dst, 'wb') as f: w.write(f)
     sys.exit(0 if ok else 1)
 
 asyncio.run(main())

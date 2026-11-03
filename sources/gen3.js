@@ -11,7 +11,7 @@ const K3 = require('./content/kit3e');
 const HERE = __dirname, B = path.join(HERE, 'build');
 fs.mkdirSync(B, { recursive: true });
 
-const { MCVT } = require('./shared/train.js');
+const { MCVT } = require('./shared/train.js'); require('./shared/mech.js');
 const AUTO = require('./shared/auto3.js');
 const QR = JSON.parse(fs.readFileSync(path.join(HERE, 'lib', 'qr.json'), 'utf8'));
 const ERR = [];
@@ -27,6 +27,13 @@ const Psub = h => String(h).replace(/P_([A-Z][\u0304]?)\(/g, 'P<sub>$1</sub>(');
 const DETS = [];
 const detBlock = (id, titre, items) => { const h = `<div class="dz-e"><p class="dz-t">${titre}</p><ol class="dz-l">${items.map(([l, t, extra]) => `<li><b>${l}</b> ${Psub(t)}${extra ? ` <i>${extra}</i>` : ''}</li>`).join('')}</ol></div>`; DETS.push({ id, h }); return h; };
 const seedOf = s => { let h = 2166136261; for (const ch of s) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+
+// pastille de compétence sur chaque question des problèmes « vers le brevet » et des défis
+const qComp = t => /Justifie|Explique|Pourquoi|Démontre|Prouve|Conclus|Vérifie|Peut-on|Que signifie|Interprète|est-il|est-elle|est-ce/i.test(t) ? 'rai'
+  : /Représente|Trace|Place |Construis|Dessine|graphique|Complète le tableau/i.test(t) ? 'rep'
+  : /Écris (une|la|l’) ?(fonction|formule|expression|équation|programme)|Modélise|Traduis|Exprime/i.test(t) ? 'mod'
+  : /Repère|Relève|Lis |Cherche|Quelles? données/i.test(t) ? 'che' : 'cal';
+const pastQ = body => body.replace(/(<p class="q"><span class="qn">[^<]*<\/span>)([\s\S]*?)(<\/p>)/g, (m, a, b, c) => `${a}${b}<span class="cp cp-${qComp(b.replace(/<[^>]*>/g, ''))} cpq">${CPS[qComp(b.replace(/<[^>]*>/g, ''))]}</span>${c}`);
 const L = 'abcdefghijklmnop';
 const CPS = { che: 'Chercher', mod: 'Modéliser', rep: 'Représenter', rai: 'Raisonner', cal: 'Calculer', com: 'Communiquer' };
 const ORD = ['che', 'mod', 'rep', 'rai', 'cal', 'com'];
@@ -38,22 +45,36 @@ const trouTxt = h => h.replace(/⟦([^⟧]+)⟧/g, '<b>$1</b>');
 const qcmOpts = it => `<span class="opts">${it.qcm.choices.map((c, j) => opt(c, j === it.qcm.ok)).join('')}</span>`;
 /* QCM : les choix se placent sur la ligne de la question (à droite) ; en dessous seulement si la question n’a pas de ligne propre */
 const stk = g => { const m = /<svg[^>]*viewBox="0 0 (\d+)/.exec(g.support); return m && +m[1] >= 400 ? ' stk' : ''; };
+/* cadre de réponse : de la place pour les calculs, puis une phrase de conclusion */
+const FRAME = { 'c1.e3': [16, 1], 'c1.e5': [14, 0], 'c2.e1': [14, 0], 'c2.e4': [16, 1], 'c3.e1': [16, 0], 'c3.e2': [18, 0], 'c3.e3': [16, 0], 'c3.e4': [16, 0],
+  'c4.e1': [18, 1], 'c4.e2': [18, 1], 'c4.e3': [18, 1], 'c4.e4': [18, 1], 'c5.e2': [14, 0], 'c5.e3': [18, 1], 'c6.e1': [18, 1], 'c6.e2': [16, 0], 'c6.e3': [16, 0],
+  'c7.e3': [14, 0], 'c7.e4': [14, 0], 'c8.e1': [18, 1], 'c8.e2': [16, 0], 'c8.e3': [18, 1], 'c8.e4': [16, 0], 'c9.e1': [16, 0], 'c9.e2': [16, 0], 'c9.e3': [18, 1], 'c9.e4': [18, 1],
+  'c10.e1': [16, 0], 'c10.e4': [16, 0], 'c10.e5': [16, 0] };
+/* « Mes calculs » seulement s’il y a quelque chose à calculer ; « Ma réponse en une phrase » seulement si l’exercice demande une conclusion */
+const calc = key => { const f = Array.isArray(key) ? key : FRAME[key]; if (!f) return ''; return `<div class="calc" style="height:${f[0]}mm"><span class="calc-t">✍️ Mes calculs</span></div>` + (f[1] ? '<div class="conc"><span>Ma réponse en une phrase :</span><i></i></div>' : ''); };
 const trParts = g => {
-  let sup = g.support; const out = [];
+  /* 1. une question par ligne : « a. … · b. … » est scindé */
+  let sup = g.support.replace(/<p class="tr-l">((?:(?!<\/p>)[\s\S])*)<\/p>/g, (m, inner) => { const parts = inner.split(/\s·\s(?=[a-h]\. )/); return parts.length > 1 ? parts.map(x => `<p class="tr-l">${x}</p>`).join('') : m; });
+  const out = [];
   g.items.forEach(it => {
     if (sup.includes(`data-k="${it.k}"`) || new RegExp(`class="sbk"[^>]*>${it.k}<`).test(sup)) return;
-    if (it.qcm) {
-      const re = new RegExp(`<p class="tr-l">(${it.k}\\. (?:(?!</p>)[\\s\\S])*)</p>`);
-      if (re.test(sup)) { sup = sup.replace(re, (m, inner) => `<p class="tr-l tr-lq"><span class="tr-lt">${inner}</span>${qcmOpts(it)}</p>`); return; }
+    const re = new RegExp(`<p class="tr-l">(${it.k}\\. (?:(?!</p>)[\\s\\S])*)</p>`);
+    if (re.test(sup)) {
+      /* la question a sa ligne : réponse courte à droite, réponse longue sur des lignes pleine largeur, dessous */
+      if (it.qcm) { sup = sup.replace(re, (m, inner) => `<p class="tr-l tr-lq"><span class="tr-lt">${inner}</span>${qcmOpts(it)}</p>`); return; }
+      const short = String(it.a).replace(/<[^>]+>/g, '').length <= 14 && !/\s\S+\s\S+\s\S+/.test(String(it.a).replace(/<[^>]+>/g, ''));
+      sup = sup.replace(re, (m, inner) => short ? `<p class="tr-l tr-lq"><span class="tr-lt">${inner}</span><span class="bl tr3 tr-bx" data-k="${it.k}" data-a="${esc(it.a)}"></span></p>` : `<p class="tr-l">${inner}</p><div class="alines"><span class="bl aln" data-a="${esc(it.a)}"></span><span class="bl aln"></span></div>`);
+      return;
     }
     out.push(it);
   });
-  return { support: sup, extra: out.length ? `<div class="tr-q">${out.map(it => `<div class="tr-qi"><span class="mg-l">${it.k}.</span>${it.qcm ? qcmOpts(it) : bl(30, it.a)}</div>`).join('')}</div>` : '' };
+  return { support: sup, extra: out.length ? `<div class="tr-q">${out.map(it => `<div class="tr-qi"><span class="mg-l">${it.k}.</span>${it.qcm ? qcmOpts(it) : bl(40, it.a)}</div>`).join('')}</div>` : '' };
 };
 
 /* ---------- « Ce que tu sais déjà » : de la 5e et de la 4e à la 3e ---------- */
-const pontBox = c => `<div class="blk pont3 c-${c.col}"><div class="pont3-h">🔗 Ce que tu sais déjà : ce qui reste, ce qui change en 3e</div><div class="pont3-g"><div class="pont3-a"><span class="pont3-k">Avant la 3e, tu as appris</span><ul>${c.pont.de.map(x => `<li><b class="pont3-n">${x.niv}</b> <i>${esc(x.titre)}</i> : ${x.sais}</li>`).join('')}</ul><p class="pont3-ex"><b>Exemple de 4e</b> · ${c.pont.ex2}</p></div><div class="pont3-b"><span class="pont3-k">En 3e, la même situation va plus loin</span><p class="pont3-ex">${c.pont.ex1}</p></div></div><div class="pont3-g3"><div><span class="pont3-k">✅ Ce qui reste</span><ul>${c.pont.reste.map(x => `<li>${x}</li>`).join('')}</ul></div><div><span class="pont3-k">➕ Ce qui change</span><ul>${c.pont.change.map(x => `<li>${x}</li>`).join('')}</ul></div><div><span class="pont3-k">🎯 À quoi ça sert</span><p>${c.pont.pourquoi}</p></div></div></div>`;
+const pontBox = c => `<div class="blk pont3 c-${c.col}"><div class="pont3-h">🔗 Ce que tu sais déjà : ce que tu peux réutiliser, et ce qui est nouveau en 3e</div><div class="pont3-g"><div class="pont3-a"><span class="pont3-k">Avant la 3e, tu as déjà appris</span><ul>${c.pont.de.map(x => `<li><b class="pont3-n">${x.niv}</b> <i>${esc(x.titre)}</i> : ${x.sais}</li>`).join('')}</ul><p class="pont3-ex"><b>Exemple de 4e</b> · ${c.pont.ex2}</p></div><div class="pont3-b"><span class="pont3-k">En 3e, on reprend la même situation et on va plus loin</span><p class="pont3-ex">${c.pont.ex1}</p></div></div><div class="pont3-g3"><div><span class="pont3-k">✅ Ce que tu peux réutiliser tel quel</span><ul>${c.pont.reste.map(x => `<li>${x}</li>`).join('')}</ul></div><div><span class="pont3-k">➕ Ce qui est nouveau en 3e</span><ul>${c.pont.change.map(x => `<li>${x}</li>`).join('')}</ul></div><div><span class="pont3-k">🎯 À quoi ça sert dans la vie ?</span><p>${c.pont.pourquoi}</p></div></div></div>`;
 /* ---------- un chapitre ---------- */
+const FLASH = [];
 function chapter(c) {
   const col = c.col, R = id => `<b data-numof="${c.id}-${id}">·</b>`;
   const nivB = e => e.niv ? `<span class="niv niv-${e.niv > 0 ? 'd' : 'a'}">${e.niv > 0 ? '🚀 Défi' : '🌱 Guidé'}</span>` : '';
@@ -71,29 +92,32 @@ function chapter(c) {
   fixed.push(`<div class="blk dep3 c-${col}" data-sec="${c.id}-dep" data-det="${c.id}-dep"><div class="dep3-h"><span class="ic">🚀</span>Point de départ<span class="sec-sub">un document · 5 questions · sans calculatrice</span></div><div class="dep3-g"><div class="dep3-doc"><div class="dep3-t">${dp.titre}</div>${dp.doc}</div><ol class="dep3-q">${dp.qs.map(q => `<li><span class="dq-t">${q.t}</span>${q.kind === 'qcm' ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(24, q.a)}</li>`).join('')}</ol></div></div>`);
   key.push({ k: 'dep', det: detBlock(`${c.id}-dep`, `🚀 Point de départ · ${dp.titre}`, dp.qs.map((q, i) => [`${i + 1}.`, q.x || q.a])) });
   /* 3. la leçon : une notion par page, dans l’ordre logique : je découvre → la méthode → la solution → je retiens → à moi */
+  const ntB = [];
   c.notions.forEach((nt, i) => {
     const pi = c.parties.findIndex(p => p.n.includes(i + 1));
-    fixed.push(`<div class="blk nt4 pgb c-${col}"${i ? '' : ` data-sec="${c.id}-cours"`}><div class="nt3-k">📘 La leçon · notion ${i + 1} sur ${c.notions.length} · Partie ${'ABCDE'[pi]} · ${c.parties[pi].t}</div><div class="nt3-h"><span class="lc-n">${i + 1}</span>${nt.titre}</div>
+    ntB.push(`<div class="blk nt4 c-${col}" data-lcn="${i + 1}"${i ? '' : ` data-sec="${c.id}-cours"`}><div class="nt3-h"><span class="lc-n">${i + 1}</span><span class="nt3-t">${nt.titre}</span><span class="nt3-ch">Chapitre ${c.n} · ${esc(c.titre)}</span></div>
 <div class="nt4-d"><div><span class="t3">🔎 Je découvre</span><p>${nt.decouvre.txt}</p></div><div class="nt4-img">${nt.decouvre.img}</div></div>
-<div class="nt4-m"><span class="t3">🧭 La méthode, pas à pas</span><ol class="nt4-s">${nt.methode.map(m => `<li>${m}</li>`).join('')}</ol><div class="nt4-v">${nt.vois}</div></div>
-<div class="nt4-sol"><span class="nt4-sk">✅ La solution</span><div>${nt.solution}</div></div><div class="nt4r"><div class="nt4-rg"><div class="lc-r"><span class="lc-t">📌 Je retiens</span>${nt.retiens}</div><div class="att">⚠️ <b>Attention</b> · ${nt.attention}</div></div><div class="nt4-a"><span class="t3">✏️ À moi</span><ol>${nt.amoi.map(([q, a]) => `<li><span>${q}</span>${bl(30, a)}</li>`).join('')}</ol></div></div></div>`);
-  });
-  fixed.push(`<div class="blk mk3 c-${col}"><div class="lc-h"><span class="lc-n">🔤</span>Les mots à connaître</div><table class="tbl mkt3"><tr><th>Le mot</th><th>Ce qu’il veut dire</th><th>En exemple</th></tr>${c.mots.map(r => `<tr><td class="mk-w">${r[0]}</td><td>${r[1]}</td><td class="mk-x">« ${r[2]} »</td></tr>`).join('')}</table></div>`);
-  /* 4. méthodes : un résolu complet, un résolu à compléter */
-  fixed.push(`<div class="blk sec-h kwn" data-sec="${c.id}-meth"><span class="ic">🧭</span>Méthodes<span class="sec-sub">un exercice résolu, puis le même à compléter</span></div>`);
-  c.resolus.forEach((r, i) => {
-    const td = r.trous ? trou : (x => x);
-    fixed.push(`<div class="blk rs${r.trous ? ' rs2' : ''} c-${col}"><div class="rs-h"><span class="rs-k">${r.trous ? '✍️ À toi' : 'Exercice résolu'}</span><span class="rs-t">${r.titre}</span>${r.outil ? `<span class="outil">${r.outil}</span>` : ''}</div><div class="rs-en">${r.enonce}${r.doc ? `<div class="rs-doc">${r.doc}</div>` : ''}</div><table class="rs-t2"><tr><th>Ce que j’écris</th><th>Pourquoi je le fais</th></tr>${r.rows.map((x, j) => `<tr><td class="rs-w"><span class="rs-s">${j + 1}</span><span>${td(x[0])}</span></td><td class="rs-x">${x[1]}</td></tr>`).join('')}</table><p class="rs-ver">🔁 <b>Je vérifie</b> · ${r.verif}</p><p class="rs-rep">✅ ${r.trous ? `<span class="prof-only inl">${r.rep}</span><span class="el-only">Ma réponse : ${bl(90)}</span>` : r.rep}</p><p class="rs-go">➜ Je m’entraîne : exercice${r.go.length > 1 ? 's' : ''} ${r.go.map(R).join(' et ')}</p></div>`);
-    if (r.trous) key.push({ k: 'r2', det: detBlock(`${c.id}-r2`, `✍️ À toi (méthodes) · ${r.titre.replace(/^À toi : /, '')}`, [...r.rows.map((x, j) => [`${j + 1}.`, trouTxt(x[0]), x[1]]), ['✅', r.rep]]) });
+<div class="nt4-m"><span class="t3">🧭 La méthode, pas à pas</span><ol class="nt4-s">${nt.methode.map(m => `<li><div>${m}</div></li>`).join('')}</ol><div class="nt4-v">${nt.vois}</div></div>
+<div class="nt4-sa"><div class="nt4-sol"><span class="nt4-sk">✅ La solution</span><div>${nt.solution}</div></div><div class="att">⚠️ <b>Attention</b> · ${nt.attention}</div></div><div class="lc-r nt4-ret"><span class="lc-t">📌 Je retiens</span>${nt.retiens}</div></div>`);
   });
   /* 5. je m’entraîne : 3 exercices à support visuel (tirage fixe ; d’autres nombres dans l’appli) */
-  ex.push(`<div class="blk ex palh palh3 kwn keep" data-stage="1" data-sec="${c.id}-x"><span class="ph-i">✏️</span><b>Je m’entraîne</b><span>Un support à compléter, des cases lettrées. Réponses p. <span data-pageof="rep-${c.id}">…</span> ; d’autres nombres dans l’appli.</span></div>`);
+  const byLc = {};
   c.entraine.forEach(e => {
+    if (e.niv < 0) return; /* 🌱 guidé : dans l’appli seulement ; 🚀 défi : l’exercice d’approfondissement de la notion */
     const g = MCVT.tr(e.gen, seedOf(c.id + '-' + e.id)), eid = c.id + '-' + e.id;
     const tp = trParts(g), extra = tp.extra;
     key.push({ eid, titre: g.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> ${nivT(e)}${g.titre}`, g.items.map(it => [`${it.k}.`, it.x || it.a])) });
-    ex.push(`<div class="blk ex tr3 c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span>${nivB(e)}<span class="ext">${g.titre}</span><span class="cps"><span class="lcref">notion ${e.lc}</span></span></div><div class="exb">${nivNote(e)}<p class="tr-c">${g.consigne}</p><div class="tr-s">${tp.support}</div>${extra}</div></div>`);
+    (byLc[e.lc] = byLc[e.lc] || []).push(`<div class="blk ex tr3 c-${col}" data-inl="1" data-lcn="${e.lc}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span>${nivB(e)}<span class="ext">${g.titre}</span><span class="cps"><span class="lcref">notion ${e.lc}</span></span></div><div class="exb">${nivNote(e)}<p class="tr-c">${g.consigne}</p><div class="tr-s">${tp.support}</div>${extra}${calc(e.niv > 0 ? [18, 1] : c.id + '.' + e.id)}</div></div>`);
     rep.push({ eid, titre: nivT(e) + g.titre, txt: g.items.map(it => `${it.k}. ${it.a}`).join(' ; ') });
+  });
+
+  /* 5 bis. la mécanique : dix petits calculs sans contexte, avant les exercices contextualisés de la notion */
+  c.notions.forEach((nt, i) => {
+    const k = i + 1; if (!MCVT.MECH[c.id + '.' + k]) return;
+    const eid = `${c.id}-m${k}`, m = MCVT.mech(c.id, k, seedOf(eid));
+    key.push({ eid, titre: 'Mécanique · ' + m.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> Mécanique · ${m.titre}`, [['💡', `<i>Méthode :</i> ${(MCVT.MECH_REGLE || {})[c.id + '.' + k] || ''}`]].concat(m.items.map(it => [`${it.k}.`, it.a]))) });
+    rep.push({ eid, titre: '🔧 ' + m.titre, txt: m.items.map(it => `${it.k}. ${it.a}`).join(' ; ') });
+    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex mech c-${col}" data-inl="1" data-lcn="${k}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span><span class="mech-b">🔧 Mécanique</span><span class="ext">${m.titre}</span><span class="cps"><span class="lcref">notion ${k}</span><span class="outil">10 calculs · sans contexte</span></span></div><div class="exb"><p class="tr-c">${m.consigne}</p><ol class="mech-l">${m.items.map(it => `<li><span class="mq"><b>${it.k}.</b> ${it.t}</span><span class="bl mech-a" data-a="${esc(it.a)}"></span></li>`).join('')}</ol></div></div>`);
   });
 
   /* réserve : d’autres tirages des exercices « Je m’entraîne ». La mise en page ne les pose que dans la place restée vide d’une page (jamais de page en plus). */
@@ -108,19 +132,19 @@ function chapter(c) {
         if (seen.has(sig(g))) return; seen.add(sig(g));
         const tp = trParts(g), extra = tp.extra;
         detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> ${g.titre}`, g.items.map(it => [`${it.k}.`, it.x || it.a]));
-        const html = `<div class="blk ex tr3 opt${stk(g)}${isEv ? ' evb' : ''} c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="1" data-src="${c.id}-${e.id}" data-lc="${e.lc}"><div class="exh"><span class="num">·</span><span class="ext">${g.titre}</span><span class="cps"><span class="optn optn-s">autres nombres · comme l’exercice <b data-numof="${c.id}-${e.id}">·</b></span><span class="optn optn-l">à toi, tout de suite</span><span class="optn optn-g">encore une fois · autres nombres</span><span class="optn optn-e">pour t’entraîner encore · hors barème</span><span class="lcref">notion ${e.lc}</span></span></div><div class="exb"><p class="tr-c">${g.consigne}</p><div class="tr-s">${tp.support}</div>${extra}</div></div>`;
+        const html = `<div class="blk ex tr3 pool${stk(g)}${isEv ? ' evb' : ''} c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="1" data-src="${c.id}-${e.id}" data-lc="${e.lc}"><div class="exh"><span class="num">·</span><span class="ext">${g.titre}</span><span class="cps"><span class="optn optn-s">autres nombres · comme l’exercice <b data-numof="${c.id}-${e.id}">·</b></span><span class="optn optn-l">à toi, tout de suite</span><span class="optn optn-g">encore une fois · autres nombres</span><span class="optn optn-e">pour t’entraîner encore · hors barème</span><span class="lcref">notion ${e.lc}</span></span></div><div class="exb"><p class="tr-c">${g.consigne}</p><div class="tr-s">${tp.support}</div>${extra}${calc(c.id + '.' + e.id)}</div></div>`;
         (isEv ? evPool : ex).push(html);
         rep.push({ eid, titre: g.titre, txt: g.items.map(it => `${it.k}. ${it.a}`).join(' ; '), opt: 1 });
       });
     });
   }
   /* rappel : des exercices d’avant (autres nombres). Au « Point de départ » : ceux du chapitre précédent ; ailleurs, seulement si une page garde de la place vide (jamais de page en plus). */
- {
+ if (false) {
     const ci = DATA.indexOf(c), prev = ci > 0 ? DATA[ci - 1] : null; let nr = 0, ne = 0;
     const addRap = (g, eid, srcId, titre, dep, free, isEv) => {
       const tp = trParts(g), extra = tp.extra;
       detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> ${g.titre}`, g.items.map(it => [`${it.k}.`, it.x || it.a]));
-      const html = `<div class="blk ex tr3 opt rap${stk(g)}${isEv ? ' evb' : ''} c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="1"${dep ? ' data-dep="1"' : ''} data-rap="1"${free ? ' data-free="1"' : ''} data-src="${srcId}"><div class="exh"><span class="num">·</span><span class="ext">${g.titre}</span><span class="cps"><span class="optn optn-r">je me rappelle · ${titre}</span></span></div><div class="exb"><p class="tr-c">${g.consigne}</p><div class="tr-s">${tp.support}</div>${extra}</div></div>`;
+      const html = `<div class="blk ex tr3 pool rap${stk(g)}${isEv ? ' evb' : ''} c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="1"${dep ? ' data-dep="1"' : ''} data-rap="1"${free ? ' data-free="1"' : ''} data-src="${srcId}"><div class="exh"><span class="num">·</span><span class="ext">${g.titre}</span><span class="cps"><span class="optn optn-r">je me rappelle · ${titre}</span></span></div><div class="exb"><p class="tr-c">${g.consigne}</p><div class="tr-s">${tp.support}</div>${extra}</div></div>`;
       (isEv ? evPool : ex).push(html);
       rep.push({ eid, titre: g.titre, txt: g.items.map(it => `${it.k}. ${it.a}`).join(' ; '), opt: 1 });
     };
@@ -135,6 +159,7 @@ function chapter(c) {
     const CROSS = {}[c.id];
     if (CROSS) CROSS[1].forEach((gid, i) => { const eid = c.id + '-rax' + (i + 1); addRap(MCVT.tr(gid, seedOf(eid)), eid, 'x-' + gid, CROSS[0], true, true, false); });
   }
+  c.notions.forEach((nt, i) => { fixed.push(ntB[i]); (byLc[i + 1] || []).forEach(h => fixed.push(h)); });
   /* Je programme avec Scratch : un programme à lire, une question */
   (c.scratch || []).forEach((sx, j) => {
     const eid = `${c.id}-s${j + 1}`;
@@ -151,13 +176,14 @@ function chapter(c) {
     const badge = p.defi ? `<span class="defi">Défi · ${p.defi} étapes</span>` : `<span class="et3b">${ET[p.etape]}</span>`;
     const autr = p.autravail ? `<div class="autr"><span class="cp cp-${p.autravail.comp}">${CPS[p.autravail.comp]}</span><span>🧑‍🔧 <b>Dans un métier, cela sert à</b> ${p.autravail.txt}</span></div>` : '';
     const pouce = p.pouce ? `<div class="pouce-inv"><span>💡 Coup de pouce · exercice <b data-numof="${eid}">·</b> : ${p.pouce}</span></div>` : '';
-    ex.push(`<div class="blk ex pb3${p.cls ? ' ' + p.cls : ''} c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="${p.etape}"><div class="exh"><span class="num">·</span>${badge}<span class="ext">${p.titre}</span><span class="cps">${p.lc ? `<span class="lcref">notion ${Math.min(p.lc, c.notions.length)}</span>` : ''}${(p.comps || []).map(cp).join('')}</span></div><div class="exb">${p.body}</div>${autr}${pouce}</div>`);
+    ex.push(`<div class="blk ex pb3${p.cls ? ' ' + p.cls : ''} c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="${p.etape}"><div class="exh"><span class="num">·</span>${badge}<span class="ext">${p.titre}</span><span class="cps">${p.lc ? `<span class="lcref">notion ${Math.min(p.lc, c.notions.length)}</span>` : ''}${(p.comps || []).map(cp).join('')}</span></div><div class="exb">${p.etape === 4 || p.defi ? pastQ(p.body) : p.body}</div>${autr}${pouce}</div>`);
     key.push({ eid, titre: p.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> ${p.titre}`, p.qs.map(q => [/[.)]$/.test(q.l) ? q.l : q.l + '.', q.x || q.a])) });
   });
   /* 7. le métier derrière la scène, et je sais faire */
   const m = c.metier.job;
   ex.push(`<div class="blk ex mt3 keep c-${col}" data-stage="9"><div class="mt3-h">🧑‍🔧 Le métier derrière la scène</div><div class="mt3-g"><div><b class="mt3-n">${m.nom}</b><p>${m.fait}</p><p class="mt3-m">📐 <b>Ses maths</b> · ${m.maths}</p></div><div class="mt3-a"><span class="mt3-k">Après la 3e</span><ul>${m.apres.map(x => `<li>${x}</li>`).join('')}</ul></div></div></div>`);
   const au = AUTO.gen(c.id, seedOf(c.id + '-auto'), 10);
+  FLASH.push(`<template id="flash-${c.id}"><ol>${[1, 2, 3, 4, 5, 6, 7, 8].flatMap(k => AUTO.gen(c.id, seedOf(c.id + "-flash" + k), 40)).filter((q, i, a) => !au.some(z => z.t === q.t) && a.findIndex(z => z.t === q.t) === i).filter((q, i) => i % 2 === 0 || true).slice(0, 130).map(q => `<li><span class="fl-t">${q.t}</span>${q.choices ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(24, q.a)}</li>`).join('')}</ol></template>`);
   ex.push(`<div class="blk ex sais3 keep c-${col}" data-stage="9" data-sec="${c.id}-auto" data-det="${c.id}-auto"><div class="exh"><span class="ext">✅ Je fais le point</span></div><div class="exb"><p class="small">Je coche quand je sais faire seul. L’appli coche aussi cette liste au fil des réussites.</p><table class="tbl bilan"><tr><th>Je sais…</th><th>Exercices</th><th>Oui</th><th>Presque</th><th>Pas encore</th></tr>${c.bilan.map(([t, es]) => `<tr><td class="tl">${t.replace(/^Je sais /, '')}</td><td>${es.map(e => /^n\d/.test(e) ? `à moi, notion ${e.slice(1)}` : R(e)).join(', ')}</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>`).join('')}</table>
 <div class="auto4"><div class="auto3-h"><span class="ic">⚡</span>Automatismes du brevet<span class="sec-sub">10 questions · 10 minutes · sans calculatrice · comme la partie 1 du brevet</span></div><ol class="auto3-q">${au.map(q => `<li><span>${q.t}</span>${q.choices ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(26, q.a)}</li>`).join('')}</ol></div></div></div>`);
   key.push({ k: 'auto', det: detBlock(`${c.id}-auto`, '⚡ Automatismes du brevet', au.map((q, i) => [`${i + 1}.`, q.x || q.a])) });
@@ -166,22 +192,24 @@ function chapter(c) {
   const per = {}; [...e.auto, ...e.exos.flatMap(x => x.qs)].forEach(q => { per[q.comp] = (per[q.comp] || 0) + q.pts; }); per.com = (per.com || 0) + e.redac;
   const evh = `<div class="blk evh c-${col}"><div class="evh-t"><span class="evh-k">🎯 S’évaluer au format du brevet · série professionnelle</span><h2>${c.titre}</h2><p>${e.lieu} · durée : ${e.duree}</p></div><div class="evh-n"><span>Nom</span><i></i><span>Date</span><i></i><b>… / 20</b></div><p class="evccf">Comme au brevet : la partie 1 (automatismes) se fait sans calculatrice ; la partie 2 (problèmes) avec la calculatrice. ${e.redac} points récompensent la clarté et la rédaction.</p>
 <table class="tbl evg evg3 evg6"><tr><th>Compétence</th><th>Ce que je sais faire</th><th>Points</th><th>Insuffisante</th><th>Fragile</th><th>Satisfaisante</th><th>Très bonne</th></tr>${ORD.filter(o => per[o]).map(o => `<tr><td class="tl"><span class="cp cp-${o}">${CPS[o]}</span></td><td class="tl gp">${e.grille[o]}</td><td>${ptsTxt(per[o])}</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>`).join('')}</table></div>`;
-  const qBlk = (q, det) => { k++; return `<div class="blk evq c-${col}" data-det="${det}"><div class="evq-h"><span class="evq-n">${k}</span><span class="evq-t">${q.t}</span><span class="cp cp-${q.comp}">${CPS[q.comp]}</span><span class="evq-p">${ptsTxt(q.pts)}</span></div>${q.choices ? `<p class="ans">${`<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>`}</p>` : q.lines ? lines(q.lines, q.a) : `<p class="ans"><span>${q.lab || ''}</span>${bl(q.w || 40, q.a)}</p>`}</div>`; };
+  const qBlk = (q, det) => { k++; return `<div class="blk evq c-${col}" data-det="${det}"><div class="evq-h"><span class="evq-n">${k}</span><span class="evq-t">${q.t}</span><span class="cp cp-${q.comp}">${CPS[q.comp]}</span><span class="evq-p">${ptsTxt(q.pts)}</span></div>${q.choices ? `<p class="ans">${`<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>`}</p>` : q.lines ? lines(q.lines, q.a) : ['rai', 'com'].includes(q.comp) && !q.lab ? lines(2, q.a) : `<p class="ans ans-w"><span>${q.lab || ''}</span>${bl(q.w || 40, q.a)}</p>`}</div>`; };
   const evAuto = `<div class="blk evx kwn c-${col}" data-det="${c.id}-au"><div class="evx-h"><span class="evx-n">Partie 1</span><span class="evx-t">Automatismes · sans calculatrice · 10 min</span><span class="evx-p">${ptsTxt(e.auto.reduce((a, b) => a + b.pts, 0))}</span></div><p class="evccf">Réponds sans justifier.</p></div>` + e.auto.map(q => qBlk(q, `${c.id}-au`)).join('');
   const evx = e.exos.map((x, i) => `<div class="blk evx kwn c-${col}" data-det="${c.id}-ev${i}">${i === 0 ? `<p class="ev-p2">Partie 2 · Problèmes · calculatrice autorisée · justifie tes réponses</p>` : ''}<div class="evx-h"><span class="evx-n">Exercice ${i + 1}</span><span class="evx-t">${x.t}</span><span class="evx-p">${ptsTxt(x.qs.reduce((a, b) => a + b.pts, 0))}</span></div>${x.intro || ''}</div>` + x.qs.map(q => qBlk(q, `${c.id}-ev${i}`)).join(''));
   const evRed = `<div class="blk evred c-${col}">✍️ <b>Rédaction · ${ptsTxt(e.redac)}</b> · phrases complètes, calculs posés, unités, résultats encadrés.</div>`;
   let kq = 0;
   key.push({ k: 'ev', det: detBlock(`${c.id}-au`, '🎯 S’évaluer · partie 1 · automatismes', e.auto.map(q => [`${++kq}.`, q.x || q.a, `(${ptsTxt(q.pts)})`])) });
   e.exos.forEach((x, i) => key.push({ k: 'ev', det: detBlock(`${c.id}-ev${i}`, `🎯 S’évaluer · exercice ${i + 1} · ${x.t}`, x.qs.map(q => [`${++kq}.`, q.x || q.a, `(${ptsTxt(q.pts)})`])) }));
-  return { c, fixed, ex, ev: evh + evAuto + evx.join('') + evRed + evPool.join(''), key, rep };
+  const bilan = `<div class="blk optend c-${col}" data-opt="1"><div class="ob-h">🧭 Mon bilan du chapitre ${c.n}</div><table class="ob-t"><tr><th>Notion</th><th>Seul·e, sans hésiter</th><th>Avec mon cours</th><th>À retravailler</th></tr>${c.notions.map((nt, i) => `<tr><td><b>${i + 1}.</b> ${nt.titre}</td><td><i></i></td><td><i></i></td><td><i></i></td></tr>`).join('')}</table><p class="ob-q">Mes erreurs les plus fréquentes dans ce chapitre :</p><div class="lines"><i></i><i></i><i></i></div><p class="ob-q">Ce que je fais pour progresser (refaire un exercice, relire une méthode, demander de l’aide…) :</p><div class="lines"><i></i><i></i><i></i></div></div>`;
+  return { c, fixed, ex, ev: evh + evRed + evAuto + evx.join('') + evPool.join('') + bilan, key, rep };
 }
 const CH = DATA.map(chapter);
 
 /* ---------- pages d’ouverture ---------- */
 const QV = s => ({ vb: s.match(/viewBox="([^"]+)"/)[1], body: s.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '') });
 const pCover = `<div class="page cover2"><div class="cvfull">${cover({ qr: QV(QR.home.svg) })}</div></div>`;
+const pCoverP = `<div class="page cover2"><div class="cvfull">${cover({ qr: QV(QR.home.svg), prof: true })}</div></div>`;
 /* le schéma du chapitre */
-const STEPS = [['🎬', 'La scène', 'de la pop culture|et une question'], ['🚀', 'Point de départ', 'un document|5 questions'], ['📘', 'La leçon', 'une notion|par page'], ['🧭', 'Méthodes', 'un résolu, puis|un à compléter'], ['✏️', 'Je m’entraîne', 'des supports|à compléter'], ['🧩', 'Je résous', 'des situations|du métier'], ['🎯', 'S’évaluer', 'au format du brevet|45 min, sur 20']];
+const STEPS = [['🎬', 'La scène', 'de la pop culture|et une question'], ['🚀', 'Point de départ', 'un document|5 questions'], ['📘', 'La leçon', 'une notion|par page'], ['🧭', 'Méthodes', 'un résolu, puis|un à compléter'], ['✏️', 'Je m’entraîne', 'des supports|à compléter'], ['🧩', 'Je résous', 'des situations|du métier'], ['🎯', 'S’évaluer', 'au format du brevet|55 min (une séance), sur 20']];
 const flow = S(600, 250, STEPS.map(([ic, t, s], i) => { const x = 10 + (i % 4) * 150, y = i < 4 ? 20 : 140, w = 130; return Rc(x, y, w, 86, { c: i === 2 ? 'k' : 'k2', rx: 14 }) + `<text x="${x + w / 2}" y="${y + 30}" font-size="22" text-anchor="middle">${ic}</text>` + T(x + w / 2, y + 50, t, { fs: 14, c: i === 2 ? 'tw' : 'tx' }) + s.split('|').map((l, j) => T(x + w / 2, y + 68 + j * 12, l, { fs: 10, c: i === 2 ? 'tw' : 'ts', w: 600 })).join('') + (i < 3 ? Ar(x + w + 2, y + 43, x + w + 18, y + 43, { w: 2.4, h: 8 }) : '') + (i >= 4 && i < 6 ? Ar(x + w + 2, y + 43, x + w + 18, y + 43, { w: 2.4, h: 8 }) : ''); }).join('') + `<path d="M535 106 C 560 125, 90 112, 75 134" fill="none" class="ks" stroke-width="2.4" stroke-dasharray="6 4"/><path d="M75 138 l-6 -10 h12 z" class="k"/>` + T(527, 196, 'Une notion, une page :', { fs: 12, c: 'kt', a: 'middle' }) + T(527, 214, 'je découvre → la méthode', { fs: 10.5, w: 600 }) + T(527, 229, '→ la solution → je retiens', { fs: 10.5, w: 600 }) + T(527, 244, '→ à moi', { fs: 10.5, w: 600 }), 'Le déroulé d’un chapitre');
 const pGuide = `<div class="page c-nombre" data-recto="0"><div class="inner" data-sec="guide">
   <h1 class="pg-t">Ton manuel : comment ça marche ?</h1>
@@ -224,8 +252,8 @@ const pToc = `<div class="page" data-recto="0"><div class="inner" data-sec="somm
 </div><div class="foot"></div></div>`;
 
 /* ---------- « Ce que tu sais déjà » : vue d’ensemble (élève et professeur) ---------- */
-const pontSec = `<section class="sec" data-key="pont" data-recto="0" data-run="Ce que tu sais déjà" data-col="brand"><div class="blk chead kwn c-brand"><div class="ch-txt"><div class="ch-k">Avant de commencer</div><h2>🔗 Ce que tu sais déjà</h2><p>Chaque chapitre de 3e part de ce que tu as appris en 5e et en 4e, puis va plus loin. Tu n’as pas tout retenu ? C’est normal : chaque chapitre commence par le rappeler.</p></div></div>`
-  + DATA.map(c => `<div class="blk pontl c-${c.col}"><span class="pontl-n">${c.n}</span><div class="pontl-t"><b>${esc(c.titre)}</b><span class="pontl-d">S’appuie sur : ${c.pont.de.map(x => `${x.niv} <i>${esc(x.titre)}</i>`).join(' · ')}</span><span class="pontl-f">➜ ${c.pont.fil}</span></div></div>`).join('') + `</section>`;
+const pontSec = `<section class="sec" data-key="pont" data-recto="0" data-fill="1" data-run="Ce que tu sais déjà" data-col="brand"><div class="blk chead kwn c-brand"><div class="ch-txt"><div class="ch-k">Avant de commencer</div><h2>🔗 Ce que tu sais déjà</h2><p>Chaque chapitre de 3e part de ce que tu as appris en 5e et en 4e, puis va plus loin. Tu n’as pas tout retenu ? C’est normal : chaque chapitre commence par le rappeler.</p></div></div>`
+  + DATA.map(c => `<div class="blk pontl c-${c.col}"><span class="pontl-n">${c.n}</span><div class="pontl-t"><b>${esc(c.titre)}</b><span class="pontl-d"><em>Tu as déjà vu</em>${c.pont.de.map(x => `<span class="pontl-l"><b>${x.niv}</b> · <i>${esc(x.titre)}</i> : ${x.sais}</span>`).join('')}</span><span class="pontl-f"><em>Et en 3e ?</em>${c.pont.fil}</span></div></div>`).join('') + `</section>`;
 /* ---------- continuité du cycle 4 : version professeur ---------- */
 const pontProf = `<section class="sec" data-key="pontp" data-recto="0" data-run="Continuité 5e-4e → 3e · version professeur" data-col="brand"><div class="blk chead kwn c-brand"><div class="ch-txt"><div class="ch-k">Version professeur</div><h2>🧭 Continuité du cycle 4, chapitre par chapitre</h2><p>Pour chaque chapitre : les attendus de fin de 3e couverts et les parties du chapitre, les appuis de 5e et de 4e, les automatismes du brevet à réactiver (zone ⚡ Automatismes du brevet, page « Je fais le point ») et les points de vigilance repérés dans les erreurs fréquentes.</p></div></div>`
   + DATA.map(c => `<div class="blk pontp c-${c.col}"><h3><span class="pontl-n">${c.n}</span>${esc(c.titre)}</h3><p class="pontp-d"><b>Appuis</b> · ${c.pont.de.map(x => `${x.niv} « ${esc(x.titre)} »`).join(' · ')}</p><table class="pontp-t"><tr><th>Attendus de fin de 3e</th><th>À réactiver</th><th>Vigilance</th></tr><tr><td><ul>${c.pont.prog.map(x => `<li>${x}</li>`).join('')}</ul><p class="pontp-pl"><b>Parties</b> · ${c.parties.map((p, i) => `${'ABCDE'[i]}. ${p.t}`).join(' · ')}</p></td><td><ul>${c.pont.reac.map(x => `<li>${x}</li>`).join('')}</ul></td><td><ul>${c.pont.vig.map(x => `<li>${x}</li>`).join('')}</ul></td></tr></table></div>`).join('') + `</section>`;
@@ -246,7 +274,7 @@ const dnbIntro = `<div class="blk chead kwn c-brand"><div class="ch-txt"><div cl
 <div class="blk ccfhow c-brand"><div><b>⚡ Partie 1 · 6 points</b><span>des automatismes, en 20 minutes, sans calculatrice. Tu réponds sans justifier. La feuille est ramassée à la fin des 20 minutes.</span></div><div><b>🧩 Partie 2 · 14 points</b><span>des problèmes, en 1 h 40, avec la calculatrice collège. Tu justifies tes réponses.</span></div><div><b>✍️ 2 points de rédaction</b><span>compris dans la partie 2 : la clarté, la précision des raisonnements et la rédaction.</span></div><div><b>🧮 Matériel</b><span>stylo, règle, équerre, compas, rapporteur ; calculatrice pour la partie 2 seulement.</span></div></div>
 <div class="blk ccfadv c-brand"><p><b>Un conseil</b> : dans la partie 2, les exercices sont indépendants. Commence par celui que tu préfères, et laisse une trace de tes essais : une démarche, même inachevée, rapporte des points.</p></div>`;
 const dnbSec = (sj, i) => { let k = 0; const per = {}; [...sj.auto, ...sj.exos.flatMap(x => x.qs)].forEach(q => { per[q.comp] = (per[q.comp] || 0) + q.pts; }); per.com = (per.com || 0) + sj.redac;
-  const qB = (q, det) => { k++; return `<div class="blk evq c-brand" data-det="${det}"><div class="evq-h"><span class="evq-n">${k}</span><span class="evq-t">${q.t}</span><span class="cp cp-${q.comp}">${CPS[q.comp]}</span><span class="evq-p">${ptsTxt(q.pts)}</span></div>${q.choices ? `<p class="ans"><span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span></p>` : q.lines ? lines(q.lines, q.a) : `<p class="ans"><span>${q.lab || ''}</span>${bl(q.w || 40, q.a)}</p>`}</div>`; };
+  const qB = (q, det) => { k++; return `<div class="blk evq c-brand" data-det="${det}"><div class="evq-h"><span class="evq-n">${k}</span><span class="evq-t">${q.t}</span><span class="cp cp-${q.comp}">${CPS[q.comp]}</span><span class="evq-p">${ptsTxt(q.pts)}</span></div>${q.choices ? `<p class="ans"><span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span></p>` : q.lines ? lines(q.lines, q.a) : ['rai', 'com'].includes(q.comp) && !q.lab ? lines(2, q.a) : `<p class="ans ans-w"><span>${q.lab || ''}</span>${bl(q.w || 40, q.a)}</p>`}</div>`; };
   const head = `<div class="blk evh c-brand ccfh" data-sec="dnb-${sj.id}"><div class="evh-t"><span class="evh-k">🎓 Sujet blanc ${sj.id} · brevet, série professionnelle</span><h2>${sj.titre}</h2><p>Durée : 2 heures · partie 1 sans calculatrice, partie 2 avec la calculatrice</p></div><div class="evh-n"><span>Nom</span><i></i><span>Date</span><i></i><b>… / 20</b></div>
 <table class="tbl evg evg3 evg6"><tr><th>Compétence</th><th>Ce que je sais faire</th><th>Points</th><th>Insuffisante</th><th>Fragile</th><th>Satisfaisante</th><th>Très bonne</th></tr>${ORD.filter(o => per[o]).map(o => `<tr><td class="tl"><span class="cp cp-${o}">${CPS[o]}</span></td><td class="tl gp">${sj.grille[o]}</td><td>${ptsTxt(per[o])}</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>`).join('')}</table></div>`;
   const p1 = `<div class="blk evx kwn c-brand" data-det="dnb-${sj.id}-au"><div class="evx-h"><span class="evx-n">Partie 1</span><span class="evx-t">Automatismes · 20 minutes · sans calculatrice</span><span class="evx-p">6 pts</span></div><p class="evccf">Réponds sans justifier. Cette partie est ramassée au bout de 20 minutes.</p></div>` + sj.auto.map(q => qB(q, `dnb-${sj.id}-au`)).join('');
@@ -285,8 +313,8 @@ const CSS = ['print.css', 'n3.css', 'mcv.css', 'v3.css'].map(f => fs.readFileSyn
 .page.cover2{padding:0}.cvfull,.cvfull svg{width:210mm;height:297mm;display:block}
 .cvsvg text{font-family:'Inter',${FALL}}
 .niv{font:800 8.6pt 'Inter',${FALL};border-radius:99px;padding:.5mm 2.8mm;white-space:nowrap;border:1.6px solid #1D2240;color:#1D2240}.niv-a{background:#DCF4E4}.niv-d{background:#FDE3E0}.niv-n{margin:0 0 1.6mm;padding:1.2mm 3mm;border-left:5px solid var(--cc);background:var(--tt);border-radius:2mm;font-size:9.8pt}
-.opt.stk{display:block;font-size:11pt}.opt.stk>.exh{margin-bottom:1.6mm}
-.optn{font:800 8.4pt 'Inter',${FALL};color:var(--cc);background:var(--tt);border-radius:3mm;padding:.3mm 2.2mm;margin-right:2mm;white-space:nowrap}.opt .optn-e{display:none}.opt.evb .optn-s{display:none}.opt.evb .optn-e{display:inline}.opt .optn-r{display:none}.opt.rap .optn-s,.opt.rap .optn-e,.opt.rap .optn-l{display:none}.opt.rap .optn-r{display:inline}.opt .optn-l{display:none}.opt.inl .optn-l{display:inline}.opt.inl .optn-s{display:none}.opt .optn-g{display:none}.opt.inl.again .optn-l{display:none}.opt.inl.again .optn-g{display:inline}
+.pool.stk{display:block;font-size:11pt}.pool.stk>.exh{margin-bottom:1.6mm}
+.optn{font:800 8.4pt 'Inter',${FALL};color:var(--cc);background:var(--tt);border-radius:3mm;padding:.3mm 2.2mm;margin-right:2mm;white-space:nowrap}.pool .optn-e{display:none}.pool.evb .optn-s{display:none}.pool.evb .optn-e{display:inline}.pool .optn-r{display:none}.pool.rap .optn-s,.pool.rap .optn-e,.pool.rap .optn-l{display:none}.pool.rap .optn-r{display:inline}.pool .optn-l{display:none}.pool.vinl .optn-l{display:inline}.pool.vinl .optn-s{display:none}.pool .optn-g{display:none}.pool.vinl.again .optn-l{display:none}.pool.vinl.again .optn-g{display:inline}
 .owner{display:grid;grid-template-columns:auto 1fr auto 40mm;gap:3mm;align-items:end;font:800 11pt 'Inter',${FALL};color:#1D2240;margin-top:4mm}.owner i{border-bottom:2px dashed #9aa3c7;height:8mm}
 .ccfhow{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0}.ccfhow div{border:2px solid var(--cc);border-radius:4mm;padding:2.4mm 3.4mm;background:var(--tt)}.ccfhow b{display:block;font:800 12pt 'Inter',${FALL};color:#1D2240}.ccfhow span{font-size:10pt;line-height:1.3}.ccfadv{border-left:5px solid var(--cc);background:#FFFBEA;border-radius:3mm;padding:2mm 4mm;font-size:10.4pt}.ccfctx{font-size:10.6pt;margin:1mm 0 2mm}
 .evccf{font-size:9.6pt;margin:1.4mm 0 0;color:#545B7A}.appel3{margin:1.6mm 0 .4mm;border:2px dashed var(--cc);border-radius:3mm;padding:1.4mm 3mm;font-size:9.8pt;background:#fff}.appel3 b{color:var(--cc)}
@@ -302,13 +330,22 @@ const TPL = `<template id="notesTpl"><div class="blk notes"><h3>📝 Mes notes</
 const FOOT = 'Maths · 3ème Série Pro // T. Rougeaud';
 const typo = h => h.split(/(<pre[\s\S]*?<\/pre>|<style[\s\S]*?<\/style>|<svg[\s\S]*?<\/svg>)/).map((part, i) => i % 2 ? part : part.replace(/>([^<]+)</g, (m, t) => '>' + t.replace(/ ([?!:;»])/g, ' $1').replace(/« /g, '« ').replace(/(\d) (%|€)/g, '$1 $2').replace(/([+−]) (\d)/g, '$1 $2') + '<')).join('');
 const anchors = h => h.replace(/(<section [^>]*data-key="([^"]+)"[^>]*>)<div class="blk/g, '$1<div id="k-$2" class="blk').replace(/ data-sec="([^"]+)"/g, ' id="k-$1" data-sec="$1"');
-const detsHtml = () => `<div id="dets" hidden>${DETS.map(d => `<div class="dz-src" data-for="${d.id}">${d.h}</div>`).join('')}</div>`;
-const doc = (title, body, cls) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${esc(title)}</title><style>${FONTS}\n${TEX.css()}\n${ROOT}\n${CSS}</style></head>
-<body class="${cls}" data-foot="${esc(FOOT)}"><div id="flow">${anchors(typo(body))}</div><div id="out"></div>${cls === 'prof' ? typo(detsHtml()) : ''}${TPL}<script>${PAG}</script></body></html>`;
+const detsHtml = (pred = () => true) => `<div id="dets" hidden>${DETS.filter(pred).map(d => `<div class="dz-src" data-for="${d.id}">${d.h}</div>`).join('')}</div>`;
+
+// surligne automatiquement les données chiffrées (nombre + unité, €, %, °) dans les énoncés d’exercices
+const hlText = require('./lib/hl');
+const hlAuto = h => h.replace(/(<p class="tr-c">)([\s\S]*?)(<\/p>)/g, (m, a, b, c) => a + hlText(b) + c);
+const MH = h => require('./lib/mathify').html(h, t => { try { return TEX.kx(t); } catch (e) { return null; } });
+const doc = (title, body, cls, dp) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${esc(title)}</title><style>${FONTS}\n${TEX.css()}\n${ROOT}\n${CSS}</style></head>
+<body class="${cls}" data-foot="${esc(cls === 'prof' ? FOOT + ' · Spécimen enseignant' : FOOT)}"><div id="flow">${anchors(MH(typo(hlAuto(body))))}</div><div id="out"></div>${cls === 'prof' ? MH(typo(detsHtml(dp))) : ''}${TPL}${MH(typo(FLASH.join('')))}<script>${PAG}</script></body></html>`;
 const pBlank = `<div class="page blank" data-recto="0"></div>`;
 const front = pCover + pBlank + pGuide + pComp + pToc;
+const frontP = pCoverP + pBlank + pGuide + pComp + pToc;
 fs.writeFileSync(path.join(B, 'eleve.html'), doc('Maths · 3ème Série Pro — manuel', front + pontSec + chapSecs + dnbSecs + repSec + glo, 'eleve'));
-fs.writeFileSync(path.join(B, 'prof.html'), doc('Maths · 3ème Série Pro — version professeur', front + pontSec + pontProf + chapSecs + dnbSecs + repSec+ glo, 'prof'));
+fs.writeFileSync(path.join(B, 'sujets.html'), doc('Maths · 3ème Série Pro — trois sujets blancs du brevet', dnbSecs, 'eleve'));
+fs.writeFileSync(path.join(B, 'glossaire.html'), doc('Maths · 3ème Série Pro — glossaire visuel', glo, 'eleve'));
+fs.writeFileSync(path.join(B, 'prof.html'), doc('Maths · 3ème Série Pro — version professeur', frontP + pontSec + pontProf + chapSecs + dnbSecs + repSec + glo, 'prof'));
+fs.writeFileSync(path.join(B, 'sujets-prof.html'), doc('Maths · 3ème Série Pro — sujets blancs · version professeur', dnbSecs, 'prof', d => /^dnb/.test(d.id)));
 const nEx = CH.reduce((a, x) => a + x.rep.filter(r => !r.opt).length + x.c.probs.length, 0);
 fs.writeFileSync(path.join(B, 'log.json'), JSON.stringify({ version: 3, chapitres: DATA.map(c => ({ id: c.id, n: c.n, titre: c.titre })), exercices: nEx, mots: DATA.reduce((a, c) => a + c.words.length, 0) }, null, 1));
 console.log(`chapitres : ${DATA.length} · exercices du manuel : ${nEx} · contrôles de calcul : OK`);

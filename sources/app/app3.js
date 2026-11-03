@@ -7,6 +7,8 @@
   const APP = 'mcv3e', VER = 'v1', KEY = k => `${APP}.${VER}.${k}`;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const PG = DATA.pages || {};
+  const pgChip = (c, k, id) => { const m = PG[c.id]; const v = m && (id == null ? m[k] : (m[k] || {})[id]); return v ? `<span class="pgref" title="Page du manuel imprimé">📖 p. ${v}</span>` : ''; };
   const CH = DATA.chapitres, byId = Object.fromEntries(CH.map(c => [c.id, c]));
   const rnd9 = () => Math.floor(Math.random() * 1e9);
 
@@ -37,32 +39,33 @@
   /* ---------- progression et « Je sais faire » ---------- */
   const doneOf = (c, id) => { if (/^n\d/.test(id)) return !!((prog()[c.id] || {})['lc' + id.slice(1)] || {}).ok; const s = (prog()[c.id] || {})[id] || {}; return !!(s.fait || s.ok); };
   const progressOf = c => { const ids = [...c.entraine.map(e => e.id), ...c.probs.map(p => p.id)]; const done = ids.filter(id => doneOf(c, id)).length; return { done, total: ids.length, pct: Math.round(done / ids.length * 100) }; };
-  const saisList = c => `<ul class="sais">${c.bilan.map(([t, ids]) => { const ok = ids.every(id => doneOf(c, id)); return `<li class="${ok ? 'on' : ''}"><span class="sk">${ok ? '✓' : ''}</span>${t}</li>`; }).join('')}</ul>`;
+  const saisList = c => `<ul class="sais">${c.bilan.map(([t, ids]) => { const ok = ids.every(id => doneOf(c, id)); return `<li class="${ok ? 'on' : ''}"><span class="sk">${ok ? '✓' : ''}</span><span>${t}</span></li>`; }).join('')}</ul>`;
 
   /* ---------- accueil ---------- */
   function home() {
     return `<section class="hero">${DATA.deco ? `<div class="hero-deco" aria-hidden="true">${DATA.deco}</div>` : ''}<div class="hero-l"><span class="sigma">Σ</span></div><div><p class="kick">Mathématiques · 3e Prépa-Métiers</p><h1>3ème Série Pro</h1><p class="sub">Pop culture et brevet · mangas, séries, cinéma, jeux</p></div></section>
     <p class="lead">Choisis un chapitre. Chacun part d’une scène de pop culture, avec de vraies données : une leçon où chaque notion se découvre pas à pas, des méthodes, de l’entraînement corrigé tout de suite, des problèmes, puis une évaluation au format du brevet.</p>
     <div class="grid">${CH.map(c => { const p = progressOf(c), ev = ((prog()[c.id] || {}).ev || {}).best; return `<a class="card c-${c.col}" href="#/${c.id}"><span class="card-n">${c.n}</span><span class="card-i">${c.icone}</span><span class="card-t">${esc(c.titre)}</span><span class="card-d">${esc(c.dom)}</span><span class="bar"><i style="width:${p.pct}%"></i></span><span class="card-p">${p.done} / ${p.total} exercices réussis${ev != null ? ` · 🎯 ${String(ev).replace('.', ',')}/20` : ''}</span></a>`; }).join('')}</div>
-    <div class="tiles"><a class="tile" href="#/de-4e">🔗 <b>Ce que tu sais déjà</b><span>Ce que chaque chapitre reprend de la 5e et de la 4e</span></a><a class="tile" href="#/brevet">🎓 <b>Trois sujets blancs du brevet</b><span>Série professionnelle, 2 heures, sur 20</span></a><a class="tile" href="#/glossaire">🔤 <b>Glossaire visuel</b><span>Tous les mots, avec un schéma</span></a>${DATA.pdf ? `<a class="tile" href="${DATA.pdf}" download>📘 <b>Le manuel PDF</b><span>Tout le manuel, à imprimer ou à lire hors ligne</span></a>` : `<span class="tile" aria-disabled="true">📘 <b>Le manuel PDF</b><span>Bientôt disponible</span></span>`}<a class="tile" href="#/donnees">💾 <b>Mes données</b><span>Exporter, importer, effacer, taille du texte</span></a></div>`;
+    <div class="tiles"><a class="tile" href="#/de-4e">🔗 <b>Ce que tu sais déjà</b><span>Ce que chaque chapitre reprend de la 5e et de la 4e</span></a><a class="tile" href="#/brevet">🎓 <b>Trois sujets blancs du brevet</b><span>Série professionnelle, 2 heures, sur 20</span></a><a class="tile" href="#/glossaire">🔤 <b>Glossaire visuel</b><span>Tous les mots, avec un schéma</span></a>${DATA.pdf ? `<a class="tile" href="${DATA.pdf}" download>📘 <b>Le manuel PDF</b><span>Tout le manuel, à imprimer ou à lire hors ligne</span></a>` : `<span class="tile" aria-disabled="true">📘 <b>Le manuel PDF</b><span>Bientôt disponible</span></span>`}<a class="tile" href="#/donnees">💾 <b>Mes données</b><span>Exporter, importer, effacer, taille du texte</span></a></div>
+    ${DATA.pdfch ? `<details class="dl3"><summary>📥 Télécharger le manuel chapitre par chapitre (PDF)</summary><ul>${CH.map(c => `<li><a href="${pdfOf(c)}" download>${c.icone} <b>Chapitre ${c.n}</b> · ${esc(c.titre)}</a></li>`).join('')}${DATA.pdfdnb ? `<li><a href="${DATA.pdfdnb}" download>🎓 <b>Les trois sujets blancs</b> du brevet</a></li>` : ''}</ul><p class="small">Chaque PDF reprend les pages du manuel imprimé pour ce chapitre : leçons, calculs, exercices, problèmes et évaluation.</p></details>` : ''}`;
   }
 
   /* ---------- chapitre ---------- */
-  const TABS = [['depart', '🚀 Départ'], ['lecon', '📘 Leçon'], ['methodes', '🧭 Méthodes'], ['entrainement', '✏️ S’entraîner'], ['problemes', '🧩 Problèmes'], ['evaluer', '🎯 S’évaluer']];
+  const TABS = [['depart', '🚀 Départ'], ['notions', '📘 Notions'], ['methodes', '🧭 Méthodes'], ['problemes', '🧩 Problèmes'], ['evaluer', '🎯 S’évaluer']];
+  const ALIAS = { lecon: 'notions', entrainement: 'notions' };
   const pdfOf = c => DATA.pdfch ? DATA.pdfch.replace('{n}', c.n) : '';
   function chapter(c, tab) {
-    tab = TABS.some(t => t[0] === tab) ? tab : 'depart';
+    tab = ALIAS[tab] || tab; tab = TABS.some(t => t[0] === tab) ? tab : 'depart';
     const head = `<section class="chead2 c-${c.col}"><a class="back" href="#/">← Chapitres</a><p class="ck">Chapitre ${c.n} · ${esc(c.dom)}</p><h1>${c.icone} ${esc(c.titre)}</h1><p class="sous">${esc(c.sous || '')}</p>
       <p class="hbtns">${pdfOf(c) ? `<a class="btn ghost" href="${pdfOf(c)}" download>📄 PDF du chapitre</a>` : ''}<button class="btn ghost" data-sais>✅ Je sais faire</button></p><div class="saisbox" hidden>${saisList(c)}</div></section>
       <nav class="tabs c-${c.col}" role="tablist">${TABS.map(([k, l]) => `<a role="tab" href="#/${c.id}/${k}" class="${k === tab ? 'on' : ''}" aria-selected="${k === tab}">${l}</a>`).join('')}</nav>`;
     let body = '';
     if (tab === 'depart') body = departView(c);
-    if (tab === 'lecon') body = leconView(c);
+    if (tab === 'notions') body = notionsView(c);
     if (tab === 'methodes') body = methodesView(c);
-    if (tab === 'entrainement') body = autoApp(c) + `<p class="hint">Chaque exercice a un support à compléter. Les nombres changent à chaque essai : <b>🔄 Nouveaux nombres</b>. Bloqué ? Demande un indice.</p>` + c.entraine.map((e, i) => trCard(c, e, i)).join('') + (c.scratch || []).map((sx, j) => scratchCard(c, sx, c.entraine.length + j)).join('');
     if (tab === 'problemes') body = `<p class="hint">Je lis tout l’énoncé, je surligne les données, je dis avec mes mots ce que je cherche. Puis je réponds question par question.</p>` + c.probs.map((p, i) => probCard(c, p, i + 1)).join('') + metierCard(c);
     if (tab === 'evaluer') body = evalView(c);
-    return head + `<div class="tabbody">${body}</div>` + `<nav class="chnav">${c.n > 1 ? `<a href="#/c${c.n - 1}">← Chapitre ${c.n - 1}</a>` : '<span></span>'}${c.n < CH.length ? `<a href="#/c${c.n + 1}">Chapitre ${c.n + 1} →</a>` : ''}</nav>`;
+    return head + `<div class="tabbody">${body}</div>` + nextStep(c, tab);
   }
 
   /* ---------- « Ce que tu sais déjà » ---------- */
@@ -74,6 +77,30 @@
   const AUTOS = {};
   const autoApp = c => { if (!window.MCVA) return ''; const seed = AUTOS[c.id] || (AUTOS[c.id] = rnd9()), qs = window.MCVA.gen(c.id, seed, 10);
     return `<article class="auto c-${c.col}" data-c="${c.id}"><div class="ex-h"><span class="num2">⚡</span><span class="ex-t">Automatismes du brevet · 10 minutes, sans calculatrice</span><button class="btn sm ghost" data-auto-new>🔄 Nouvelles questions</button></div><p class="cons">Comme la partie 1 du brevet : les automatismes du chapitre, puis d’autres automatismes. Réponds de tête, puis vérifie.</p><ol class="auto-q">${qs.map((q, j) => `<li class="aq" data-j="${j}"><p>${q.t}</p>${q.choices ? `<span class="chs">${q.choices.map((ch, k) => `<button class="ch" data-ak="${k}">${ch}</button>`).join('')}</span>` : `<input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${j + 1}">`}<span class="afb" aria-live="polite"></span></li>`).join('')}</ol><div class="ex-act"><button class="btn" data-auto-check>Vérifier</button><span class="score"></span></div></article>`; };
+  /* ---------- « Mécanique » : dix petits calculs sans contexte pour chaque notion ---------- */
+  const fnv = t => { let h = 2166136261; for (const ch of t) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const MSEED = {};
+  const mechSet = (c, n) => { const k = c.id + '.' + n; if (!(window.MCVT && window.MCVT.MECH && window.MCVT.MECH[k])) return null; return window.MCVT.mech(c.id, n, MSEED[k] != null ? MSEED[k] : fnv(`${c.id}-m${n}`)); };
+  const mechApp = (c, n) => { const m = mechSet(c, n); if (!m) return '';
+    return `<article class="mech3 c-${c.col}" data-c="${c.id}" data-n="${n}"><div class="ex-h"><span class="mech-b">🔧 Mécanique</span><span class="ex-t">${m.titre}</span><span class="lcref">notion ${n}</span><button class="btn sm ghost" data-mech-new>🔄 Autres calculs</button></div><p class="cons">${m.consigne}</p><ol class="mech-l">${m.items.map((it, j) => `<li class="mq3" data-j="${j}"><span class="mq"><b>${it.k}.</b> ${it.t}</span><input class="inp" autocomplete="off" aria-label="Réponse ${it.k}" placeholder="ma réponse"><span class="mfb" aria-live="polite"></span></li>`).join('')}</ol><div class="ex-act"><button class="btn" data-mech-check>✔️ Je vérifie</button><span class="score"></span></div></article>`; };
+  const mnorm = x => String(x).toLowerCase().replace(/<[^>]*>/g, '').replace(/[−–]/g, '-').replace(/[x*·]/g, '×').replace(/\^(-?\d+)/g, (m, e) => e.replace(/-/, '⁻').replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d])).replace(/[\s  .;,:]/g, '');
+  const mnums = x => (String(x).replace(/[−–]/g, '-').replace(/(\d)[\s  ](?=\d{3}\b)/g, '$1').replace(/,/g, '.').match(/-?\d+(?:\.\d+)?(?:\/\d+)?/g) || []).map(t => t.includes('/') ? +t.split('/')[0] / +t.split('/')[1] : +t);
+  /* 'ok' : réponse juste ; 'ko' : fausse ; 'cmp' : écriture libre, à comparer avec la correction */
+  const mechJudge = (it, s) => { s = String(s).trim(); if (!s) return 'ko';
+    if (it.vs) { const got = mnums(s).sort((a, b) => a - b), want = it.vs.slice().sort((a, b) => a - b); const uniq = a => a.filter((v, i) => a.indexOf(v) === i); const g = uniq(got), w = uniq(want); return g.length === w.length && g.every((v, i) => Math.abs(v - w[i]) < 1e-6) ? 'ok' : 'ko'; }
+    if (it.v != null) { const g = mnums(s); return g.length && Math.abs(g[0] - it.v) <= (it.tol != null ? it.tol : 1e-6) ? 'ok' : 'ko'; }
+    if (/x/.test(String(it.a)) && !/[a-wyz]{3,}/i.test(String(it.a))) { const ev = (str, x) => { const e = String(str).toLowerCase().replace(/[−–]/g, '-').replace(/[×·]/g, '*').replace(/\^2/g, '²').replace(/²/g, '**2').replace(/,/g, '.').replace(/\s/g, '').replace(/(\d|\)|x(?!\*\*))(?=[(x])/g, '$1*'); if (!/^[0-9x+\-*/().]+$/.test(e)) return NaN; try { return Function('x', 'return ' + e)(x); } catch (err) { return NaN; } };
+      const same = [2, 5, -3].every(x => { const a = ev(s, x), b = ev(it.a, x); return Number.isFinite(a) && Math.abs(a - b) < 1e-9; });
+      if (same) return /^factorise/i.test(it.t) && !/\(/.test(s) ? 'ko' : 'ok'; if ([2, 5, -3].every(x => Number.isFinite(ev(s, x)))) return 'ko'; }
+    const yn = /^(oui|non|vrai|faux)\b/.exec(String(it.a).toLowerCase()); if (yn) return new RegExp('^' + yn[1]).test(s.toLowerCase().replace(/[^a-zé]/g, '')) ? 'ok' : 'ko';
+    return mnorm(s) === mnorm(it.a) ? 'ok' : 'cmp'; };
+  document.addEventListener('click', e => { const t = e.target.closest('[data-mech-check],[data-mech-new]'); if (!t) return; const card = t.closest('.mech3'), c = byId[card.dataset.c], n = +card.dataset.n;
+    if (t.hasAttribute('data-mech-new')) { MSEED[c.id + '.' + n] = rnd9(); const tmp = document.createElement('div'); tmp.innerHTML = mechApp(c, n); const nc = tmp.firstElementChild; card.replaceWith(nc); if (window.MCmathrun) window.MCmathrun.run(nc); return; }
+    const m = mechSet(c, n); let ok = 0;
+    $$('.mq3', card).forEach((li, j) => { const it = m.items[j], r = mechJudge(it, $('.inp', li).value); li.classList.remove('ok', 'ko', 'cmp'); li.classList.add(r); if (r === 'ok') ok++;
+      $('.mfb', li).innerHTML = r === 'ok' ? '✅' : r === 'cmp' ? `🔎 Compare avec : <span class="sol">${it.a}</span>` : `❌ <span class="sol">${it.a}</span>`; });
+    $('.score', card).textContent = `${ok} bonne${ok > 1 ? 's' : ''} réponse${ok > 1 ? 's' : ''} sur 10`; if (window.MCmathrun) window.MCmathrun.run(card); });
+  document.addEventListener('input', e => { if (e.target.id === 'glo-q') { GLO.q = e.target.value; $('#glo-list').innerHTML = gloList(); } });
   document.addEventListener('click', e => { const ak = e.target.closest('.aq [data-ak]'); if (ak) { $$('.ch', ak.parentNode).forEach(b => b.classList.toggle('sel', b === ak)); return; } const t = e.target.closest('[data-auto-check],[data-auto-new]'); if (!t) return; const card = t.closest('.auto'), cid = card.dataset.c;
     if (t.hasAttribute('data-auto-new')) { AUTOS[cid] = rnd9(); const tmp = document.createElement('div'); tmp.innerHTML = autoApp(byId[cid]); card.replaceWith(tmp.firstElementChild); return; }
     const qs = window.MCVA.gen(cid, AUTOS[cid], 10); let ok = 0;
@@ -88,7 +115,7 @@
     const seed = rnd9(), d = TR.dep(c.depart, seed);
     DEP = { c, d, got: {} };
     return `<article class="au3 c-${c.col}"><div class="au3-sc">${c.scene}</div><div class="au3-t"><p class="au3-k">🎬 La scène <span class="mt-r">${c.metier.roles.map(r => `<span>${r}</span>`).join('')}</span></p><p>${c.travail.question}</p><p class="small">${c.metier.txt}</p><div class="plan">${c.parties.map((p, k) => `<p class="plan-p"><span class="plan-l">${'ABCDE'[k]}</span><span><b>${p.t}</b><br><small>${p.n.map(j => `${j}. ${c.notions[j - 1].titre}`).join(' · ')}</small></span></p>`).join('')}</div><ul class="objs">${c.objectifs.map(o => `<li>🎯 ${o}</li>`).join('')}</ul></div></article>${pontApp(c)}
-      <article class="dep c-${c.col}" id="dep"><div class="ex-h"><span class="num2">🚀</span><span class="ex-t">Point de départ · ${d.titre}</span><button class="btn sm ghost" data-newdep>🔄 Nouveau document</button></div>
+      <article class="dep c-${c.col}" id="dep"><div class="ex-h"><span class="num2">🚀</span><span class="ex-t">Point de départ · ${d.titre}</span>${pgChip(c, 'dep')}<button class="btn sm ghost" data-newdep>🔄 Nouveau document</button></div>
       <p class="cons">Lis le document, puis réponds. ${d.qs.some(q => q.kind === 'tap') || d.qs.some(q => q.kind === 'qcm' && hasCells(d, q)) ? 'Pour certaines questions, <b>touche directement le document</b>.' : ''}</p>
       <div class="dep-g"><div class="dep-doc" id="dep-doc">${d.doc}</div><ol class="dep-q">${d.qs.map((q, j) => `<li class="dq" data-j="${j}"><p>${q.t}</p>${q.kind === 'tap' ? `<p class="tapme">👆 Touche la bonne case du tableau.</p>` : q.kind === 'qcm' ? `<span class="chs">${q.choices.map((ch, k) => `<button class="ch" data-dk="${k}">${ch}</button>`).join('')}</span>${hasCells(d, q) ? '<p class="tapme small">… ou touche le document.</p>' : ''}` : `<span class="qa-r"><input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${j + 1}"><button class="btn sm" data-dv>Vérifier</button></span>`}<p class="qa-fb" aria-live="polite"></p></li>`).join('')}</ol></div>
       <p class="score" id="dep-score"></p></article>`;
@@ -105,15 +132,33 @@
 
   /* ---------- 2. leçon : une notion en cinq temps, dans l’ordre logique ---------- */
   const TEMPS = [['decouvre', '🔎 Je découvre'], ['methode', '🧭 La méthode'], ['solution', '✅ La solution'], ['retiens', '📌 Je retiens'], ['amoi', '✏️ À moi']];
-  function leconView(c) {
-    return `<p class="hint">Chaque notion part d’une question. Lis-la, cherche un peu, puis découvre la méthode étape par étape, la solution, ce qu’il faut retenir, et entraîne-toi tout de suite.</p>` + c.notions.map((nt, i) => `<article class="nt c-${c.col}" id="nt${i + 1}" data-t="1" data-c="${c.id}" data-i="${i + 1}"><p class="nt-k">Notion ${i + 1} sur ${c.notions.length} · Partie ${'ABCDE'[c.parties.findIndex(p => p.n.includes(i + 1))]} · ${c.parties.find(p => p.n.includes(i + 1)).t}</p><div class="lc-h"><span class="lc-n">${i + 1}</span>${nt.titre}</div>
+  /* une notion = sa leçon pas à pas, puis ses exercices : on traite notion après notion, comme dans le manuel imprimé */
+  const leconArt = (c, nt, i) => `<article class="nt c-${c.col}" id="nt${i + 1}" data-t="1" data-c="${c.id}" data-i="${i + 1}"><p class="nt-k">Chapitre ${c.n} · ${esc(c.titre)} · notion ${i + 1} sur ${c.notions.length} ${pgChip(c, 'n', i + 1)}</p><div class="lc-h"><span class="lc-n">${i + 1}</span><span>${nt.titre}</span></div>
       <div class="tp tp-decouvre"><span class="t3">🔎 Je découvre</span>${sayBtn(`#nt${i + 1} .tp-decouvre p`)}<div class="tp-dg"><p>${nt.decouvre.txt}</p><div class="tp-img">${nt.decouvre.img}</div></div><p class="small">Prends le temps de chercher : qu’est-ce qu’on te demande ? Quel calcul essayer ?</p></div>
-      <div class="tp tp-methode" hidden><span class="t3">🧭 La méthode, pas à pas</span><button class="btn sm ghost replay" data-replay-vis>▶ Rejouer</button><ol class="mth">${nt.methode.map(m => `<li>${m}</li>`).join('')}</ol>${nt.vois}</div>
+      <div class="tp tp-methode" hidden><span class="t3">🧭 La méthode, pas à pas</span><button class="btn sm ghost replay" data-replay-vis>▶ Rejouer</button><ol class="mth">${nt.methode.map(m => `<li><div>${m}</div></li>`).join('')}</ol>${nt.vois}</div>
       <div class="tp tp-solution" hidden><div class="sol3"><span class="t3">✅ La solution</span>${nt.solution}</div></div>
       <div class="tp tp-retiens" hidden><div class="lc-r"><span class="lc-t">📌 Je retiens</span>${nt.retiens}</div><div class="att">⚠️ <b>Attention</b> · ${nt.attention}</div></div>
       <div class="tp tp-amoi" hidden><span class="t3">✏️ À moi</span><ol class="amoi">${nt.amoi.map(([q, a], k) => `<li><p>${q}</p><p class="qa-r"><input class="inp" autocomplete="off" aria-label="Ma réponse ${k + 1}" placeholder="ma réponse"><button class="btn sm ghost" data-amoi="${k}">Voir la réponse</button></p><p class="amoi-a" hidden>💬 ${a}</p></li>`).join('')}</ol></div>
-      <div class="ex-act"><button class="btn" data-temps="${i + 1}">${TEMPS[1][1]} ▶</button><button class="btn ghost" data-tout="${i + 1}">Tout afficher</button><span class="tpc">1 / 5</span></div></article>`).join('')
-      + `<article class="mk c-${c.col}"><div class="lc-h"><span class="lc-n">🔤</span>Les mots à connaître</div><table class="tbl mkt3"><tr><th>Le mot</th><th>Ce qu’il veut dire</th><th>En exemple</th></tr>${c.mots.map(r => `<tr><td class="mk-w">${r[0]}</td><td>${r[1]}</td><td class="mk-x">« ${r[2]} »</td></tr>`).join('')}</table></article>`;
+      <div class="ex-act"><button class="btn" data-temps="${i + 1}">${TEMPS[1][1]} ▶</button><button class="btn ghost" data-tout="${i + 1}">Tout afficher</button><span class="tpc">1 / 5</span></div></article>`;
+  function notionsView(c) {
+    const N = c.notions.length, lcOf = lc => (lc >= 1 && lc <= N ? lc : N);
+    const ex = n => c.entraine.map((e, i) => [e, i]).filter(([e]) => lcOf(+e.lc) === n);
+    const sc = n => (c.scratch || []).map((sx, j) => [sx, j]).filter(([sx]) => lcOf(+sx.lc) === n);
+    const blocks = c.notions.map((nt, i) => {
+      const n = i + 1, es = ex(n), ss = sc(n);
+      const exh = es.length || ss.length ? `<div class="nx-h c-${c.col}"><span class="nx-t">✏️ Je m’entraîne · notion ${n}</span><span class="nx-s">${es.length + ss.length} exercice${es.length + ss.length > 1 ? 's' : ''}</span></div>` : '';
+      const nxt = n < N ? `<a class="btn ghost nx-next" href="#nt${n + 1}" data-goto="nt${n + 1}"><span>Notion ${n + 1} : ${c.notions[n].titre} ↓</span></a>` : '';
+      return leconArt(c, nt, i) + mechApp(c, n) + exh + es.map(([e, k]) => trCard(c, e, k)).join('') + ss.map(([sx, j]) => scratchCard(c, sx, c.entraine.length + j)).join('') + (nxt ? `<p class="nx-nav">${nxt}</p>` : '');
+    }).join('');
+    const mots = `<article class="mk c-${c.col}"><div class="lc-h"><span class="lc-n">🔤</span>Les mots à connaître</div><table class="tbl mkt3"><tr><th>Le mot</th><th>Ce que ça veut dire</th><th>En exemple</th></tr>${c.mots.map(r => `<tr><td class="mk-w">${r[0]}</td><td>${r[1]}</td><td class="mk-x">« ${r[2]} »</td></tr>`).join('')}</table></article>`;
+    return `<p class="hint">On avance notion après notion : je lis la question, je découvre la méthode étape par étape, puis je m’entraîne tout de suite sur cette notion. Le numéro 📖 indique la page du manuel imprimé.</p>` + blocks + autoApp(c) + mots;
+  }
+  /* à la fin d’un onglet : on propose l’étape suivante du chapitre, pas le chapitre suivant */
+  function nextStep(c, tab) {
+    const k = TABS.findIndex(t => t[0] === tab), nx = TABS[k + 1];
+    const chap = `<p class="chnav2">${c.n > 1 ? `<a href="#/c${c.n - 1}">← Chapitre ${c.n - 1}</a>` : '<span></span>'}${c.n < CH.length ? `<a href="#/c${c.n + 1}">Chapitre ${c.n + 1} →</a>` : ''}</p>`;
+    if (nx) return `<nav class="nextstep c-${c.col}"><p>Étape suivante du chapitre</p><a class="btn big" href="#/${c.id}/${nx[0]}">${nx[1]} →</a></nav>`;
+    return `<nav class="nextstep c-${c.col}"><p>Chapitre ${c.n} terminé ? Bravo !</p><a class="btn big" href="#/${c.id}/depart">↺ Revoir le chapitre</a></nav>${chap}`;
   }
   function showTemps(art, all) {
     const tps = $$('.tp', art), N = TEMPS.length, n = all ? N : Math.min(N, (+art.dataset.t || 1) + 1);
@@ -155,7 +200,7 @@
     const g = genOf(c, e), best = ((prog()[c.id] || {})[e.id] || {}).best;
     const inline = new Set(g.items.filter(it => g.support.includes(`data-k="${it.k}"`)).map(it => it.k));
     const below = g.items.filter(it => !inline.has(it.k));
-    return `<article class="ex2 tr c-${c.col}" id="ex-${e.id}" data-c="${c.id}" data-e="${e.id}" data-h="0"><div class="ex-h"><span class="num2">${i + 1}</span>${nivB(e)}<span class="ex-t">${g.titre}</span><span class="lcref">notion ${e.lc}</span>${best != null ? `<span class="best">★ ${best}/${g.items.length}</span>` : ''}</div>${e.niv ? nivNote(e, trAll(c).findIndex(x => x.id === e.base) + 1) : ''}<p class="cons">${g.consigne}</p>
+    return `<article class="ex2 tr c-${c.col}" id="ex-${e.id}" data-c="${c.id}" data-e="${e.id}" data-h="0"><div class="ex-h"><span class="num2">${i + 1}</span>${nivB(e)}<span class="ex-t">${g.titre}</span><span class="lcref">notion ${e.lc}</span>${pgChip(c, 'x', e.id)}${best != null ? `<span class="best">★ ${best}/${g.items.length}</span>` : ''}</div>${e.niv ? nivNote(e, trAll(c).findIndex(x => x.id === e.base) + 1) : ''}<p class="cons">${g.consigne}</p>
       <div class="sup">${g.support}</div>${below.length ? `<div class="its3">${below.map(it => `<div class="it3" data-k="${it.k}"><b>${it.k}.</b>${it.qcm ? `<span class="chs">${it.qcm.choices.map((ch, k) => `<button class="ch" data-k="${k}">${ch}</button>`).join('')}</span>` : `<input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${it.k}">`}<span class="itfb" aria-live="polite"></span></div>`).join('')}</div>` : ''}
       <div class="ex-act"><button class="btn" data-check>Vérifier</button><button class="btn ghost" data-hint>💡 Indice 1</button><button class="btn ghost" data-new>🔄 Nouveaux nombres</button><span class="score"></span></div><div class="hints"></div><div class="fbs" aria-live="polite"></div></article>`;
   }
@@ -203,13 +248,14 @@
   const findP = (c, id) => c.probs.find(x => x.id === id);
   function probCard(c, p, num, plus) {
     const st = (prog()[c.id] || {})[p.id] || {};
-    return `${p.bulle && !plus ? `<div class="bulle2"><span>💬</span><p>${p.bulle}</p></div>` : ''}<article class="pb c-${c.col}${p.cls === 'bac' ? ' bac' : ''}" id="ex-${p.id}" data-c="${c.id}" data-p="${p.id}"${plus ? ' data-plus="1"' : ''} data-h="0"><div class="ex-h"><span class="num2">${num}</span>${p.defi ? `<span class="defi">🏔️ Défi · ${p.defi} étapes</span>` : `<span class="et3b">${ET[p.etape] || 'Problème'}</span>`}<span class="ex-t">${p.titre}</span>${st.fait ? '<span class="best">✓ fait</span>' : ''}${sayBtn('#st-' + p.id)}</div>
+    return `${p.bulle && !plus ? `<div class="bulle2"><span>💬</span><p>${p.bulle}</p></div>` : ''}<article class="pb c-${c.col}${p.cls === 'bac' ? ' bac' : ''}" id="ex-${p.id}" data-c="${c.id}" data-p="${p.id}"${plus ? ' data-plus="1"' : ''} data-h="0"><div class="ex-h"><span class="num2">${num}</span>${p.defi ? `<span class="defi">🏔️ Défi · ${p.defi} étapes</span>` : `<span class="et3b">${ET[p.etape] || 'Problème'}</span>`}<span class="ex-t">${p.titre}</span>${pgChip(c, 'x', p.id)}${st.fait ? '<span class="best">✓ fait</span>' : ''}${sayBtn('#st-' + p.id)}</div>
       ${p.cls === 'bac' ? '<p class="bacline">🎓 Comme au brevet : consignes à l’infinitif.</p>' : ''}<div class="stmt" id="st-${p.id}">${p.intro}</div>
-      <div class="ans2">${p.seq.map(s => s.x != null ? `<div class="qx">${s.x}</div>` : qaBlock(p.qs[s.q], s.q)).join('')}${p.outro ? `<div class="qx">${p.outro}</div>` : ''}</div>
+      <div class="ans2">${p.seq.map(s => s.x != null ? `<div class="qx">${s.x}</div>` : qaBlock(p.qs[s.q], s.q, p.etape === 4 || p.defi)).join('')}${p.outro ? `<div class="qx">${p.outro}</div>` : ''}</div>
       ${p.autravail ? `<p class="autr2"><span class="cp2 cp-${p.autravail.comp}">${CPS[p.autravail.comp]}</span> 🧑‍🔧 <b>Dans un métier, cela sert à</b> ${p.autravail.txt}</p>` : ''}
       <div class="ex-act">${(p.hints || []).length ? `<button class="btn ghost" data-phint>💡 Indice 1</button>` : ''}${p.pouce ? `<button class="btn ghost" data-pouce>🤝 Coup de pouce</button>` : ''}<button class="btn ghost" data-corr>✔️ Correction</button><button class="btn" data-done>J’ai terminé</button></div><div class="hints"></div><p class="pouce2" hidden>🤝 ${p.pouce || ''}</p><p class="corr2" hidden>✔️ ${p.corr}</p></article>`;
   }
-  const qaBlock = (q, j) => `<div class="qa" data-j="${j}"><p class="qa-q"><b>${q.l}</b> ${q.t}</p>${q.v != null ? `<div class="qa-r">${q.lab ? `<span class="qa-l">${q.lab}</span>` : ''}<input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${esc(q.l)}" placeholder="ma réponse"><button class="btn sm" data-qv>Vérifier</button></div>` : `<div class="qa-r"><textarea class="inp txt" rows="2" aria-label="Réponse rédigée ${esc(q.l)}" placeholder="J’écris ma réponse ici"></textarea><button class="btn sm ghost" data-qs>Comparer</button></div>`}<p class="qa-fb" aria-live="polite"></p></div>`;
+  const qComp = t => /Justifie|Explique|Pourquoi|Démontre|Prouve|Conclus|Vérifie|Peut-on|Que signifie|Interprète|est-il|est-elle|est-ce/i.test(t) ? 'rai' : /Représente|Trace|Place |Construis|Dessine|graphique|Complète le tableau/i.test(t) ? 'rep' : /Écris (une|la|l’) ?(fonction|formule|expression|équation|programme)|Modélise|Traduis|Exprime/i.test(t) ? 'mod' : /Repère|Relève|Lis |Cherche|Quelles? données/i.test(t) ? 'che' : 'cal';
+  const qaBlock = (q, j, cpq) => `<div class="qa" data-j="${j}"><p class="qa-q"><b>${q.l}</b> ${q.t}${cpq ? ` <span class="cp2 cp-${qComp(q.t.replace(/<[^>]*>/g, ''))}">${CPS[qComp(q.t.replace(/<[^>]*>/g, ''))]}</span>` : ''}</p>${q.v != null ? `<div class="qa-r">${q.lab ? `<span class="qa-l">${q.lab}</span>` : ''}<input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${esc(q.l)}" placeholder="ma réponse"><button class="btn sm" data-qv>Vérifier</button></div>` : `<div class="qa-r"><textarea class="inp txt" rows="2" aria-label="Réponse rédigée ${esc(q.l)}" placeholder="J’écris ma réponse ici"></textarea><button class="btn sm ghost" data-qs>Comparer</button></div>`}<p class="qa-fb" aria-live="polite"></p></div>`;
   function checkQ(pb, qa) {
     const c = byId[pb.dataset.c], p = findP(c, pb.dataset.p), q = p.qs[+qa.dataset.j], fb = $('.qa-fb', qa), n = (+qa.dataset.n || 0) + 1; qa.dataset.n = n;
     const v = TR.verdict({ v: q.v, tol: q.tol, err: q.err || [] }, $('.inp', qa).value);
@@ -236,7 +282,7 @@
       + `<p class="evred2">✍️ <b>Rédaction · ${pts(e.redac)}</b> · phrases complètes, calculs posés, unités, résultats encadrés. Tu t’auto-évalues après avoir rendu ta copie.</p>`
       + `<div class="ex-act evact"><button class="btn" data-ev="rendre">📝 Rendre ma copie</button><button class="btn ghost" data-ev="again" hidden>🔄 Recommencer</button></div><section class="evres" id="ev-res" hidden></section>`;
   }
-  const evalView = c => copie({ ...c.eval, titre: c.titre }, c.col, [c.id, 'ev'], '🎯 S’évaluer au format du brevet · série professionnelle · noté sur 20', 45);
+  const evalView = c => copie({ ...c.eval, titre: c.titre }, c.col, [c.id, 'ev'], '🎯 S’évaluer au format du brevet · série professionnelle · noté sur 20 ' + pgChip(c, 'ev'), 55);
   const evQs = () => [...EV.e.auto, ...EV.e.exos.flatMap(x => x.qs)];
   function evScore() {
     const qs = evQs(), per = {}; let tot = 0, pending = 0;
@@ -265,7 +311,25 @@
 
   /* ---------- glossaire, données, à propos ---------- */
   const wordCard = (w, c) => `<article class="wcard c-${c.col}"><div class="w-ill">${w.pic}</div><h3>${w.mot}${w.abr ? ` <span class="sym">${w.abr}</span>` : ''}</h3><p>${w.def}</p>${w.formule ? `<p class="w-f">${w.formule}</p>` : ''}${w.sens ? `<p class="w-s">↔️ ${w.sens}</p>` : ''}<p class="w-p">« ${w.phrase} »</p></article>`;
-  const glossaire = () => `<section class="chead2 c-brand"><a class="back" href="#/">← Accueil</a><h1>🔤 Glossaire visuel</h1><p>Les mots de chaque chapitre, avec un schéma, une définition et une phrase pour les réutiliser.</p></section>` + CH.map(c => `<h2 class="etape">${c.icone} Chapitre ${c.n} · ${esc(c.titre)}</h2><div class="words">${c.words.map(w => wordCard(w, c)).join('')}</div>`).join('');
+  /* glossaire : par thème (par défaut), par chapitre ou de A à Z, avec une barre de recherche */
+  const GTHEMES = [['🔢 Nombres et calculs', [1, 2, 3]], ['📊 Proportionnalité, statistiques et probabilités', [4, 6, 7]], ['📈 Fonctions', [5]], ['📐 Espace, géométrie et mesures', [8, 9, 10]]];
+  const GLO = { q: '', mode: 'theme' };
+  const gnorm = t => String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/<[^>]*>/g, '');
+  const gword = (w, c) => `<div class="wc-wrap"><span class="wc-ch c-${c.col}">Chapitre ${c.n}</span>${wordCard(w, c)}</div>`;
+  function gloList() {
+    const q = gnorm(GLO.q).trim(), all = CH.flatMap(c => c.words.map(w => [w, c]));
+    const hit = ([w]) => !q || gnorm(w.mot + ' ' + (w.abr || '') + ' ' + w.def + ' ' + (w.phrase || '')).includes(q);
+    const sel = all.filter(hit);
+    if (!sel.length) return `<p class="panel">Aucun mot ne correspond à « ${esc(GLO.q)} ». Essaie un mot plus court, ou regarde la liste complète en effaçant la recherche.</p>`;
+    const count = `<p class="gcount" aria-live="polite">${sel.length} mot${sel.length > 1 ? 's' : ''}${q ? ` pour « ${esc(GLO.q)} »` : ''}</p>`;
+    const grp = (t, items) => items.length ? `<h2 class="etape">${t} <small>${items.length}</small></h2><div class="words">${items.map(([w, c]) => gword(w, c)).join('')}</div>` : '';
+    if (GLO.mode === 'az') return count + `<div class="words">${sel.sort((a, b) => gnorm(a[0].mot).localeCompare(gnorm(b[0].mot), 'fr')).map(([w, c]) => gword(w, c)).join('')}</div>`;
+    if (GLO.mode === 'chap') return count + CH.map(c => grp(`${c.icone} Chapitre ${c.n} · ${esc(c.titre)}`, sel.filter(x => x[1] === c))).join('');
+    return count + GTHEMES.map(([t, ns]) => grp(t, sel.filter(x => ns.includes(x[1].n)))).join('');
+  }
+  const glossaire = () => `<section class="chead2 c-brand"><a class="back" href="#/">← Accueil</a><h1>🔤 Glossaire visuel</h1><p>Les mots du programme, rangés par thème, avec un schéma, une définition et une phrase pour les réutiliser.</p></section>
+    <div class="gtools"><label class="gsearch"><span aria-hidden="true">🔎</span><input id="glo-q" type="search" inputmode="search" autocomplete="off" placeholder="Chercher un mot…" aria-label="Chercher un mot dans le glossaire" value="${esc(GLO.q)}"></label>
+    <div class="gmodes" role="group" aria-label="Classer les mots">${[['theme', 'Par thème'], ['chap', 'Par chapitre'], ['az', 'De A à Z']].map(([k, l]) => `<button class="btn sm ghost ${GLO.mode === k ? 'on' : ''}" data-gmode="${k}" aria-pressed="${GLO.mode === k}">${l}</button>`).join('')}</div></div><div id="glo-list">${gloList()}</div>`;
   const donnees = () => `<section class="chead2 c-brand"><a class="back" href="#/">← Accueil</a><h1>💾 Mes données</h1><p>Ta progression reste sur cet appareil. Tu peux la sauvegarder dans un fichier, la recharger ailleurs ou l’effacer.</p></section>
     <div class="panel"><p><button class="btn" data-export>⬇️ Exporter ma progression</button></p><p><label class="btn ghost">⬆️ Importer un fichier<input type="file" accept="application/json" data-import hidden></label></p><p><button class="btn danger" data-clear>🗑️ Effacer ma progression</button></p><p class="small">Format : fichier JSON « maths-3e-serie-pro-progression ». Rien n’est envoyé sur Internet.</p></div>
     <div class="panel"><h3>Taille du texte</h3><p><button class="btn ghost" data-size="1">Normale</button> <button class="btn ghost" data-size="1.15">Grande</button> <button class="btn ghost" data-size="1.3">Très grande</button></p></div>`;
@@ -303,7 +367,9 @@
       else { const k = +cell.dataset.cell, ok = k === q.ok; cell.classList.add(ok ? 'tapok' : 'tapko'); depAnswer(j, ok, ok ? `${bravo()} (${q.a})` : `❌ Ce n’est pas « ${q.choices[k]} ». Regarde encore le document.`); }
       return;
     }
+    const go = e.target.closest('[data-goto]'); if (go) { e.preventDefault(); const el = document.getElementById(go.dataset.goto); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     const t = e.target.closest('button, [data-say]'); if (!t) return;
+    if (t.dataset.gmode) { GLO.mode = t.dataset.gmode; $$('[data-gmode]').forEach(b => { b.classList.toggle('on', b === t); b.setAttribute('aria-pressed', b === t); }); $('#glo-list').innerHTML = gloList(); return; }
     if (t.dataset.say) { const el = $(t.dataset.say); if (el) { const cl = el.cloneNode(true); cl.querySelectorAll('.kx').forEach(k => k.replaceWith(' ' + (k.dataset.t || '') + ' ')); cl.querySelectorAll('.say, .t3').forEach(b => b.remove()); speak(cl.textContent); } return; }
     if (t.hasAttribute('data-sais')) { const b = $('.saisbox'); b.hidden = !b.hidden; return; }
     // départ

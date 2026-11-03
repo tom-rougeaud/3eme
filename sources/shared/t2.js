@@ -31,15 +31,24 @@
     const ctx = pick(R, [['cartes énergie', 'cartes dresseur'], ['tomes de shōnen', 'tomes de shōjo'], ['épisodes d’action', 'épisodes comiques']]);
     const W = 600, cw = Math.min(46, 540 / D), x0 = (W - cw * D) / 2;
     let s = ''; for (let i = 0; i < D; i++) s += `<rect x="${x0 + i * cw}" y="40" width="${cw - 3}" height="40" rx="4" class="${i < n1 ? 'k' : i < S ? 'k2' : 'wh'} ks" stroke-width="1.4"/>`;
-    s += T(x0 + n1 * cw / 2, 30, `${a}/${b}`, { fs: 15, c: 'kt' }) + T(x0 + (n1 + n2 / 2) * cw, 30, `${c}/${d}`, { fs: 15, c: 'kt' }) + (rest ? T(x0 + (S + rest / 2) * cw, 104, 'le reste', { fs: 13, c: 'ts' }) : '');
-    const items = [num('a', D, 0, String(D), [{ v: b + d, m: 'On n’additionne pas les dénominateurs : on cherche un multiple commun de ' + b + ' et ' + d + '.' }, { v: b * d === D ? -1 : b * d, m: b * d + ' marche aussi, mais on cherche le plus petit multiple commun.' }]),
-      num('b', n1, 0, String(n1)), num('c', n2, 0, String(n2)),
-      num('d', S, 0, String(S), [{ v: a + c, m: 'Il faut d’abord écrire les deux fractions avec le dénominateur ' + D + '.' }]),
-      num('e', rest, 0, String(rest), [{ v: S, m: 'C’est la part des deux familles. Le reste : ' + D + ' − ' + S + '.' }])];
-    xs(items, { a: `${D} est le plus petit multiple commun de ${b} et ${d}`, b: `${a}/${b} = (${a} × ${D / b})/(${b} × ${D / b}) = ${n1}/${D}`, c: `${c}/${d} = (${c} × ${D / d})/(${d} × ${D / d}) = ${n2}/${D}`, d: `${n1}/${D} + ${n2}/${D} = ${S}/${D}`, e: `1 − ${S}/${D} = ${D}/${D} − ${S}/${D} = ${rest}/${D}` });
-    return { titre: 'La barre de fractions', consigne: `Dans une collection, ${a}/${b} sont des ${ctx[0]} et ${c}/${d} des ${ctx[1]}. La barre est partagée en ${D} parts égales.`,
-      support: svg(W, 116, s, 'Barre partagée en parts égales') + `<p class="tr-l">a. Dénominateur commun : ${tb('a', String(D), 12)}</p><p class="tr-l">${a}/${b} = ${tb('b', String(n1), 10)} / ${D} · ${c}/${d} = ${tb('c', String(n2), 10)} / ${D}</p><p class="tr-l">d. Les deux familles ensemble : ${tb('d', String(S), 10)} / ${D} · e. Il reste ${tb('e', String(rest), 10)} / ${D}</p>`, items,
-      hints: ['Cherche un nombre qui est dans la table de ' + b + ' et dans celle de ' + d + '.', 'Pour changer de dénominateur, on multiplie en haut et en bas par le même nombre.', 'Le tout vaut ' + D + '/' + D + ' : le reste, c’est ' + D + ' moins la somme.'] };
+    s += T(x0 + n1 * cw / 2, 30, `${a}/${b}`, { fs: 15, c: 'kt' }) + T(x0 + (n1 + n2 / 2) * cw, 30, `${c}/${d}`, { fs: 15, c: 'kt' }) + (rest ? T(x0 + (S + rest / 2) * cw, 104, 'les autres', { fs: 13, c: 'ts' }) : '');
+    /* trois propositions de fraction : la bonne, l’erreur « on additionne aussi les dénominateurs », l’inverse */
+    const val = f => { const [x, y] = String(f).split('/').map(Number); return Number.isFinite(x / y) ? x / y : f; };
+    const mix = (right, cands) => { const w = []; cands.forEach(f => { if (val(f) !== val(right) && !w.some(g => val(g) === val(f))) w.push(f); }); const ch = H.shuffle(R, [right, ...w.slice(0, 2)]); return [ch, ch.indexOf(right)]; };
+    const fS = `${S}/${D}`, fR = `${rest}/${D}`;
+    const [chC, okC] = mix(fS, [`${a + c}/${b + d}`, `${S}/${b + d}`, `${D}/${S}`]);
+    const [chD, okD] = mix(fR, [fS, `${rest}/${b + d}`, `${D}/${rest}`, `${rest}/${D + b}`]);
+    const okE = 'Pour écrire les deux fractions avec le même dénominateur';
+    const [chE, okEi] = mix(okE, ['Parce qu’on additionne les deux dénominateurs', 'Parce qu’on multiplie les deux fractions']);
+    const items = [num('a', n1, 0, String(n1), [{ v: a, m: 'Le numérateur ' + a + ' est le nombre de parts pour un découpage en ' + b + '. Ici la barre a ' + D + ' parts : multiplie ' + a + ' par ' + D / b + '.' }]),
+      num('b', n2, 0, String(n2), [{ v: c, m: 'Multiplie le numérateur par le même nombre que le dénominateur : ' + c + ' × ' + D / d + '.' }]),
+      qcm('c', chC, okC, fS, `${n1} parts + ${n2} parts = ${S} parts sur ${D} : on additionne les numérateurs et on garde le dénominateur ${D}.`),
+      qcm('d', chD, okD, fR, `${D} − ${S} = ${rest} parts restent : ${fR} de la collection.`),
+      qcm('e', chE, okEi, okE, 'On ne peut additionner que des parts de même taille : ' + D + ' est un multiple de ' + b + ' et de ' + d + '.')];
+    xs(items, { a: `${a}/${b} = (${a} × ${D / b})/(${b} × ${D / b}) = ${n1}/${D} : ${n1} parts`, b: `${c}/${d} = (${c} × ${D / d})/(${d} × ${D / d}) = ${n2}/${D} : ${n2} parts` });
+    return { titre: 'La barre de fractions', consigne: `Dans une collection, ${a}/${b} sont des ${ctx[0]} et ${c}/${d} des ${ctx[1]}. La barre ci-dessous est partagée en ${D} parts égales : les ${ctx[0]} sont en foncé, les ${ctx[1]} en rose clair.`,
+      support: svg(W, 116, s, 'Barre partagée en parts égales') + `<p class="tr-l">a. Combien de parts de la barre représentent ${a}/${b} de la collection ?</p><p class="tr-l">b. Combien de parts de la barre représentent ${c}/${d} de la collection ?</p><p class="tr-l">c. Quelle fraction de la collection représentent les ${ctx[0]} et les ${ctx[1]} ensemble ?</p><p class="tr-l">d. Quelle fraction de la collection reste-t-il pour les autres ?</p><p class="tr-l">e. Pourquoi a-t-on partagé la barre en ${D} parts égales ?</p>`, items,
+      hints: ['Cherche un nombre qui est dans la table de ' + b + ' et dans celle de ' + d + '.', 'Pour changer de dénominateur, on multiplie en haut et en bas par le même nombre.', 'La collection entière vaut ' + D + '/' + D + ' : le reste, c’est ' + D + ' moins le nombre de parts déjà colorées.'] };
   };
 
   /* e2 · puissances de 10 et préfixes */
@@ -52,9 +61,9 @@
       num('c', pre[2], 0, String(pre[2])),
       num('d', 10 ** -n, n, fr(10 ** -n), [{ v: -(10 ** n), m: '10 puissance −' + n + ' est un nombre positif, très petit : 1 ÷ 10' + sup(n) + '.' }])];
     xs(items, { a: `10${sup(p)} × 10${sup(q)} = 10${sup(p + q)} : on additionne les exposants ${p} + ${q}`, b: `10${sup(u)} ÷ 10${sup(v)} = 10${sup(u - v)} : on soustrait les exposants ${u} − ${v}`, c: `${pre[0]} = 10${sup(pre[2])} : ${k} ${pre[3]} = ${k} × 10${sup(pre[2])} ${pre[4]}`, d: `10${sup(-n)} = 1 ÷ 10${sup(n)} = ${fr(10 ** -n)}` });
-    return { titre: 'Puissances de 10 et préfixes', consigne: 'Complète avec un exposant ou un nombre décimal. Le tableau des préfixes t’aide.',
+    return { titre: 'Puissances de 10 et préfixes', consigne: 'Réponds à chaque question. Le tableau des préfixes t’aide.',
       support: table(['Préfixe', 'Symbole', 'Puissance de 10', 'En nombre'], [['giga', 'G', '10⁹', '1 000 000 000'], ['méga', 'M', '10⁶', '1 000 000'], ['kilo', 'k', '10³', '1 000'], ['milli', 'm', '10⁻³', '0,001']])
-        + `<p class="tr-l">a. 10${sup(p)} × 10${sup(q)} = 10 puissance ${tb('a', String(p + q), 10)}</p><p class="tr-l">b. 10${sup(u)} ÷ 10${sup(v)} = 10 puissance ${tb('b', String(u - v), 10)}</p><p class="tr-l">c. ${pre[5]} : ${k} ${pre[3]} = ${k} × 10 puissance ${tb('c', String(pre[2]), 10)} ${pre[4]}</p><p class="tr-l">d. 10${sup(-n)} en écriture décimale : ${tb('d', fr(10 ** -n), 16)}</p>`, items,
+        + `<p class="tr-l">a. Écris 10${sup(p)} × 10${sup(q)} sous la forme « 10 puissance n ». Quel est l’exposant n ? n = ${tb('a', String(p + q), 10)}</p><p class="tr-l">b. Écris 10${sup(u)} ÷ 10${sup(v)} sous la forme « 10 puissance n ». Quel est l’exposant n ? n = ${tb('b', String(u - v), 10)}</p><p class="tr-l">c. ${pre[5]} : ${k} ${pre[3]}. Écris cette valeur en ${pre[4]} sous la forme « ${k} × 10 puissance n ». Quel est n ? n = ${tb('c', String(pre[2]), 10)}</p><p class="tr-l">d. Écris 10${sup(-n)} en écriture décimale : ${tb('d', fr(10 ** -n), 16)}</p>`, items,
       hints: ['Multiplier deux puissances de 10 : on additionne les exposants.', 'Diviser : on soustrait les exposants.', 'Un exposant négatif donne un nombre plus petit que 1 : 10⁻² = 0,01.'] };
   };
 
@@ -119,11 +128,11 @@
     /* e2 · puissances de 10 et préfixes */
     TR.c2e2a = R => {
       const p = int(R, 2, 4), q = int(R, 2, 4), u = int(R, 5, 8), v = int(R, 2, 4), pre = pick(R, [['kilo', 'ko', 'octets', 3], ['méga', 'Mo', 'octets', 6], ['giga', 'Go', 'octets', 9]]);
-      return Q('Puissances de 10, pas à pas', '10 puissance n s’écrit avec un 1 suivi de n zéros. Complète.', [
+      return Q('Puissances de 10, pas à pas', '10 puissance n s’écrit avec un 1 suivi de n zéros. Réponds à chaque question.', [
         { lab: `Nombre de zéros dans 10${sup(p)}`, v: p, d: 0, w: 10, x: `10${sup(p)} = ${fr(10 ** p)} : ${p} zéros.`, err: [{ v: 10 ** p, m: 'On demande le nombre de zéros, pas la valeur.' }] },
-        { lab: `10${sup(p)} × 10${sup(q)} = 10 puissance`, v: p + q, d: 0, w: 10, x: `${fr(10 ** p)} × ${fr(10 ** q)} = ${fr(10 ** (p + q))} = 10${sup(p + q)} : ${p} + ${q} = ${p + q}`, err: [{ v: p * q, m: 'Pour une multiplication, on additionne les exposants.' }] },
-        { lab: `10${sup(u)} ÷ 10${sup(v)} = 10 puissance`, v: u - v, d: 0, w: 10, x: `On soustrait les exposants : ${u} − ${v} = ${u - v}`, err: [{ v: u + v, m: 'Pour une division, on soustrait les exposants.' }] },
-        { lab: `Un ${pre[1]} contient 10 puissance ? ${pre[2]} (préfixe ${pre[0]})`, v: pre[3], d: 0, w: 10, x: `${pre[0]} signifie 10${sup(pre[3])} : 1 ${pre[1]} = ${fr(10 ** pre[3])} ${pre[2]}.` }],
+        { lab: `10${sup(p)} × 10${sup(q)} = 10 puissance n, donc n =`, v: p + q, d: 0, w: 10, x: `${fr(10 ** p)} × ${fr(10 ** q)} = ${fr(10 ** (p + q))} = 10${sup(p + q)} : ${p} + ${q} = ${p + q}`, err: [{ v: p * q, m: 'Pour une multiplication, on additionne les exposants.' }] },
+        { lab: `10${sup(u)} ÷ 10${sup(v)} = 10 puissance n, donc n =`, v: u - v, d: 0, w: 10, x: `On soustrait les exposants : ${u} − ${v} = ${u - v}`, err: [{ v: u + v, m: 'Pour une division, on soustrait les exposants.' }] },
+        { lab: `Un ${pre[1]} contient 10 puissance n ${pre[2]} (préfixe ${pre[0]}). Quel est n ? n =`, v: pre[3], d: 0, w: 10, x: `${pre[0]} signifie 10${sup(pre[3])} : 1 ${pre[1]} = ${fr(10 ** pre[3])} ${pre[2]}.` }],
         ['Compte les zéros : 10 puissance 3 = 1 000, il y a trois zéros.', 'Multiplication : on additionne les exposants.', 'Division : on soustrait les exposants.'],
         table(['Préfixe', 'Puissance de 10', 'En nombre'], [['kilo', '10³', '1 000'], ['méga', '10⁶', '1 000 000'], ['giga', '10⁹', '1 000 000 000']]) + AI('10² × 10³ = 100 × 1 000 = 100 000 = 10⁵ ; on a bien 2 + 3 = 5.'));
     };
