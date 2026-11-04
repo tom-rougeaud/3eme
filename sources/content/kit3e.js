@@ -1,4 +1,4 @@
-/* 3ème Série Pro — outils de rédaction communs aux 10 chapitres. */
+/* 3ème Prépa-Métiers — outils de rédaction communs aux 10 chapitres. */
 'use strict';
 const K = require('../lib/kit3');
 const { MCVP } = require('../shared/g1.js');
@@ -27,7 +27,7 @@ function scratchSvg(prog, lab) {
     const w = Math.max(70, b.t.length * 7.1 + 24); maxW = Math.max(maxW, x + w);
     const hat = b.c === 'evt';
     body += hat ? `<path d="M${x} ${y + 10} q30 -14 60 0 h${w - 60} a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-${w} a4 4 0 0 1 -4 -4 v-18 a4 4 0 0 1 4 -4z" fill="${col}"/>` : `<rect x="${x}" y="${y}" width="${w}" height="28" rx="5" fill="${col}"/><path d="M${x + 12} ${y}h16l-4 5h-8z" fill="#fff" opacity=".35"/>`;
-    body += `<text x="${x + 10}" y="${y + (hat ? 27 : 19)}" font-size="13" font-weight="700" fill="#fff" font-family="Inter">${esc(b.t)}</text>`;
+    body += `<text x="${x + 10}" y="${y + (hat ? 27 : 19)}" font-size="13" font-weight="700" fill="#fff" font-family="Fira Sans">${esc(b.t)}</text>`;
     if (b.c === 'ctl' && b.open) body += `<rect x="${x}" y="${y + 28}" width="10" height="${b.open * 32}" fill="${col}"/>`;
     y += hat ? 40 : 32;
   });
@@ -37,7 +37,7 @@ const scratch = (titre, texte, prog, suite = '') => `<div class="prog prog-s"><d
 /* petit tableau HTML de données */
 const tab = (head, rows, cls = '') => `<table class="dt tcx dt-sm ${cls}"><thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, j) => j === 0 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 /* tableau en deux colonnes de paires (pour une liste longue : top 10…) */
-const tab2 = (head, rows) => { const h = Math.ceil(rows.length / 2); return `<table class="dt tcx dt-sm"><thead><tr>${[...head, ...head].map(x => `<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.slice(0, h).map((r, i) => `<tr>${[...r, ...(rows[h + i] || ['', ''])].map((c, j) => j % 2 === 0 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`; };
+const tab2 = (head, rows, cls = '') => { const h = Math.ceil(rows.length / 2); return `<table class="dt tcx dt-sm ${cls}"><thead><tr>${[...head, ...head].map(x => `<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.slice(0, h).map((r, i) => `<tr>${[...r, ...(rows[h + i] || ['', ''])].map((c, j) => j % 2 === 0 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`; };
 /* pictogramme simple : un objet du magasin au trait (sans visage) */
 const pic = (w, h, body, lab) => S(w, h, body, lab).replace('class="pic vis"', 'class="pic vis dsc"');
 /* pastille d’étape dans une méthode visuelle (même numéro que la liste « La méthode, pas à pas ») */

@@ -1,4 +1,4 @@
-/* 3ème Série Pro — scènes d’ouverture (une par chapitre) : objets de pop culture au trait, jamais de personnage ni de logo.
+/* 3ème Prépa-Métiers — scènes d’ouverture (une par chapitre) : objets de pop culture au trait, jamais de personnage ni de logo.
    viewBox 600 × 230. Et les 6 compétences du cycle 4, illustrées par un geste. */
 'use strict';
 const { Sketch, esc } = require('./visu');
@@ -73,7 +73,7 @@ SC.c7 = () => { const K = Sketch(517); let s = K.P(K.line(30, 205, 570, 205));
   s += de(220, 120, [[16, 16], [46, 46]]) + de(296, 112, [[16, 16], [31, 31], [46, 46], [16, 46], [46, 16]]);
   [[392, 70], [432, 60], [472, 74]].forEach(([x, y], i) => { s += (i === 1 ? acc(x, y, 36, 64, .85, 3) : tint(x, y, 36, 64, .95, 3)) + K.P(K.rect(x, y, 36, 64), { w: 1.6 }); });
   s += K.tx(450, 46, 'boosters', 13);
-  [['#E6A800', 'répéter 1000 fois'], ['#3E9E3E', 'aléatoire 1 à 20'], ['#E8730A', 'ajouter 1']].forEach(([cl, t], i) => { s += `<rect x="${380 + i * 8}" y="${150 + i * 18}" width="170" height="16" rx="4" fill="${cl}"/><text x="${388 + i * 8}" y="${162 + i * 18}" font-family="Inter" font-size="10" font-weight="700" fill="#fff">${t}</text>`; });
+  [['#E6A800', 'répéter 1000 fois'], ['#3E9E3E', 'aléatoire 1 à 20'], ['#E8730A', 'ajouter 1']].forEach(([cl, t], i) => { s += `<rect x="${380 + i * 8}" y="${150 + i * 18}" width="170" height="16" rx="4" fill="${cl}"/><text x="${388 + i * 8}" y="${162 + i * 18}" font-family="Fira Sans" font-size="10" font-weight="700" fill="#fff">${t}</text>`; });
   return SV(600, 230, s, 'Un dé à 20 faces, deux dés à 6 faces, trois boosters et des blocs de programme'); };
 
 /* 8 · triangle rectangle : un grand écran et sa diagonale, une statue géante (silhouette rectangulaire), une équerre */
@@ -96,7 +96,7 @@ SC.c10 = () => { const K = Sketch(520); let s = K.P(K.line(30, 205, 570, 205));
   s += tint(186, 140, 64, 64, .35, 32) + K.P(K.circ(218, 172, 32)) + `<polygon points="218,160 229,168 225,181 211,181 207,168" class="k"/>`;
   s += tint(280, 30, 120, 120, .3, 60) + K.P(K.circ(340, 90, 60)) + `<ellipse cx="340" cy="90" rx="60" ry="14" fill="none" class="ks" stroke-width="1.6"/><ellipse cx="340" cy="90" rx="16" ry="60" fill="none" class="ks" stroke-width="1.6"/>` + K.tx(340, 172, 'latitude, longitude', 12);
   [[1, 0], [0, 1], [1, 1], [2, 1], [1, 2], [1, 3], [0, 3]].forEach(([x, y]) => { s += `<rect x="${440 + x * 18}" y="${40 + y * 18}" width="18" height="18" class="k ks" stroke-width="1"/>`; });
-  [['#E8901A', 'répéter 6 fois'], ['#3373CC', 'avancer de 50'], ['#3373CC', 'tourner de 60°']].forEach(([cl, t], i) => { s += `<rect x="${430 + (i ? 10 : 0)}" y="${130 + i * 22}" width="130" height="18" rx="4" fill="${cl}"/><text x="${438 + (i ? 10 : 0)}" y="${143 + i * 22}" font-family="Inter" font-size="10.5" font-weight="700" fill="#fff">${t}</text>`; });
+  [['#E8901A', 'répéter 6 fois'], ['#3373CC', 'avancer de 50'], ['#3373CC', 'tourner de 60°']].forEach(([cl, t], i) => { s += `<rect x="${430 + (i ? 10 : 0)}" y="${130 + i * 22}" width="130" height="18" rx="4" fill="${cl}"/><text x="${438 + (i ? 10 : 0)}" y="${143 + i * 22}" font-family="Fira Sans" font-size="10.5" font-weight="700" fill="#fff">${t}</text>`; });
   return SV(600, 230, s, 'Un seau de pop-corn, un ballon, un globe terrestre, un petit vaisseau en pixel art et des blocs de programme'); };
 
 /* les 6 compétences du cycle 4, illustrées par un geste */

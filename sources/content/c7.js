@@ -1,4 +1,4 @@
-/* Chapitre 7 · Probabilités — 3ème Série Pro (programme du cycle 4, BO n° 31 du 30 juillet 2020). */
+/* Chapitre 7 · Probabilités — 3ème Prépa-Métiers (programme du cycle 4, BO n° 31 du 30 juillet 2020). */
 'use strict';
 const K = require('./kit3e');
 const { H, FM, R, Q, BQ, PB, S, T, Rc, Ar, st, SN, Sketch, MCVP, tab } = K;
@@ -24,7 +24,7 @@ module.exports = function (chk) {
   const skD20 = () => { const k = Sketch(771); return SV(d20(70, 62, 46, k) + tt(150, 54, '15 ou', 14) + tt(150, 74, 'plus ?', 14) + tt(100, 124, 'un dé à 20 faces', 11), 'Un dé à 20 faces'); };
   const skEchec = () => { const k = Sketch(772); return SV(d20(66, 60, 44, k, '1') + tt(148, 50, 'échec', 14) + tt(148, 70, 'critique', 14) + tt(100, 124, 'et le contraire ?', 11), 'Un dé à 20 faces qui montre 1'); };
   const skDeuxDes = () => { const k = Sketch(773); const de = (x, y, n) => fill(x, y, 54, 54, .9, 'k2', 8) + k.P(k.rect(x, y, 54, 54)) + (n === 3 ? [[14, 14], [27, 27], [40, 40]] : [[14, 14], [40, 14], [27, 27], [14, 40], [40, 40]]).map(([a, b]) => `<circle cx="${x + a}" cy="${y + b}" r="5" class="k"/>`).join(''); return SV(de(30, 30, 3) + de(110, 22, 5) + tt(100, 112, '3 + 5 = 8', 14), 'Deux dés à 6 faces : 3 et 5'); };
-  const skSimu = () => { const k = Sketch(774); const col = ['#E6A800', '#E8901A', '#3E9E3E', '#7A52CC']; let s = ''; ['quand ⚑ cliqué', 'répéter 1000 fois', 'si … ≥ 15 alors', 'ajouter 1 à succès'].forEach((l, i) => { s += `<rect x="${20 + (i > 1 ? 14 : 0)}" y="${14 + i * 24}" width="${150 - (i > 1 ? 14 : 0)}" height="20" rx="4" fill="${col[i]}"/>` + `<text x="${28 + (i > 1 ? 14 : 0)}" y="${28 + i * 24}" font-family="Inter" font-size="10.5" font-weight="700" fill="#fff">${l}</text>`; }); return SV(s + tt(100, 124, `succès : ${OK1000}`, 13), 'Un programme Scratch qui simule 1 000 lancers'); };
+  const skSimu = () => { const k = Sketch(774); const col = ['#E6A800', '#E8901A', '#3E9E3E', '#7A52CC']; let s = ''; ['quand ⚑ cliqué', 'répéter 1000 fois', 'si … ≥ 15 alors', 'ajouter 1 à succès'].forEach((l, i) => { s += `<rect x="${20 + (i > 1 ? 14 : 0)}" y="${14 + i * 24}" width="${150 - (i > 1 ? 14 : 0)}" height="20" rx="4" fill="${col[i]}"/>` + `<text x="${28 + (i > 1 ? 14 : 0)}" y="${28 + i * 24}" font-family="Fira Sans" font-size="10.5" font-weight="700" fill="#fff">${l}</text>`; }); return SV(s + tt(100, 124, `succès : ${OK1000}`, 13), 'Un programme Scratch qui simule 1 000 lancers'); };
 
   /* ---------- méthodes visuelles ---------- */
   // 1. les 20 issues, 6 favorables

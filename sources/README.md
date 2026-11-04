@@ -1,4 +1,4 @@
-# Sources de « 3ème Série Pro » (manuel PDF + appli)
+# Sources de « 3ème Prépa-Métiers » (manuel PDF + appli)
 
 Ces fichiers fabriquent le manuel de mathématiques de 3e Prépa-Métiers (version élève et version professeur), les PDF par chapitre, les trois sujets blancs du brevet série professionnelle et l’appli publiée dans le dépôt `3eme`.
 Programme : cycle 4 (arrêté du 17 juillet 2020, BO n° 31 du 30 juillet 2020), attendus de fin de 3e ; épreuve de mathématiques du brevet, série professionnelle (note de service du 2 septembre 2025, BO n° 33 du 4 septembre 2025).

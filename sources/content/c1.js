@@ -1,4 +1,4 @@
-/* Chapitre 1 · Nombres entiers et arithmétique — 3ème Série Pro (programme du cycle 4, BO n° 31 du 30 juillet 2020). */
+/* Chapitre 1 · Nombres entiers et arithmétique — 3ème Prépa-Métiers (programme du cycle 4, BO n° 31 du 30 juillet 2020). */
 'use strict';
 const K = require('./kit3e');
 const { H, FM, R, Q, BQ, PB, S, T, Rc, Ar, st, bl, SN } = K;

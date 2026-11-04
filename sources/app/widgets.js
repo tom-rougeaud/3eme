@@ -1,4 +1,4 @@
-/* Maths · 3ème Série Pro — rubrique « Je manipule » : un simulateur par chapitre.
+/* Maths · 3ème Prépa-Métiers — rubrique « Je manipule » : un simulateur par chapitre.
    Tout se calcule dans le navigateur ; rien n’est envoyé ni enregistré. Les graphiques utilisent le même moteur exact que le manuel (MCVP). */
 (function () {
   'use strict';

@@ -1,4 +1,4 @@
-/* 3ème Série Pro — la référence de pop culture de chaque chapitre (roles : les références citées, txt : ce que l’on fait avec)
+/* 3ème Prépa-Métiers — la référence de pop culture de chaque chapitre (roles : les références citées, txt : ce que l’on fait avec)
    et « Les maths dans un contexte professionnel » : un métier (hors commerce et vente), ce qu’il fait, ses maths, et des formations possibles après la 3e. */
 'use strict';
 module.exports = {

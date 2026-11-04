@@ -1,4 +1,4 @@
-/* 3ème Série Pro — trois sujets blancs du brevet, série professionnelle (note de service du 2 septembre 2025, BO n° 33 du 4 septembre 2025).
+/* 3ème Prépa-Métiers — trois sujets blancs du brevet, série professionnelle (note de service du 2 septembre 2025, BO n° 33 du 4 septembre 2025).
    Partie 1 : 9 automatismes, 6 points, 20 minutes, sans calculatrice. Partie 2 : 4 exercices (2 + 4 + 4 + 2 points), 1 h 40,
    calculatrice autorisée, plus 2 points de rédaction. Chaque question porte son corrigé détaillé (x) pour la version professeur. */
 'use strict';

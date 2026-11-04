@@ -1,4 +1,4 @@
-/* 3ème Série Pro — « S’évaluer au format du brevet » : une évaluation par chapitre, sur le modèle de l’épreuve de mathématiques
+/* 3ème Prépa-Métiers — « S’évaluer au format du brevet » : une évaluation par chapitre, sur le modèle de l’épreuve de mathématiques
    du DNB, série professionnelle (note de service du 2 septembre 2025) : partie 1 automatismes sans calculatrice (6 points),
    partie 2 problèmes avec la calculatrice (12 points), 2 points de rédaction. 55 minutes (une séance), sur 20.
    La grille reprend les 6 compétences du cycle 4, écrites en phrases d’élève. */

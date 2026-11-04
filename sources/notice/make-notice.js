@@ -1,23 +1,23 @@
-/* Notice d’installation (PDF A4) — appli et manuel « 3ème Série Pro ». */
+/* Notice d’installation (PDF A4) — appli et manuel « 3ème Prépa-Métiers ». */
 'use strict';
 const fs = require('fs'), path = require('path');
 const HERE = path.join(__dirname, '..');
 const FONTS = fs.readFileSync(path.join(HERE, 'style', 'fonts.css'), 'utf8');
 const RES = k => { try { return JSON.parse(fs.readFileSync(path.join(HERE, 'build', k + '.result.json'), 'utf8')).pages; } catch (e) { return '…'; } };
 const QR = JSON.parse(fs.readFileSync(path.join(HERE, 'lib', 'qr.json'), 'utf8'));
-const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Notice d’installation · 3ème Série Pro</title><style>${FONTS}
+const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Notice d’installation · 3ème Prépa-Métiers</title><style>${FONTS}
 @page{size:A4;margin:13mm 14mm 14mm}
 *{box-sizing:border-box}
-body{font-family:'Andika','Noto Color Emoji','DejaVu Sans',sans-serif;font-size:9.4pt;line-height:1.3;color:#1D2240;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-h1,h2,.k,.tag,th{font-family:'Inter','Noto Color Emoji','DejaVu Sans',sans-serif}
+body{font-family:'Fira Sans','Noto Color Emoji','DejaVu Sans',sans-serif;font-size:9.4pt;line-height:1.3;color:#1D2240;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+h1,h2,.k,.tag,th{font-family:'Fira Sans','Noto Color Emoji','DejaVu Sans',sans-serif}
 .hd{display:grid;grid-template-columns:auto 1fr 34mm;gap:5mm;align-items:center;background:#FFEC73;color:#1D2240;border-radius:6mm;padding:5mm 6mm;position:relative;overflow:hidden}
 .hd::after{content:"";position:absolute;right:-18mm;top:-22mm;width:60mm;height:60mm;border-radius:50%;background:#FFF5B8}
 .hd>*{position:relative;z-index:1}
-.sig{display:grid;place-items:center;width:17mm;height:17mm;border-radius:4.5mm;background:#1D2240;color:#FFEC73;font:800 28pt 'Inter'}
+.sig{display:grid;place-items:center;width:17mm;height:17mm;border-radius:4.5mm;background:#1D2240;color:#FFEC73;font:800 28pt 'Fira Sans'}
 .k{font-weight:800;font-size:8.6pt;letter-spacing:.08em;text-transform:uppercase;color:#6B4A00;margin:0}
 h1{margin:.5mm 0 1mm;font-size:21pt;line-height:1.05}
 .hd p{margin:0}
-.qr{background:#fff;border-radius:3mm;padding:1.6mm;text-align:center;color:#9A5B00;font:800 7pt 'Inter'}.qr svg{width:100%;display:block}
+.qr{background:#fff;border-radius:3mm;padding:1.6mm;text-align:center;color:#9A5B00;font:800 7pt 'Fira Sans'}.qr svg{width:100%;display:block}
 h2{font-size:12pt;color:#9A5B00;margin:3.6mm 0 1.4mm;break-after:avoid;display:flex;align-items:center;gap:2mm}
 h2 b{display:inline-grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:#FFEC73;color:#1D2240;font-size:10pt}
 .box{border:1.6px solid #D9DEF2;border-radius:4mm;padding:2.2mm 3.6mm;background:#fff}tr,li{break-inside:avoid}
@@ -30,7 +30,7 @@ table{width:100%;border-collapse:collapse;font-size:9.6pt}th,td{border:1px solid
 .small{font-size:8.8pt;color:#545B7A}
 .pb{break-before:page}
 </style></head><body>
-<div cla<div class="hd"><span class="sig">Σ</span><div><p class="k">Notice d’installation · octobre 2026</p><h1>3ème Série Pro</h1><p>L’appli en ligne et le manuel PDF de mathématiques pour la 3e Prépa-Métiers, brevet série professionnelle</p></div><div class="qr">${QR.home.svg}L’appli</div></div>
+<div cla<div class="hd"><span class="sig">Σ</span><div><p class="k">Notice d’installation · octobre 2026</p><h1>3ème Prépa-Métiers</h1><p>L’appli en ligne et le manuel PDF de mathématiques pour la 3e Prépa-Métiers, brevet série professionnelle</p></div><div class="qr">${QR.home.svg}L’appli</div></div>
 
 <h2><b>1</b>Ce qui est en ligne</h2>
 <div class="box"><table><tr><th style="width:30%">Élément</th><th>Adresse</th></tr>

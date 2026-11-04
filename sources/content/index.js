@@ -1,4 +1,4 @@
-/* 3ème Série Pro — chargement des 10 chapitres (contenu commun à l’appli et au manuel). */
+/* 3ème Prépa-Métiers — chargement des 10 chapitres (contenu commun à l’appli et au manuel). */
 'use strict';
 const fs = require('fs'), path = require('path');
 const METIERS = require('./metiers3');

@@ -1,4 +1,4 @@
-/* Chapitre 5 · Fonctions — 3ème Série Pro (programme du cycle 4, BO n° 31 du 30 juillet 2020). */
+/* Chapitre 5 · Fonctions — 3ème Prépa-Métiers (programme du cycle 4, BO n° 31 du 30 juillet 2020). */
 'use strict';
 const K = require('./kit3e');
 const { H, FM, R, Q, BQ, PB, st, SN, Sketch, MCVP } = K;

@@ -1,6 +1,6 @@
-# Σ 3ème Série Pro
+# Σ 3ème Prépa-Métiers
 
-L’appli et le manuel de mathématiques **3ème Série Pro**, pour la 3e Prépa-Métiers et le brevet série professionnelle.
+L’appli et le manuel de mathématiques **3ème Prépa-Métiers**, pour la 3e Prépa-Métiers et le brevet série professionnelle.
 
 👉 En ligne : https://tom-rougeaud.github.io/3eme/
 

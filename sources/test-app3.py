@@ -1,4 +1,4 @@
-"""Test de bout en bout de l’appli 3ème Série Pro : 10 chapitres × 6 onglets, et les 3 sujets blancs du brevet, deux largeurs d’écran.
+"""Test de bout en bout de l’appli 3ème Prépa-Métiers : 10 chapitres × 6 onglets, et les 3 sujets blancs du brevet, deux largeurs d’écran.
    On répond juste partout (départ, résolu à compléter, supports, problèmes, contrôle blanc) et on vérifie
    qu’une erreur fréquente reçoit bien son message d’explication."""
 import asyncio, sys

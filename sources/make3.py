@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Construit le manuel « 3ème Série Pro » : node gen3.js, puis pagination et PDF (élève et professeur).
+"""Construit le manuel « 3ème Prépa-Métiers » : node gen3.js, puis pagination et PDF (élève et professeur).
    python3 make.py          → build/maths-3e-serie-pro-eleve.pdf et build/maths-3e-serie-pro-professeur.pdf
    python3 make.py --html   → seulement les HTML
 La version professeur n’est jamais publiée."""
@@ -45,7 +45,7 @@ def meta(path, title, res, log, prof):
     add('Réponses de « Je m’entraîne »', 'rep'); add('Glossaire visuel', 'glo')
     w.page_mode = '/UseOutlines'
     w._root_object[NameObject('/Lang')] = TextStringObject('fr-FR')
-    w.add_metadata({'/Title': title, '/Author': 'Tom Rougeaud', '/Subject': 'Maths · 3ème Série Pro — CC BY-NC 4.0'})
+    w.add_metadata({'/Title': title, '/Author': 'Tom Rougeaud', '/Subject': 'Maths · 3ème Prépa-Métiers — CC BY-NC 4.0'})
     w.compress_identical_objects(remove_identicals=True, remove_orphans=True)
     with open(path, 'wb') as f: w.write(f)
     if shutil.which('qpdf'):
@@ -61,7 +61,7 @@ def split(pdf, res, log):
         a = S[c['id']]; b = (S[ids[i + 1]] - 1) if i + 1 < len(ids) else (S.get('dnb') or S['rep']) - 1
         w = PdfWriter()
         for k in range(a - 1, b): w.add_page(r.pages[k])
-        w.add_metadata({'/Title': f"Maths · 3ème Série Pro — chapitre {c['n']} · {c['titre']}", '/Author': 'Tom Rougeaud', '/Subject': 'CC BY-NC 4.0'})
+        w.add_metadata({'/Title': f"Maths · 3ème Prépa-Métiers — chapitre {c['n']} · {c['titre']}", '/Author': 'Tom Rougeaud', '/Subject': 'CC BY-NC 4.0'})
         w._root_object[NameObject('/Lang')] = TextStringObject('fr-FR')
         w.compress_identical_objects(remove_identicals=True, remove_orphans=True)
         dst = out / f"maths-3e-serie-pro-chapitre-{c['n']}.pdf"
@@ -73,8 +73,8 @@ async def main():
     if '--html' in sys.argv: return
     log = json.loads((B / 'log.json').read_text(encoding='utf-8'))
     ok = True
-    for kind, pdf, title in [('eleve', B / 'maths-3e-serie-pro-eleve.pdf', '3ème Série Pro — manuel'),
-                             ('prof', B / 'maths-3e-serie-pro-professeur.pdf', '3ème Série Pro — version professeur')]:
+    for kind, pdf, title in [('eleve', B / 'maths-3e-serie-pro-eleve.pdf', '3ème Prépa-Métiers — manuel'),
+                             ('prof', B / 'maths-3e-serie-pro-professeur.pdf', '3ème Prépa-Métiers — version professeur')]:
         if '--eleve' in sys.argv and kind == 'prof': continue
         res = await render(kind, pdf)
         (B / f'{kind}.result.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding='utf-8')
@@ -93,7 +93,7 @@ async def main():
             print(f"{name} : {res['pages']} pages")
             for e in res['errors'][:20]: print('  ✗', e); ok = False
             r = PdfReader(str(dst)); w = PdfWriter(clone_from=r)
-            w.add_metadata({'/Title': f'Maths · 3ème Série Pro — {title}', '/Author': 'Tom Rougeaud', '/Subject': 'CC BY-NC 4.0'})
+            w.add_metadata({'/Title': f'Maths · 3ème Prépa-Métiers — {title}', '/Author': 'Tom Rougeaud', '/Subject': 'CC BY-NC 4.0'})
             w._root_object[NameObject('/Lang')] = TextStringObject('fr-FR')
             with open(dst, 'wb') as f: w.write(f)
     sys.exit(0 if ok else 1)

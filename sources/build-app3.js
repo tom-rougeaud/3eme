@@ -1,4 +1,4 @@
-/* Construit l’appli « Maths · 3ème Série Pro » en un seul fichier HTML (aucune ressource externe). */
+/* Construit l’appli « Maths · 3ème Prépa-Métiers » en un seul fichier HTML (aucune ressource externe). */
 'use strict';
 const fs = require('fs'), path = require('path');
 const HERE = __dirname, OUT = process.argv[2] || path.join(HERE, '..', '3eme', 'index.html');
@@ -55,8 +55,8 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>3ème Série Pro</title>
-<meta name="description" content="Mathématiques de 3e Prépa-Métiers, brevet série professionnelle : des scènes de pop culture avec de vraies données, des leçons pas à pas, de l’entraînement corrigé, des problèmes, des évaluations et trois sujets blancs du brevet.">
+<title>3ème Prépa-Métiers</title>
+<meta name="description" content="Mathématiques de 3e Prépa-Métiers, brevet série professionnelle : des références de la pop culture avec de vraies données, des leçons pas à pas, de l’entraînement corrigé, des problèmes, des évaluations et trois sujets blancs du brevet.">
 <meta name="theme-color" content="#FFEC73">
 <meta name="author" content="Tom Rougeaud">
 <link rel="icon" href="${FAV}">
@@ -64,7 +64,7 @@ const html = `<!doctype html>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="3ème Série Pro">
+<meta name="apple-mobile-web-app-title" content="3ème Prépa-Métiers">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>${FONTS}</style>
 <style>${require('./lib/tex').css()}</style>
@@ -73,9 +73,9 @@ const html = `<!doctype html>
 </head>
 <body>
 <a class="skip" href="#main">Aller au contenu</a>
-<header class="top"><div class="top-in"><a class="logo" href="#/"><i>Σ</i><span><b>3ème Série Pro</b><small>Maths · brevet série professionnelle</small></span></a><nav><a href="#/brevet" class="hide-s">Brevet</a><a href="#/glossaire" class="hide-s">Glossaire</a><a href="#/a-propos">À propos</a></nav></div></header>
+<header class="top"><div class="top-in"><a class="logo" href="#/"><i>Σ</i><span><b>3ème Prépa-Métiers</b><small>Maths · brevet série professionnelle</small></span></a><nav><a href="#/brevet" class="hide-s">Brevet</a><a href="#/glossaire" class="hide-s">Glossaire</a><a href="#/a-propos">À propos</a></nav></div></header>
 <main id="main" tabindex="-1"><noscript><p>Cette application a besoin de JavaScript.${HASPDF ? ` Le manuel PDF reste disponible : <a href="${PDF}">télécharger le manuel</a>.` : ''}</p></noscript></main>
-<footer class="foot2">3ème Série Pro — Tom Rougeaud · CC BY-NC 4.0 · <a href="#/confidentialite">Confidentialité</a> · <a href="#/donnees">Mes données</a> · <a href="https://tom-rougeaud.github.io/mcv/">Tout le programme</a></footer>
+<footer class="foot2">3ème Prépa-Métiers — Tom Rougeaud · CC BY-NC 4.0 · <a href="#/confidentialite">Confidentialité</a> · <a href="#/donnees">Mes données</a> · <a href="https://tom-rougeaud.github.io/mcv/">Tout le programme</a></footer>
 <script>${js(rd('shared/gens.js'))}</script>
 <script>${js(rd('shared/g1.js'))}</script>
 <script>${js(rd('shared/pie.js'))}</script>
@@ -92,7 +92,7 @@ ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter(n => fs.existsSync(path.join(HERE, 'sha
 <script>${js(rd('lib/mathrun.js'))}</script>
 <script>try { MCmathrun.watch(document.getElementById('main')); } catch (e) { }</script>
 <script>try { MCVfit.watch(document.getElementById('main')); } catch (e) { }</script>
-<script>window.MCVPWA={"name": "3ème Série Pro", "short": "3ème Série Pro", "key": "mcv3e.v1", "color": "#F5A300", "ink": "#1D2240"};</script>
+<script>window.MCVPWA={"name": "3ème Prépa-Métiers", "short": "3e Prépa-Métiers", "key": "mcv3e.v1", "color": "#F5A300", "ink": "#1D2240"};</script>
 <script>${js(rd('pwa/pwa.js'))}</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* 3ème Série Pro — « Ce que tu sais déjà » : ce que chaque chapitre reprend de la 5e et de la 4e, et ce qu’il ajoute en 3e.
+/* 3ème Prépa-Métiers — « Ce que tu sais déjà » : ce que chaque chapitre reprend de la 5e et de la 4e, et ce qu’il ajoute en 3e.
    de      : notions déjà vues (niveau, thème, ce que l’élève y a appris)
    fil     : une phrase de synthèse (page d’ouverture du manuel)
    ex2/ex1 : la même situation traitée en 4e, puis en 3e
