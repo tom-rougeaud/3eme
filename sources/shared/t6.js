@@ -45,15 +45,16 @@
   };
 
   /* e3 · lire un diagramme en barres */
-  const JOURS = ['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'];
+  const JOURS = ['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'], JOURS_L = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
   TR.c6e3 = R => {
-    const v = JOURS.map(() => int(R, 4, 24) * 50), tot = sum(v), iM = v.indexOf(Math.max(...v)), i1 = int(R, 0, 6), i2 = (i1 + int(R, 1, 6)) % 7;
+    const v = JOURS.map(() => int(R, 4, 24) * 50), tot = sum(v), iM = v.indexOf(Math.max(...v)); let i1 = int(R, 0, 6), i2 = (i1 + int(R, 1, 6)) % 7;
+    if (v[i1] < v[i2]) { const t0 = i1; i1 = i2; i2 = t0; }
     const g = P.plot({ W: 560, H: 220, x: [0, 7, 1], y: [0, 1200, 100], ly: 2, ml: 52, mr: 12, mt: 12, mb: 28, fs: 11, yl: 'spectateurs', xt: JOURS.map((j, i) => [i + .5, j]), grid: true, cls: 'pic vis trs' });
     const bars = v.map((y, i) => `<rect x="${g.X(i + .15)}" y="${g.Y(y)}" width="${g.X(.7) - g.X(0)}" height="${g.Y(0) - g.Y(y)}" class="k2 ks" stroke-width="1.4"/>`).join('');
     const items = [num('a', v[iM], 0, String(v[iM])), num('b', v[i1] - v[i2], 0, fr(v[i1] - v[i2])), num('c', tot, 0, fr(tot)), num('d', rnd(v[iM] / tot * 100, 1), 1, fr(rnd(v[iM] / tot * 100, 1)) + ' %', [{ v: rnd(tot / v[iM], 1), m: 'Fréquence = effectif ÷ total, pas l’inverse.' }])];
-    xs(items, { a: `la barre la plus haute est celle du ${JOURS[iM]} : ${v[iM]}`, b: `${v[i1]} − ${v[i2]} = ${fr(v[i1] - v[i2])}`, c: `${v.join(' + ')} = ${fr(tot)}`, d: `${v[iM]} ÷ ${fr(tot)} × 100 ≈ ${fr(rnd(v[iM] / tot * 100, 1))} %` });
+    xs(items, { a: `la barre la plus haute est celle du ${JOURS_L[iM]} : ${v[iM]}`, b: `${v[i1]} − ${v[i2]} = ${fr(v[i1] - v[i2])}`, c: `${v.join(' + ')} = ${fr(tot)}`, d: `${v[iM]} ÷ ${fr(tot)} × 100 ≈ ${fr(rnd(v[iM] / tot * 100, 1))} %` });
     return { titre: 'Lire un diagramme en barres', consigne: 'Spectateurs d’un live de jeu vidéo, jour par jour. Lis les valeurs : elles tombent sur des multiples de 50.',
-      support: g.wrap(g.base + bars) + `<p class="tr-l">a. Le plus grand nombre de spectateurs : ${tb('a', String(v[iM]), 12)} · b. Écart entre ${JOURS[i1]} et ${JOURS[i2]} : ${tb('b', fr(v[i1] - v[i2]), 12)}</p><p class="tr-l">c. Total de la semaine : ${tb('c', fr(tot), 14)} · d. Fréquence du meilleur jour, en %, au dixième : ${tb('d', fr(rnd(v[iM] / tot * 100, 1)), 12)}</p>`, items,
+      support: g.wrap(g.base + bars) + `<p class="tr-l">a. Le plus grand nombre de spectateurs en une journée : ${tb('a', String(v[iM]), 12)} · b. Combien de spectateurs de plus le ${JOURS_L[i1]} que le ${JOURS_L[i2]} ? ${tb('b', fr(v[i1] - v[i2]), 12)}</p><p class="tr-l">c. Total de la semaine : ${tb('c', fr(tot), 14)} · d. Fréquence du meilleur jour (celui qui a le plus de spectateurs), en pourcentage, arrondie au dixième : ${tb('d', fr(rnd(v[iM] / tot * 100, 1)), 12)}</p>`, items,
       hints: ['Lis le haut de chaque barre sur l’axe vertical : chaque ligne vaut 100.', 'Un écart peut être négatif si le second jour a plus de spectateurs.', 'Fréquence = effectif ÷ total × 100.'] };
   };
   if (typeof module !== 'undefined') module.exports = { SIMP, med, sum };

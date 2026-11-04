@@ -17,12 +17,12 @@ module.exports = chk => {
       { t: 'Calcule 3/4 de 60.', comp: 'cal', pts: 1, a: '45', v: 45, tol: .01, w: 20, x: '60 ÷ 4 = 15 ; 15 × 3 = 45.' },
       { t: '10² × 10³ est égal à :', comp: 'cal', pts: .5, choices: ['10⁵', '10⁶', '20⁵'], ok: 0, a: '10⁵', v: null, x: 'On additionne les exposants : 2 + 3 = 5.' },
       { t: 'Calcule 25 % de 80.', comp: 'cal', pts: .5, a: '20', v: 20, tol: .01, w: 20, x: '25 % = un quart : 80 ÷ 4 = 20.' },
-      { t: 'Résous 3x − 5 = 10.', comp: 'cal', pts: 1, a: 'x = 5', v: 5, tol: .01, w: 20, lab: 'x =', x: '3x = 15 ; x = 5.' },
+      { t: 'Résous l’équation 3x − 5 = 10.', comp: 'cal', pts: 1, a: 'x = 5', v: 5, tol: .01, w: 20, lab: 'x =', x: '3x = 15 ; x = 5.' },
       { t: 'Convertis 1,5 h en minutes.', comp: 'cal', pts: .5, a: '90 min', v: 90, tol: .01, w: 20, x: '1,5 × 60 = 90 min.' },
-      { t: 'Médiane de la série 4 ; 7 ; 2 ; 9 ; 5 ?', comp: 'cal', pts: .5, a: '5', v: 5, tol: .01, w: 20, x: 'Rangée : 2 ; 4 ; 5 ; 7 ; 9. La valeur du milieu est 5.' },
-      { t: 'On lance un dé équilibré à 6 faces. P(obtenir un nombre pair) =', comp: 'cal', pts: .5, choices: ['1/2', '1/3', '1/6'], ok: 0, a: '1/2', v: null, x: '2, 4, 6 : 3 issues sur 6, soit 1/2.' },
-      { t: 'Triangle rectangle de côtés de l’angle droit 6 cm et 8 cm. Hypoténuse ?', comp: 'cal', pts: 1, a: '10 cm', v: 10, tol: .01, w: 20, x: '6² + 8² = 36 + 64 = 100 ; √100 = 10 cm.' },
-      { t: 'Volume d’un cube d’arête 3 cm ?', comp: 'cal', pts: .5, a: '27 cm³', v: 27, tol: .01, w: 20, x: '3 × 3 × 3 = 27 cm³.' }],
+      { t: 'Calcule la médiane de la série 4 ; 7 ; 2 ; 9 ; 5.', comp: 'cal', pts: .5, a: '5', v: 5, tol: .01, w: 20, x: 'Rangée : 2 ; 4 ; 5 ; 7 ; 9. La valeur du milieu est 5.' },
+      { t: 'On lance un dé équilibré à 6 faces. Quelle est la probabilité d’obtenir un nombre pair ?', comp: 'cal', pts: .5, choices: ['1/2', '1/3', '1/6'], ok: 0, a: '1/2', v: null, x: '2, 4, 6 : 3 issues sur 6, soit 1/2.' },
+      { t: 'Dans un triangle rectangle, les deux côtés de l’angle droit mesurent 6 cm et 8 cm. Combien mesure l’hypoténuse ?', comp: 'cal', pts: 1, a: '10 cm', v: 10, tol: .01, w: 20, x: '6² + 8² = 36 + 64 = 100 ; √100 = 10 cm.' },
+      { t: 'Quel est le volume d’un cube d’arête 3 cm ?', comp: 'cal', pts: .5, a: '27 cm³', v: 27, tol: .01, w: 20, x: '3 × 3 × 3 = 27 cm³.' }],
     exos: [
       { t: 'Les lots de badges', intro: `<p>Les organisateurs d’une convention manga ont ${H('84 badges')} et ${H('126 marque-pages')}. Ils veulent faire des lots identiques, en utilisant tout.</p>`, qs: [
         { t: 'Décomposer 84 et 126 en produits de facteurs premiers.', comp: 'cal', pts: 1, a: '84 = 2² × 3 × 7 ; 126 = 2 × 3² × 7', v: null, lines: 1, x: '84 ÷ 2 = 42 ; ÷ 2 = 21 ; ÷ 3 = 7 : 84 = 2² × 3 × 7. 126 ÷ 2 = 63 ; ÷ 3 = 21 ; ÷ 3 = 7 : 126 = 2 × 3² × 7.' },
@@ -46,18 +46,18 @@ module.exports = chk => {
   SJ.push({ id: 'B', titre: 'Soirée cinéma et séries', redac: 2,
     grille: { che: 'Je relève les données dans un tableau ou un texte.', mod: 'Je choisis le calcul adapté à la situation.', rai: 'Je justifie avec un calcul, une propriété ou une lettre.', cal: 'Je calcule pourcentages, statistiques et longueurs.', com: 'Je rédige une conclusion argumentée.' },
     auto: [
-      { t: '2/5 + 1/5 =', comp: 'cal', pts: .5, choices: ['3/5', '3/10', '2/25'], ok: 0, a: '3/5', v: null, x: 'Même dénominateur : 2/5 + 1/5 = 3/5.' },
+      { t: 'Calcule 2/5 + 1/5.', comp: 'cal', pts: .5, choices: ['3/5', '3/10', '2/25'], ok: 0, a: '3/5', v: null, x: 'Même dénominateur : 2/5 + 1/5 = 3/5.' },
       { t: 'Écris 4,5 × 10³ en écriture décimale.', comp: 'cal', pts: .5, a: '4 500', v: 4500, tol: .01, w: 20, x: 'La virgule avance de 3 rangs : 4 500.' },
       { t: 'Calcule 15 % de 200.', comp: 'cal', pts: 1, a: '30', v: 30, tol: .01, w: 20, x: '200 × 15 ÷ 100 = 30.' },
-      { t: 'f(x) = 2x − 1. Calcule f(5).', comp: 'cal', pts: .5, a: '9', v: 9, tol: .01, w: 20, x: '2 × 5 − 1 = 9.' },
-      { t: 'Moyenne de 12 ; 14 ; 19 ?', comp: 'cal', pts: 1, a: '15', v: 15, tol: .01, w: 20, x: '(12 + 14 + 19) ÷ 3 = 45 ÷ 3 = 15.' },
-      { t: 'Plan à l’échelle 1/100 : 3 cm sur le plan représentent :', comp: 'mod', pts: .5, choices: ['3 m', '30 cm', '300 m'], ok: 0, a: '3 m', v: null, x: '3 × 100 = 300 cm = 3 m.' },
-      { t: 'Un triangle a deux angles de 50° et 60°. Le troisième mesure ?', comp: 'cal', pts: .5, a: '70°', v: 70, tol: .01, w: 20, x: '180 − 50 − 60 = 70°.' },
+      { t: 'La fonction f est définie par f(x) = 2x − 1. Calcule f(5).', comp: 'cal', pts: .5, a: '9', v: 9, tol: .01, w: 20, x: '2 × 5 − 1 = 9.' },
+      { t: 'Calcule la moyenne des nombres 12 ; 14 ; 19.', comp: 'cal', pts: 1, a: '15', v: 15, tol: .01, w: 20, x: '(12 + 14 + 19) ÷ 3 = 45 ÷ 3 = 15.' },
+      { t: 'Un plan est à l’échelle 1/100. Une longueur de 3 cm sur le plan représente, dans la réalité :', comp: 'mod', pts: .5, choices: ['3 m', '30 cm', '300 m'], ok: 0, a: '3 m', v: null, x: '3 × 100 = 300 cm = 3 m.' },
+      { t: 'Un triangle a deux angles de 50° et de 60°. Combien mesure le troisième angle ?', comp: 'cal', pts: .5, a: '70°', v: 70, tol: .01, w: 20, x: '180 − 50 − 60 = 70°.' },
       { t: 'Arrondis 7,846 au dixième.', comp: 'cal', pts: .5, a: '7,8', v: 7.8, tol: .01, w: 20, x: 'Le chiffre des centièmes est 4 < 5 : 7,8.' },
       { t: 'Baisser un prix de 30 %, c’est le multiplier par :', comp: 'mod', pts: 1, choices: ['0,7', '0,3', '1,3'], ok: 0, a: '0,7', v: null, x: '1 − 0,30 = 0,7.' }],
     exos: [
       { t: 'La hausse de l’abonnement', intro: `<p>Le 18 avril 2025, l’abonnement Netflix Standard avec pub est passé de ${H('5,99 €')} à ${H('7,99 €')} par mois.</p><p class="srcl">${D.srcNetflix}</p>`, qs: [
-        { t: 'Calculer le taux d’évolution du prix, arrondi au dixième de pourcent.', comp: 'cal', pts: 1, a: '2 ÷ 5,99 × 100 ≈ + 33,4 %', v: 33.4, tol: .05, w: 22, lab: 'en % :', x: 'Hausse : 7,99 − 5,99 = 2 €. 2 ÷ 5,99 ≈ 0,334, soit + 33,4 %.' },
+        { t: 'Calculer le taux d’évolution du prix, en pourcentage, arrondi au dixième.', comp: 'cal', pts: 1, a: '2 ÷ 5,99 × 100 ≈ + 33,4 %', v: 33.4, tol: .05, w: 22, lab: 'en % :', x: 'Hausse : 7,99 − 5,99 = 2 €. 2 ÷ 5,99 ≈ 0,334, soit + 33,4 %.' },
         { t: 'Calculer le prix d’une année d’abonnement au nouveau tarif.', comp: 'che', pts: 1, a: '7,99 × 12 = 95,88 €', v: 95.88, tol: .006, w: 22, lab: 'en € :', x: '7,99 × 12 = 95,88 €.' }] },
       { t: 'Les entrées au cinéma en 2025', intro: `${tab(['Mois', 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'], [['Entrées (M)', ...M.map(v => String(v).replace('.', ','))]])}<p>Total de l’année 2025 : ${H('156,66 millions')}. En 2024 : ${H('181,54 millions')}.</p><p class="srcl">${D.srcCnc}</p>`, qs: [
         { t: 'Calculer le total des entrées d’avril, mai et juin 2025.', comp: 'cal', pts: 1, a: '11,83 + 11,23 + 11,37 = 34,43 millions', v: 34.43, tol: .006, w: 24, x: '11,83 + 11,23 + 11,37 = 34,43 millions d’entrées.' },
@@ -81,11 +81,11 @@ module.exports = chk => {
       { t: 'Calcule −3 + 8.', comp: 'cal', pts: .5, a: '5', v: 5, tol: .01, w: 20, x: '8 − 3 = 5.' },
       { t: 'L’écriture scientifique de 0,0004 est :', comp: 'cal', pts: 1, choices: ['4 × 10⁻⁴', '4 × 10⁴', '0,4 × 10⁻³'], ok: 0, a: '4 × 10⁻⁴', v: null, x: 'La virgule se déplace de 4 rangs vers la droite : 4 × 10⁻⁴.' },
       { t: 'Le développement de 3(x − 2) est :', comp: 'cal', pts: .5, choices: ['3x − 6', '3x − 2', 'x − 6'], ok: 0, a: '3x − 6', v: null, x: '3 × x − 3 × 2 = 3x − 6.' },
-      { t: 'Un car parcourt 180 km en 2 h. Vitesse moyenne, en km/h ?', comp: 'cal', pts: .5, a: '90 km/h', v: 90, tol: .01, w: 20, x: '180 ÷ 2 = 90 km/h.' },
-      { t: 'Partager 30 dans le ratio 1 : 4 donne :', comp: 'mod', pts: .5, choices: ['6 et 24', '1 et 4', '10 et 20'], ok: 0, a: '6 et 24', v: null, x: '5 parts ; 30 ÷ 5 = 6 ; 1 × 6 = 6 et 4 × 6 = 24.' },
-      { t: '18 victoires sur 72 parties : fréquence ?', comp: 'cal', pts: 1, a: '0,25', v: .25, tol: .002, w: 20, x: '18 ÷ 72 = 0,25.' },
+      { t: 'Un car parcourt 180 km en 2 h. Quelle est sa vitesse moyenne, en km/h ?', comp: 'cal', pts: .5, a: '90 km/h', v: 90, tol: .01, w: 20, x: '180 ÷ 2 = 90 km/h.' },
+      { t: 'On partage 30 dans le ratio 1 : 4. Les deux parts valent :', comp: 'mod', pts: .5, choices: ['6 et 24', '1 et 4', '10 et 20'], ok: 0, a: '6 et 24', v: null, x: '5 parts ; 30 ÷ 5 = 6 ; 1 × 6 = 6 et 4 × 6 = 24.' },
+      { t: 'Un joueur a gagné 18 parties sur 72. Quelle est la fréquence de ses victoires ?', comp: 'cal', pts: 1, a: '0,25', v: .25, tol: .002, w: 20, x: '18 ÷ 72 = 0,25.' },
       { t: 'Combien vaut cos 60° ?', comp: 'cal', pts: .5, a: '0,5', v: .5, tol: .002, w: 20, x: 'cos 60° = 0,5.' },
-      { t: 'Volume d’un cylindre de rayon 1 cm et de hauteur 5 cm, au dixième ?', comp: 'cal', pts: 1, a: '≈ 15,7 cm³', v: 15.7, tol: .06, w: 20, x: 'π × 1² × 5 = 5π ≈ 15,7 cm³.' }],
+      { t: 'Calcule le volume d’un cylindre de rayon 1 cm et de hauteur 5 cm. Arrondis au dixième.', comp: 'cal', pts: 1, a: '≈ 15,7 cm³', v: 15.7, tol: .06, w: 20, x: 'π × 1² × 5 = 5π ≈ 15,7 cm³.' }],
     exos: [
       { t: 'Les boosters', intro: `<p>Dans un jeu de cartes, un booster contient une carte rare avec la probabilité ${H('1/5')}, indépendamment des autres boosters.</p>`, qs: [
         { t: 'Calculer la probabilité qu’un booster ne contienne pas de carte rare.', comp: 'cal', pts: 1, a: '1 − 1/5 = 4/5', v: .8, tol: .002, w: 22, x: 'Événement contraire : 1 − 1/5 = 4/5 = 0,8.' },

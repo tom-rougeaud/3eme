@@ -40,7 +40,7 @@ const yn = ['oui', 'non'];
       { t: 'Le tournoi de cartes', intro: `<p>Un club prépare un tournoi avec ${H('180 cartes')} et ${H('150 jetons')}. Il veut faire des lots identiques, en utilisant tout.</p>`, qs: [
         { t: 'Décomposer 180 et 150 en produits de facteurs premiers.', comp: 'cal', pts: 2, a: '180 = 2² × 3² × 5 ; 150 = 2 × 3 × 5²', v: null, lines: 1 },
         { t: 'Déterminer le nombre maximal de lots.', comp: 'mod', pts: 1.5, a: 'facteurs communs : 2 × 3 × 5 = 30 lots', v: 30, tol: .01, w: 24 },
-        { t: 'Donner la composition d’un lot.', comp: 'cal', pts: 1.5, a: '180 ÷ 30 = 6 cartes et 150 ÷ 30 = 5 jetons', v: 6, tol: .01, w: 24, lab: 'cartes par lot :' },
+        { t: 'Donner le nombre de cartes et le nombre de jetons dans un lot.', comp: 'cal', pts: 1.5, a: '180 ÷ 30 = 6 cartes et 150 ÷ 30 = 5 jetons', v: 6, tol: .01, w: 24, lab: 'cartes par lot :' },
         { t: 'Peut-on faire 12 lots ? Justifier.', comp: 'rai', pts: 1, a: 'Non : 150 ÷ 12 = 12,5 n’est pas un nombre entier.', v: null, lines: 1 }] },
       { t: 'Les épisodes des Simpson', intro: '', qs: [
         { t: 'Combien d’épisodes comptent, en tout, les saisons 6 à 9 ?', comp: 'che', pts: 1, a: '4 × 25 = 100 épisodes', v: 100, tol: .01, w: 24 },
@@ -80,14 +80,14 @@ const yn = ['oui', 'non'];
   E.c3 = { lieu: 'Soirée jeux et séries', duree: '55 min', grille: GR.c3, redac: 2,
     auto: [
       { t: 'Le développement de 2(x + 3) est :', comp: 'cal', pts: 1, choices: ['2x + 6', '2x + 3', 'x + 6'], ok: 0, a: '2x + 6', v: null },
-      { t: 'Résous 2x = 10.', comp: 'cal', pts: 1, a: 'x = 5', v: 5, tol: .01, w: 20, lab: 'x =' },
-      { t: 'Calcule 3x − 1 pour x = 4.', comp: 'cal', pts: 1, a: '11', v: 11, tol: .01, w: 20 },
+      { t: 'Résous l’équation 2x = 10.', comp: 'cal', pts: 1, a: 'x = 5', v: 5, tol: .01, w: 20, lab: 'x =' },
+      { t: 'Calcule la valeur de 3x − 1 quand x = 4.', comp: 'cal', pts: 1, a: '11', v: 11, tol: .01, w: 20 },
       { t: 'Une factorisation de 4x + 8 est :', comp: 'cal', pts: 1, choices: ['4(x + 2)', '4(x + 8)', '2(x + 8)'], ok: 0, a: '4(x + 2)', v: null },
       { t: 'Les solutions de (x − 1)(x + 2) = 0 sont :', comp: 'rai', pts: 1, choices: ['1 et −2', '−1 et 2', '1 et 2'], ok: 0, a: '1 et −2', v: null },
       { t: 'Calcule (−2) × (−3).', comp: 'cal', pts: 1, a: '6', v: 6, tol: .01, w: 20 }],
     exos: [
       { t: 'Les formules de streaming', intro: `<p>Netflix coûte ${H('7,99 €')} par mois en Standard avec pub et ${H('14,99 €')} par mois en Standard.</p><p class="srcl">${D.srcNetflix}</p>`, qs: [
-        { t: 'Exprimer le prix de x mois de Standard.', comp: 'mod', pts: 1, a: '14,99x', v: null, w: 30 },
+        { t: 'Écrire, en fonction de x, le prix de x mois de Standard (14,99 € par mois).', comp: 'mod', pts: 1, a: '14,99x', v: null, w: 30 },
         { t: 'Calculer le prix d’une année de Standard.', comp: 'cal', pts: 1, a: '14,99 × 12 = 179,88 €', v: 179.88, tol: .006, w: 26 },
         { t: 'Résoudre l’équation 14,99x = 7,99x + 56.', comp: 'cal', pts: 2, a: '7x = 56, donc x = 8', v: 8, tol: .01, w: 26, lab: 'x =' },
         { t: 'Vérifier la solution trouvée.', comp: 'rai', pts: 1, a: '14,99 × 8 = 119,92 et 7,99 × 8 + 56 = 63,92 + 56 = 119,92 ✓', v: null, lines: 1 },
@@ -105,22 +105,22 @@ const yn = ['oui', 'non'];
   chk0.push(Math.round(1.5 / 13.49 * 1000) === 111 && Math.abs(14.99 / 13.49 - 1.111) < .001 && Math.round(19.99 * 1.1 * 100) === 2199 && 2 * 12 === 24);
   E.c4 = { lieu: 'Cuisine pédagogique et soirée ciné', duree: '55 min', grille: GR.c4, redac: 2,
     auto: [
-      { t: '3 places coûtent 24 €. Combien coûtent 5 places ?', comp: 'cal', pts: 1, a: '40 €', v: 40, tol: .01, w: 20, lab: 'en € :' },
+      { t: '3 places de cinéma coûtent 24 €. Combien coûtent 5 places au même prix ?', comp: 'cal', pts: 1, a: '40 €', v: 40, tol: .01, w: 20, lab: 'en € :' },
       { t: 'Calcule 20 % de 50.', comp: 'cal', pts: 1, a: '10', v: 10, tol: .01, w: 20 },
       { t: 'Augmenter un prix de 5 %, c’est le multiplier par :', comp: 'mod', pts: 1, choices: ['1,05', '0,05', '1,5'], ok: 0, a: '1,05', v: null },
       { t: 'Convertis 2 h 30 min en minutes.', comp: 'cal', pts: 1, a: '150 min', v: 150, tol: .01, w: 20 },
-      { t: 'Un car parcourt 120 km en 2 h. Sa vitesse moyenne, en km/h ?', comp: 'cal', pts: 1, a: '60 km/h', v: 60, tol: .01, w: 20 },
-      { t: 'Partager 25 dans le ratio 2 : 3 donne :', comp: 'mod', pts: 1, choices: ['10 et 15', '2 et 3', '12 et 13'], ok: 0, a: '10 et 15', v: null }],
+      { t: 'Un car parcourt 120 km en 2 h. Quelle est sa vitesse moyenne, en km/h ?', comp: 'cal', pts: 1, a: '60 km/h', v: 60, tol: .01, w: 20 },
+      { t: 'On partage 25 dans le ratio 2 : 3. Les deux parts valent :', comp: 'mod', pts: 1, choices: ['10 et 15', '2 et 3', '12 et 13'], ok: 0, a: '10 et 15', v: null }],
     exos: [
-      { t: 'Les ramen de la cantine', intro: `<p>Une recette de ramen pour ${H('4 personnes')} demande ${H('300 g')} de nouilles. Le bouillon se prépare avec de l’eau et de la sauce dans le ${H('ratio 4 : 1')}.</p>`, qs: [
+      { t: 'Les ramen de la cantine', intro: `<p>Une recette de ramen pour ${H('4 personnes')} demande ${H('300 g')} de nouilles. Le bouillon se prépare avec de l’eau et de la sauce dans le ${H('ratio 4 : 1')} (4 parts d’eau pour 1 part de sauce).</p>`, qs: [
         { t: 'Calculer la masse de nouilles pour 10 personnes.', comp: 'cal', pts: 1.5, a: '300 ÷ 4 × 10 = 750 g', v: 750, tol: .01, w: 22, lab: 'en g :' },
         { t: 'La masse de nouilles est-elle proportionnelle au nombre de personnes ? Donner le coefficient.', comp: 'mod', pts: 1.5, a: 'Oui : on multiplie par 75 (300 ÷ 4 = 75 g par personne).', v: null, lines: 1 },
         { t: 'Pour 1,5 L de bouillon, quel volume d’eau faut-il ?', comp: 'cal', pts: 1.5, a: '1,5 ÷ 5 = 0,3 L par part ; eau : 4 × 0,3 = 1,2 L', v: 1.2, tol: .01, w: 22, lab: 'en L :' },
         { t: 'Les nouilles coûtent 2,40 € les 500 g. Quel est le prix des nouilles pour 10 personnes ?', comp: 'che', pts: 1.5, a: '2,40 ÷ 500 × 750 = 3,60 €', v: 3.6, tol: .006, w: 22, lab: 'en € :' }] },
       { t: 'La hausse des abonnements', intro: `<p>Le 18 avril 2025, Netflix est passé de ${H('13,49 €')} à ${H('14,99 €')} par mois en Standard, et de ${H('19,99 €')} à ${H('21,99 €')} en Premium.</p><p class="srcl">${D.srcNetflix}</p>`, qs: [
-        { t: 'Calculer le taux d’évolution du Standard, arrondi au dixième de pourcent.', comp: 'cal', pts: 2, a: '1,50 ÷ 13,49 × 100 ≈ + 11,1 %', v: 11.1, tol: .05, w: 22, lab: 'en % :' },
+        { t: 'Calculer le taux d’évolution du prix Standard, en pourcentage, arrondi au dixième.', comp: 'cal', pts: 2, a: '1,50 ÷ 13,49 × 100 ≈ + 11,1 %', v: 11.1, tol: .05, w: 22, lab: 'en % :' },
         { t: 'Quel est le coefficient multiplicateur correspondant, arrondi au millième ?', comp: 'mod', pts: 1, a: '14,99 ÷ 13,49 ≈ 1,111', v: 1.111, tol: .0006, w: 22 },
-        { t: 'Léa affirme : « Une hausse de 10 % suivie d’une baisse de 10 % ramène au prix de départ. » Vérifier avec le prix Premium de 21,99 €.', comp: 'rai', pts: 1.5, a: 'Non : 21,99 × 1,1 ≈ 24,19 puis 24,19 × 0,9 ≈ 21,77 €, ce n’est pas 21,99 €.', v: null, lines: 2 },
+        { t: 'Léa affirme : « Une hausse de 10 % suivie d’une baisse de 10 % ramène au prix de départ. » Tester cette affirmation avec le prix Premium de 21,99 € : calculer le prix après une hausse de 10 %, puis après une baisse de 10 %. Léa a-t-elle raison ?', comp: 'rai', pts: 1.5, a: 'Non : 21,99 × 1,1 ≈ 24,19 puis 24,19 × 0,9 ≈ 21,77 €, ce n’est pas 21,99 €.', v: null, lines: 2 },
         { t: 'Combien un abonné Premium paie-t-il de plus sur une année ? Répondre par une phrase.', comp: 'com', pts: 1.5, a: '2 × 12 = 24 : il paie 24 € de plus par an.', v: null, lines: 1 }] }] };
 }
 
@@ -132,16 +132,16 @@ const yn = ['oui', 'non'];
   const g = MCVP.plot({ W: 560, H: 220, x: [0, 8, 1], y: [0, 9, 1], ml: 40, mr: 16, mt: 12, mb: 30, fs: 11, xl: 't (dixièmes de s)', yl: 'h(t) (cases)' });
   E.c5 = { lieu: 'Atelier jeu vidéo et ciné-club', duree: '55 min', grille: GR.c5, redac: 2,
     auto: [
-      { t: 'f(x) = 2x + 3. Calcule f(4).', comp: 'cal', pts: 1, a: '11', v: 11, tol: .01, w: 20 },
+      { t: 'La fonction f est définie par f(x) = 2x + 3. Calcule f(4).', comp: 'cal', pts: 1, a: '11', v: 11, tol: .01, w: 20 },
       { t: 'Si f(5) = 12, alors :', comp: 'rai', pts: 1, choices: ['12 est l’image de 5', '5 est l’image de 12', '12 est un antécédent de 5'], ok: 0, a: '12 est l’image de 5', v: null },
       { t: 'Quelle fonction est linéaire ?', comp: 'mod', pts: 1, choices: ['f(x) = 3x', 'f(x) = 3x + 1', 'f(x) = x²'], ok: 0, a: 'f(x) = 3x', v: null },
-      { t: 'f(x) = 5x. Quel est l’antécédent de 35 ?', comp: 'cal', pts: 1, a: '7', v: 7, tol: .01, w: 20 },
-      { t: 'Quelle est l’ordonnée à l’origine de f(x) = 4x − 2 ?', comp: 'rep', pts: 1, a: '−2', v: -2, tol: .01, w: 20 },
+      { t: 'La fonction f est définie par f(x) = 5x. Quel est l’antécédent de 35 par f ?', comp: 'cal', pts: 1, a: '7', v: 7, tol: .01, w: 20 },
+      { t: 'Quelle est l’ordonnée à l’origine de la fonction f définie par f(x) = 4x − 2 ?', comp: 'rep', pts: 1, a: '−2', v: -2, tol: .01, w: 20 },
       { t: 'La droite d’une fonction linéaire passe toujours par :', comp: 'rep', pts: 1, choices: ['l’origine', 'le point (1 ; 1)', 'le point (0 ; 1)'], ok: 0, a: 'l’origine', v: null }],
     exos: [
       { t: 'Le saut du personnage', intro: `<p>Dans un jeu, la hauteur d’un saut, en cases, est donnée par ${H('h(t) = 4t − 0,5t²')}, où t est le temps en dixièmes de seconde.</p>${g.wrap(g.base + g.curve(hh))}`, qs: [
         { t: 'Lire graphiquement l’image de 2 par h.', comp: 'rep', pts: 1, a: 'h(2) = 6', v: 6, tol: .01, w: 20 },
-        { t: 'Lire les antécédents de 7,5.', comp: 'rep', pts: 1.5, a: '3 et 5', v: null, w: 24 },
+        { t: 'Lire graphiquement les antécédents de 7,5 par h (les valeurs de t pour lesquelles h(t) = 7,5).', comp: 'rep', pts: 1.5, a: '3 et 5', v: null, w: 24 },
         { t: 'Quelle est la hauteur maximale, et à quel instant ?', comp: 'che', pts: 1, a: '8 cases, pour t = 4', v: null, w: 34 },
         { t: 'Calculer h(1,5).', comp: 'cal', pts: 1.5, a: '4 × 1,5 − 0,5 × 1,5² = 6 − 1,125 = 4,875', v: 4.875, tol: .001, w: 22 },
         { t: 'La fonction h est-elle affine ? Justifier.', comp: 'rai', pts: 1, a: 'Non : sa représentation n’est pas une droite (elle contient t²).', v: null, lines: 1 }] },
@@ -159,23 +159,23 @@ const yn = ['oui', 'non'];
   doc.c6 = `<div class="evdoc">${K.tab2(['Film', 'Entrées (M)'], D.top2025.map(([f, v]) => [f, String(v).replace('.', ',')]))}<p class="srcl">${D.srcTop}</p></div>`;
   E.c6 = { lieu: 'Club ciné et séries', duree: '55 min', grille: GR.c6, redac: 2,
     auto: [
-      { t: 'Moyenne de 10 ; 12 ; 14 ; 16 ?', comp: 'cal', pts: 1, a: '13', v: 13, tol: .01, w: 20 },
-      { t: 'Médiane de 3 ; 8 ; 5 ; 9 ; 1 ?', comp: 'cal', pts: 1, a: '5', v: 5, tol: .01, w: 20 },
-      { t: 'Étendue de 2 ; 15 ; 7 ?', comp: 'cal', pts: 1, a: '13', v: 13, tol: .01, w: 20 },
-      { t: '9 saisons sur 36 : fréquence en % ?', comp: 'cal', pts: 1, a: '25 %', v: 25, tol: .01, w: 20 },
+      { t: 'Calcule la moyenne des nombres 10 ; 12 ; 14 ; 16.', comp: 'cal', pts: 1, a: '13', v: 13, tol: .01, w: 20 },
+      { t: 'Calcule la médiane de la série 3 ; 8 ; 5 ; 9 ; 1.', comp: 'cal', pts: 1, a: '5', v: 5, tol: .01, w: 20 },
+      { t: 'Calcule l’étendue de la série 2 ; 15 ; 7.', comp: 'cal', pts: 1, a: '13', v: 13, tol: .01, w: 20 },
+      { t: 'Sur 36 saisons d’une série, on en a regardé 9. Quelle est la fréquence des saisons regardées, en pourcentage ?', comp: 'cal', pts: 1, a: '25 %', v: 25, tol: .01, w: 20 },
       { t: 'Pour comparer les entrées mois par mois, on utilise plutôt :', comp: 'rep', pts: 1, choices: ['un diagramme en barres', 'un diagramme circulaire', 'un tableau de proportionnalité'], ok: 0, a: 'un diagramme en barres', v: null },
-      { t: 'Quelle formule de tableur donne la moyenne de A1 à A5 ?', comp: 'mod', pts: 1, choices: ['=MOYENNE(A1:A5)', '=SOMME(A1:A5)', '=MEDIANE(A1:A5)'], ok: 0, a: '=MOYENNE(A1:A5)', v: null }],
+      { t: 'Dans un tableur, quelle formule calcule la moyenne des nombres écrits dans les cellules A1 à A5 ?', comp: 'mod', pts: 1, choices: ['=MOYENNE(A1:A5)', '=SOMME(A1:A5)', '=MEDIANE(A1:A5)'], ok: 0, a: '=MOYENNE(A1:A5)', v: null }],
     exos: [
       { t: 'Une année de cinéma', intro: `<p>Entrées au cinéma en France en 2025, en millions :</p>${tab(['Mois', 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'], [['2025', ...tb6]])}<p class="srcl">${D.srcCnc}</p>`, qs: [
         { t: 'Calculer le total des entrées du premier trimestre (janvier à mars).', comp: 'cal', pts: 1.5, a: '13,83 + 14,30 + 12,72 = 40,85 millions', v: 40.85, tol: .006, w: 24 },
         { t: 'Sachant que le total des six derniers mois (juillet à décembre) est 81,38 millions, calculer leur moyenne mensuelle au centième.', comp: 'cal', pts: 1.5, a: '81,38 ÷ 6 ≈ 13,56 millions', v: 13.56, tol: .006, w: 24 },
         { t: 'Déterminer la médiane des entrées des six derniers mois (juillet à décembre).', comp: 'cal', pts: 1.5, a: '9,46 ; 9,94 ; 12,84 ; 14,12 ; 14,29 ; 20,73 → (12,84 + 14,12) ÷ 2 = 13,48 millions', v: 13.48, tol: .006, w: 24 },
-        { t: 'Quel est le meilleur mois de l’année ? Combien d’entrées de plus que le mois le plus faible ?', comp: 'che', pts: 1.5, a: 'Décembre : 20,73 − 9,46 = 11,27 millions de plus qu’en septembre.', v: null, lines: 1 }] },
+        { t: 'Quel mois compte le plus d’entrées ? Combien d’entrées de plus compte-t-il que le mois qui en compte le moins ?', comp: 'che', pts: 1.5, a: 'Décembre : 20,73 − 9,46 = 11,27 millions de plus qu’en septembre.', v: null, lines: 1 }] },
       { t: 'Le top 10 de l’année 2025', intro: '', qs: [
         { t: 'Calculer le total des entrées des trois premiers films.', comp: 'cal', pts: 1, a: '6,18 + 5,10 + 4,58 = 15,86 millions', v: 15.86, tol: .006, w: 24 },
         { t: 'Le total des entrées du top 10 est 35,40 millions. Quelle part les trois premiers films représentent-ils, en % au dixième ?', comp: 'mod', pts: 1.5, a: '15,86 ÷ 35,40 × 100 ≈ 44,8 %', v: 44.8, tol: .05, w: 22, lab: 'en % :' },
         { t: 'Déterminer la médiane des cinq derniers films du classement.', comp: 'cal', pts: 1.5, a: '2,46 ; 2,55 ; 2,64 ; 2,66 ; 2,95 → la médiane est la 3e valeur : 2,64 millions', v: 2.64, tol: .006, w: 24 },
-        { t: 'Pour comparer les entrées de ces 10 films, un élève propose un diagramme circulaire. Quel diagramme est plus adapté ? Justifier.', comp: 'rai', pts: 2, a: 'Un diagramme en barres : il permet de comparer facilement 10 valeurs ; un diagramme circulaire à 10 parts serait peu lisible.', v: null, lines: 2 }] }] };
+        { t: 'Pour comparer les entrées de ces 10 films, un élève propose un diagramme circulaire. Quel type de diagramme est le plus adapté : circulaire ou en barres ? Justifier.', comp: 'rai', pts: 2, a: 'Un diagramme en barres : il permet de comparer facilement 10 valeurs ; un diagramme circulaire à 10 parts serait peu lisible.', v: null, lines: 2 }] }] };
 }
 
 /* ---------- chapitre 7 · probabilités ---------- */
@@ -183,24 +183,24 @@ const yn = ['oui', 'non'];
   chk0.push(1 / 20 === .05 && 5 / 20 === .25 && 1 - .25 === .75 && 47 / 1000 === .047 && 3 / 36 === 1 / 12 && 11 / 36 > .3);
   E.c7 = { lieu: 'Club de jeux de rôle', duree: '55 min', grille: GR.c7, redac: 2,
     auto: [
-      { t: 'Avec un dé équilibré à 6 faces, P(obtenir 6) =', comp: 'cal', pts: 1, choices: ['1/6', '6', '1/2'], ok: 0, a: '1/6', v: null },
-      { t: 'Avec un dé équilibré à 6 faces, P(obtenir un nombre pair) ?', comp: 'cal', pts: 1, a: '0,5', v: .5, tol: .002, w: 20 },
-      { t: 'Si P(A) = 0,2, alors P(non A) = ?', comp: 'cal', pts: 1, a: '0,8', v: .8, tol: .002, w: 20 },
-      { t: 'Obtenir 7 avec un dé à 6 faces est un événement :', comp: 'rai', pts: 1, choices: ['impossible', 'certain', 'probable'], ok: 0, a: 'impossible', v: null },
-      { t: 'On lance deux pièces. Combien d’issues ?', comp: 'mod', pts: 1, a: '4', v: 4, tol: .01, w: 20 },
-      { t: '30 succès sur 120 essais : fréquence ?', comp: 'cal', pts: 1, a: '0,25', v: .25, tol: .002, w: 20 }],
+      { t: 'On lance un dé équilibré à 6 faces. Quelle est la probabilité d’obtenir 6 ?', comp: 'cal', pts: 1, choices: ['1/6', '6', '1/2'], ok: 0, a: '1/6', v: null },
+      { t: 'On lance un dé équilibré à 6 faces. Quelle est la probabilité d’obtenir un nombre pair ?', comp: 'cal', pts: 1, a: '0,5', v: .5, tol: .002, w: 20 },
+      { t: 'La probabilité d’un événement A est 0,2. Quelle est la probabilité de l’événement contraire (« non A ») ?', comp: 'cal', pts: 1, a: '0,8', v: .8, tol: .002, w: 20 },
+      { t: 'On lance un dé à 6 faces. Obtenir 7 est un événement :', comp: 'rai', pts: 1, choices: ['impossible', 'certain', 'probable'], ok: 0, a: 'impossible', v: null },
+      { t: 'On lance deux pièces de monnaie. Combien y a-t-il de résultats possibles ?', comp: 'mod', pts: 1, a: '4', v: 4, tol: .01, w: 20 },
+      { t: 'Une expérience est répétée 120 fois et réussit 30 fois. Quelle est la fréquence de réussite ?', comp: 'cal', pts: 1, a: '0,25', v: .25, tol: .002, w: 20 }],
     exos: [
       { t: 'Le dé à 20 faces', intro: `<p>On lance un ${H('dé équilibré à 20 faces')}, numérotées de 1 à 20.</p>`, qs: [
         { t: 'Calculer la probabilité d’obtenir 20.', comp: 'cal', pts: 1, a: '1/20 = 0,05', v: .05, tol: .002, w: 22 },
         { t: 'Calculer la probabilité d’obtenir 16 ou plus.', comp: 'cal', pts: 1.5, a: '16 à 20 : 5/20 = 1/4', v: .25, tol: .002, w: 22 },
         { t: 'En déduire la probabilité d’obtenir moins de 16.', comp: 'cal', pts: 1, a: '1 − 1/4 = 3/4', v: .75, tol: .002, w: 22 },
         { t: 'Lina dit : « Le 20 sort plus souvent, car c’est la réussite critique. » A-t-elle raison ? Justifier.', comp: 'rai', pts: 1.5, a: 'Non : le dé est équilibré, chaque face a la même probabilité, 1/20.', v: null, lines: 1 },
-        { t: 'Sur 1 000 lancers simulés, le 20 est sorti 47 fois. Commenter.', comp: 'com', pts: 1, a: 'Fréquence 0,047, proche de la probabilité 0,05 : c’est cohérent.', v: null, lines: 1 }] },
+        { t: 'Sur 1 000 lancers simulés, le 20 est sorti 47 fois. Calculer la fréquence du 20 et la comparer à la probabilité de l’obtenir.', comp: 'com', pts: 1, a: 'Fréquence 0,047, proche de la probabilité 0,05 : c’est cohérent.', v: null, lines: 1 }] },
       { t: 'Deux dés de plateau', intro: `<p>On lance ${H('deux dés équilibrés à 6 faces')} et on additionne les deux nombres.</p>`, qs: [
-        { t: 'Combien y a-t-il d’issues ? Justifier avec un tableau.', comp: 'mod', pts: 1, a: '6 × 6 = 36 issues', v: 36, tol: .01, w: 20 },
+        { t: 'Combien y a-t-il d’issues ? Construire le tableau des sommes pour justifier.', comp: 'mod', pts: 1, a: '6 × 6 = 36 issues', v: 36, tol: .01, w: 20 },
         { t: 'Calculer la probabilité d’obtenir une somme de 10.', comp: 'cal', pts: 1.5, a: '(4 ; 6), (5 ; 5), (6 ; 4) : 3/36 = 1/12', v: 1 / 12, tol: .002, w: 22 },
         { t: 'Calculer la probabilité d’obtenir une somme de 11 ou plus.', comp: 'cal', pts: 1.5, a: '11 : 2 cases ; 12 : 1 case ; 3/36 = 1/12', v: 1 / 12, tol: .002, w: 22 },
-        { t: 'Calculer la probabilité d’obtenir au moins un 6.', comp: 'rai', pts: 2, a: '11 cases contiennent un 6 (6 + 6 − 1) : 11/36', v: 11 / 36, tol: .002, w: 22 }] }] };
+        { t: 'Calculer la probabilité d’obtenir au moins un 6 (un 6 sur le premier dé, ou sur le second, ou sur les deux).', comp: 'rai', pts: 2, a: '11 cases contiennent un 6 (6 + 6 − 1) : 11/36', v: 11 / 36, tol: .002, w: 22 }] }] };
 }
 
 /* ---------- chapitre 8 · Pythagore et trigonométrie ---------- */
@@ -209,23 +209,23 @@ const yn = ['oui', 'non'];
   chk0.push(Math.sqrt(9 + 16) === 5 && Math.sqrt(81) === 9 && 36 + 64 === 100 && r1(55 * 2.54) === 139.7 && r1(Math.sqrt(139.7 ** 2 - 121.8 ** 2)) === 68.4 && r1(dg(Math.atan(19.7 / 40))) === 26.2 && r1(19.7 / Math.tan(rd(50))) === 16.5);
   E.c8 = { lieu: 'Atelier bois et sortie à Tokyo', duree: '55 min', grille: GR.c8, redac: 2,
     auto: [
-      { t: 'Triangle rectangle de côtés de l’angle droit 3 et 4. Hypoténuse ?', comp: 'cal', pts: 1, a: '5', v: 5, tol: .01, w: 20 },
+      { t: 'Dans un triangle rectangle, les deux côtés de l’angle droit mesurent 3 et 4. Combien mesure l’hypoténuse ?', comp: 'cal', pts: 1, a: '5', v: 5, tol: .01, w: 20 },
       { t: 'Calcule √81.', comp: 'cal', pts: 1, a: '9', v: 9, tol: .01, w: 20 },
       { t: 'L’hypoténuse est le côté :', comp: 'rai', pts: 1, choices: ['opposé à l’angle droit', 'le plus court', 'adjacent à l’angle droit'], ok: 0, a: 'opposé à l’angle droit', v: null },
-      { t: 'Dans un triangle rectangle, cos = …', comp: 'mod', pts: 1, choices: ['adjacent ÷ hypoténuse', 'opposé ÷ hypoténuse', 'opposé ÷ adjacent'], ok: 0, a: 'adjacent ÷ hypoténuse', v: null },
+      { t: 'Dans un triangle rectangle, le cosinus d’un angle aigu est égal à :', comp: 'mod', pts: 1, choices: ['adjacent ÷ hypoténuse', 'opposé ÷ hypoténuse', 'opposé ÷ adjacent'], ok: 0, a: 'adjacent ÷ hypoténuse', v: null },
       { t: 'Un triangle de côtés 6, 8 et 10 est-il rectangle ?', comp: 'rai', pts: 1, choices: ['oui', 'non'], ok: 0, a: 'oui : 36 + 64 = 100', v: null },
       { t: 'Combien vaut tan 45° ?', comp: 'cal', pts: 1, a: '1', v: 1, tol: .01, w: 20 }],
     exos: [
-      { t: 'L’écran de 55 pouces', intro: `<p>Un écran de ${H('55 pouces')} mesure ${H('121,8 cm')} de large. 1 pouce = 2,54 cm.</p>`, qs: [
-        { t: 'Convertir 55 pouces en cm.', comp: 'cal', pts: 1, a: '55 × 2,54 = 139,7 cm', v: 139.7, tol: .06, w: 22 },
-        { t: 'Calculer la hauteur de l’écran, au dixième.', comp: 'cal', pts: 2, a: 'h² = 139,7² − 121,8² = 4 680,85 ; h ≈ 68,4 cm', v: 68.4, tol: .06, w: 22, lab: 'en cm :' },
+      { t: 'L’écran de 55 pouces', intro: `<p>La taille d’un écran est la longueur de sa diagonale. Un écran de ${H('55 pouces')} (55 pouces de diagonale) mesure ${H('121,8 cm')} de large. On rappelle que 1 pouce = 2,54 cm.</p>`, qs: [
+        { t: 'Convertir la diagonale de 55 pouces en cm.', comp: 'cal', pts: 1, a: '55 × 2,54 = 139,7 cm', v: 139.7, tol: .06, w: 22 },
+        { t: 'Calculer la hauteur de l’écran (le triangle formé par la largeur, la hauteur et la diagonale est rectangle), au dixième.', comp: 'cal', pts: 2, a: 'h² = 139,7² − 121,8² = 4 680,85 ; h ≈ 68,4 cm', v: 68.4, tol: .06, w: 22, lab: 'en cm :' },
         { t: 'Montrer que le rapport largeur ÷ hauteur est proche de 16/9.', comp: 'rai', pts: 1.5, a: '121,8 ÷ 68,4 ≈ 1,78 et 16 ÷ 9 ≈ 1,78.', v: null, lines: 1 },
         { t: 'Rédiger une phrase qui donne les dimensions de l’écran.', comp: 'com', pts: 1.5, a: 'L’écran mesure environ 121,8 cm de large, 68,4 cm de haut et 139,7 cm de diagonale.', v: null, lines: 1 }] },
       { t: 'La statue géante', intro: `<p>La statue géante d’Odaiba mesure ${H('19,7 m')} de haut. On regarde son sommet depuis le sol.</p><p class="srcl">${D.srcGundam}</p>`, qs: [
         { t: 'Expliquer pourquoi la statue, le sol et la ligne de visée forment un triangle rectangle.', comp: 'rai', pts: 1, a: 'La statue est verticale et le sol horizontal : ils forment un angle droit.', v: null, lines: 1 },
-        { t: 'Quelle formule de trigonométrie relie la hauteur, la distance au sol et l’angle ?', comp: 'mod', pts: 1, a: 'La tangente : tan = opposé ÷ adjacent = hauteur ÷ distance.', v: null, lines: 1 },
-        { t: 'À 40 m de la statue, sous quel angle voit-on son sommet ? Arrondir au dixième.', comp: 'cal', pts: 2, a: 'tan x = 19,7 ÷ 40 ; x ≈ 26,2°', v: 26.2, tol: .06, w: 22, lab: 'en ° :' },
-        { t: 'À quelle distance faut-il se placer pour voir le sommet sous un angle de 50° ? Arrondir au dixième.', comp: 'cal', pts: 2, a: 'd = 19,7 ÷ tan 50° ≈ 16,5 m', v: 16.5, tol: .06, w: 22, lab: 'en m :' }] }] };
+        { t: 'Quelle formule de trigonométrie (sinus, cosinus ou tangente) relie la hauteur de la statue, la distance au pied de la statue et l’angle de vue ?', comp: 'mod', pts: 1, a: 'La tangente : tan = opposé ÷ adjacent = hauteur ÷ distance.', v: null, lines: 1 },
+        { t: 'On se place au sol, à 40 m du pied de la statue. Sous quel angle voit-on son sommet ? Arrondir au dixième.', comp: 'cal', pts: 2, a: 'tan x = 19,7 ÷ 40 ; x ≈ 26,2°', v: 26.2, tol: .06, w: 22, lab: 'en ° :' },
+        { t: 'À quelle distance du pied de la statue faut-il se placer pour voir le sommet sous un angle de 50° ? Arrondir au dixième.', comp: 'cal', pts: 2, a: 'd = 19,7 ÷ tan 50° ≈ 16,5 m', v: 16.5, tol: .06, w: 22, lab: 'en m :' }] }] };
 }
 
 /* ---------- chapitre 9 · échelles et Thalès ---------- */
@@ -233,22 +233,22 @@ const yn = ['oui', 'non'];
   chk0.push(2 * 100 === 200 && 3 ** 2 === 9 && 2 ** 3 === 8 && 288 / 144 === 2 && 6 * 1.5 === 9 && 12 * 8 === 96 && 24 * 16 === 384 && 96 * 40000 / 10000 === 384 && 1.2 * 7.5 / 3 === 3 && 2.5 ** 2 === 6.25);
   E.c9 = { lieu: 'Atelier décors et ciné-club', duree: '55 min', grille: GR.c9, redac: 2,
     auto: [
-      { t: 'Plan au 1/100 : 2 cm sur le plan font combien de cm en vrai ?', comp: 'cal', pts: 1, a: '200 cm', v: 200, tol: .01, w: 20 },
+      { t: 'Un plan est à l’échelle 1/100. Une longueur de 2 cm sur le plan représente combien de cm dans la réalité ?', comp: 'cal', pts: 1, a: '200 cm', v: 200, tol: .01, w: 20 },
       { t: 'Si les longueurs sont multipliées par 3, l’aire est multipliée par :', comp: 'cal', pts: 1, choices: ['9', '3', '27'], ok: 0, a: '9', v: null },
       { t: 'Si les longueurs sont multipliées par 2, le volume est multiplié par :', comp: 'cal', pts: 1, choices: ['8', '4', '2'], ok: 0, a: '8', v: null },
-      { t: 'Une statue de 288 cm au 1/144 mesure combien de cm ?', comp: 'cal', pts: 1, a: '2 cm', v: 2, tol: .01, w: 20 },
-      { t: 'Une longueur de 6 cm agrandie × 1,5 mesure :', comp: 'cal', pts: 1, a: '9 cm', v: 9, tol: .01, w: 20 },
-      { t: '(MN) // (BC), M sur [AB], N sur [AC]. Alors :', comp: 'rai', pts: 1, choices: ['AM/AB = MN/BC', 'AM/MB = MN/BC', 'AB/AM = MN/BC'], ok: 0, a: 'AM/AB = MN/BC', v: null }],
+      { t: 'Une statue mesure 288 cm. Sa figurine à l’échelle 1/144 mesure combien de cm ?', comp: 'cal', pts: 1, a: '2 cm', v: 2, tol: .01, w: 20 },
+      { t: 'Une longueur de 6 cm est agrandie avec un rapport 1,5. Elle mesure alors :', comp: 'cal', pts: 1, a: '9 cm', v: 9, tol: .01, w: 20 },
+      { t: 'Dans le triangle ABC, M est sur [AB], N est sur [AC] et les droites (MN) et (BC) sont parallèles. Alors :', comp: 'rai', pts: 1, choices: ['AM/AB = MN/BC', 'AM/MB = MN/BC', 'AB/AM = MN/BC'], ok: 0, a: 'AM/AB = MN/BC', v: null }],
     exos: [
       { t: 'Le plan de la salle', intro: `<p>Le plan d’une salle de cinéma est à l’échelle ${H('1/200')}. Sur le plan, la salle est un rectangle de ${H('12 cm')} sur ${H('8 cm')}, et l’écran mesure ${H('7 cm')}.</p>`, qs: [
         { t: 'Calculer la largeur réelle de l’écran, en mètres.', comp: 'cal', pts: 1.5, a: '7 × 200 = 1 400 cm = 14 m', v: 14, tol: .01, w: 20, lab: 'en m :' },
         { t: 'Calculer la longueur réelle de la salle, en mètres.', comp: 'cal', pts: 1, a: '12 × 200 = 2 400 cm = 24 m', v: 24, tol: .01, w: 20, lab: 'en m :' },
         { t: 'Calculer l’aire réelle de la salle, sachant que sa largeur réelle est 16 m.', comp: 'mod', pts: 1.5, a: '24 × 16 = 384 m²', v: 384, tol: .01, w: 22, lab: 'en m² :' },
-        { t: 'Retrouver ce résultat à partir de l’aire sur le plan (96 cm²) et de k².', comp: 'rai', pts: 2, a: '96 × 200² = 96 × 40 000 = 3 840 000 cm² = 384 m²', v: null, lines: 2 }] },
+        { t: 'Retrouver ce résultat autrement : l’aire de la salle sur le plan est 96 cm², et les longueurs réelles sont 200 fois plus grandes. Par quel nombre l’aire est-elle multipliée ? Calculer l’aire réelle, en m².', comp: 'rai', pts: 2, a: '96 × 200² = 96 × 40 000 = 3 840 000 cm² = 384 m²', v: null, lines: 2 }] },
       { t: 'Le projecteur', intro: `<p>Un projecteur S éclaire un mur. À ${H('3 m')} du projecteur, l’image mesure ${H('1,2 m')} de large. On recule le mur à ${H('7,5 m')} du projecteur. Les images sont parallèles.</p>`, qs: [
         { t: 'Justifier qu’on peut utiliser le théorème de Thalès.', comp: 'rai', pts: 1, a: 'Les rayons partent du même point S et les deux images sont parallèles.', v: null, lines: 1 },
         { t: 'Calculer la largeur de l’image à 7,5 m.', comp: 'cal', pts: 2, a: '1,2 × 7,5 ÷ 3 = 3 m', v: 3, tol: .01, w: 20, lab: 'en m :' },
-        { t: 'Par combien l’aire de l’image est-elle multipliée ?', comp: 'mod', pts: 1.5, a: 'k = 7,5 ÷ 3 = 2,5 ; aire × 2,5² = 6,25', v: 6.25, tol: .006, w: 20 },
+        { t: 'Quand le mur passe de 3 m à 7,5 m du projecteur, par combien l’aire de l’image est-elle multipliée ?', comp: 'mod', pts: 1.5, a: 'k = 7,5 ÷ 3 = 2,5 ; aire × 2,5² = 6,25', v: 6.25, tol: .006, w: 20 },
         { t: 'Rédiger une phrase de conclusion pour le ciné-club.', comp: 'com', pts: 1.5, a: 'À 7,5 m, l’image mesure 3 m de large, et son aire est 6,25 fois plus grande qu’à 3 m.', v: null, lines: 1 }] }] };
 }
 
@@ -257,8 +257,8 @@ const yn = ['oui', 'non'];
   chk0.push(2 * 3 * 4 === 24 && Math.round(Math.PI * 100 * 25) === 7854 && Math.round(Math.PI * 100 * 25 / 3) === 2618 && 360 / 6 === 60 && 6 * 50 === 300 && 360 / 3 === 120);
   E.c10 = { lieu: 'Snack du cinéma et atelier code', duree: '55 min', grille: GR.c10, redac: 2,
     auto: [
-      { t: 'Volume d’un pavé de 2 cm × 3 cm × 4 cm ?', comp: 'cal', pts: 1, a: '24 cm³', v: 24, tol: .01, w: 20 },
-      { t: 'Combien de cm³ dans 1 L ?', comp: 'cal', pts: 1, a: '1 000', v: 1000, tol: .01, w: 20 },
+      { t: 'Quel est le volume d’un pavé droit de 2 cm sur 3 cm sur 4 cm ?', comp: 'cal', pts: 1, a: '24 cm³', v: 24, tol: .01, w: 20 },
+      { t: 'Combien de cm³ y a-t-il dans 1 litre ?', comp: 'cal', pts: 1, a: '1 000', v: 1000, tol: .01, w: 20 },
       { t: 'Le volume d’un cylindre de rayon r et de hauteur h est :', comp: 'mod', pts: 1, choices: ['π × r² × h', '2 × π × r × h', 'π × r × h²'], ok: 0, a: 'π × r² × h', v: null },
       { t: 'Quelle transformation change la taille d’une figure ?', comp: 'rai', pts: 1, choices: ['l’homothétie', 'la translation', 'la rotation'], ok: 0, a: 'l’homothétie', v: null },
       { t: 'Pour tracer un hexagone régulier, le lutin tourne de combien de degrés à chaque coin ?', comp: 'cal', pts: 1, a: '60°', v: 60, tol: .01, w: 20 },
@@ -273,8 +273,8 @@ const yn = ['oui', 'non'];
         { t: 'Combien de côtés la figure tracée a-t-elle ?', comp: 'che', pts: 1, a: '6 côtés', v: 6, tol: .01, w: 20 },
         { t: 'Expliquer pourquoi le lutin tourne de 60° à chaque fois.', comp: 'rai', pts: 1.5, a: 'Il fait un tour complet en 6 rotations : 360 ÷ 6 = 60°.', v: null, lines: 1 },
         { t: 'Calculer le périmètre de la figure.', comp: 'cal', pts: 1, a: '6 × 50 = 300 pas', v: 300, tol: .01, w: 20 },
-        { t: 'Modifier le programme pour tracer un triangle équilatéral.', comp: 'mod', pts: 1.5, a: 'répéter 3 fois : avancer de 50 pas, tourner de 120 degrés.', v: null, lines: 1 },
-        { t: 'On agrandit la figure par une homothétie de rapport 2. Quel est le nouveau périmètre ?', comp: 'cal', pts: 1, a: '300 × 2 = 600 pas', v: 600, tol: .01, w: 20 }] }] };
+        { t: 'Comment modifier le programme pour tracer un triangle équilatéral de côté 50 ? Écrire les deux nombres à changer.', comp: 'mod', pts: 1.5, a: 'répéter 3 fois : avancer de 50 pas, tourner de 120 degrés.', v: null, lines: 1 },
+        { t: 'On agrandit la figure de départ (l’hexagone) par une homothétie de rapport 2. Quel est le nouveau périmètre ?', comp: 'cal', pts: 1, a: '300 × 2 = 600 pas', v: 600, tol: .01, w: 20 }] }] };
 }
 
 /* vérification du format : 55 min, partie 1 de 6 questions sur 6 points, partie 2 sur 12 points (1 ou 2 exercices), 2 points de rédaction */

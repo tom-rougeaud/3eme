@@ -26,7 +26,7 @@
     const items = [num('a', n, 0, String(n)), num('b', fav1, 0, String(fav1), [{ v: n - k, m: 'N’oublie pas ' + k + ' lui-même : « ' + k + ' ou plus ».' }]), num('c', fav1 / n, 3, fx(fav1, n)), num('d', fav2 / n, 3, fx(fav2, n)), num('e', fav3 / n, 3, fx(fav3, n)), num('f', 1 - fav1 / n, 3, fx(n - fav1, n), [{ v: fav1 / n, m: 'L’événement contraire : 1 − P(« ' + k + ' ou plus »).' }])];
     xs(items, { a: `les faces 1 à ${n}`, b: `${k}, …, ${n} : ${n} − ${k} + 1 = ${fav1} issues`, c: `${fav1} issues favorables sur ${n} : ${fx(fav1, n)}`, d: `nombres pairs de 2 à ${n} : ${fav2} issues ; ${fx(fav2, n)}`, e: `multiples de ${m} jusqu’à ${n} : ${Array.from({ length: fav3 }, (_, i) => m * (i + 1)).join(', ')} ; ${fx(fav3, n)}`, f: `1 − ${fav1}/${n} = ${n - fav1}/${n}` });
     return { titre: 'Les issues d’un dé', consigne: `On lance un dé équilibré à ${n} faces, numérotées de 1 à ${n}. Réponds par une fraction ou un nombre décimal.`,
-      support: table(['Question', 'Réponse'], [['a. Nombre d’issues possibles', tb('a', String(n), 12)], [`b. Issues favorables à « ${k} ou plus »`, tb('b', String(fav1), 12)], [`c. P(« ${k} ou plus »)`, tb('c', fx(fav1, n), 16)], ['d. P(« nombre pair »)', tb('d', fx(fav2, n), 16)], [`e. P(« multiple de ${m} »)`, tb('e', fx(fav3, n), 16)], [`f. P(« moins de ${k} »)`, tb('f', fx(n - fav1, n), 16)]]), items,
+      support: table(['Question', 'Réponse'], [['a. Nombre d’issues possibles', tb('a', String(n), 12)], [`b. Issues favorables à « ${k} ou plus »`, tb('b', String(fav1), 12)], [`c. Probabilité d’obtenir « ${k} ou plus »`, tb('c', fx(fav1, n), 16)], ['d. Probabilité d’obtenir un nombre pair', tb('d', fx(fav2, n), 16)], [`e. Probabilité d’obtenir un multiple de ${m}`, tb('e', fx(fav3, n), 16)], [`f. Probabilité d’obtenir un nombre inférieur à ${k}`, tb('f', fx(n - fav1, n), 16)]]), items,
       hints: ['Le dé est équilibré : toutes les faces ont la même chance.', 'Probabilité = issues favorables ÷ issues possibles.', '« Moins de ' + k + ' » est le contraire de « ' + k + ' ou plus ».'] };
   };
 
@@ -41,7 +41,7 @@
     const items = [num('a', N, 0, String(N), [{ v: p + q, m: 'On multiplie : ' + p + ' × ' + q + '.' }]), num('b', fav, 0, String(fav)), num('c', fav / N, 3, fx(fav, N)), num('d', dbl / N, 3, fx(dbl, N))];
     xs(items, { a: `${p} × ${q} = ${N} cases, toutes équiprobables`, b: `cases où la somme vaut ${s} : ${fav}`, c: `${fav} ÷ ${N} : ${fx(fav, N)}`, d: `doubles : (1 ; 1) … (${dbl} ; ${dbl}), ${dbl} cases : ${fx(dbl, N)}` });
     return { titre: 'Deux dés : le tableau', consigne: `Deux dés équilibrés, à ${p} et à ${q} faces : on additionne les deux nombres. Complète le tableau des sommes au brouillon.`,
-      support: tbl + `<p class="tr-l">a. Nombre d’issues : ${tb('a', String(N), 12)} · b. Cases où la somme vaut ${s} : ${tb('b', String(fav), 12)}</p><p class="tr-l">c. P(somme = ${s}) : ${tb('c', fx(fav, N), 16)} · d. P(obtenir un double) : ${tb('d', fx(dbl, N), 16)}</p>`, items,
+      support: tbl + `<p class="tr-l">a. Nombre d’issues : ${tb('a', String(N), 12)} · b. Cases où la somme vaut ${s} : ${tb('b', String(fav), 12)}</p><p class="tr-l">c. Probabilité que la somme soit égale à ${s} : ${tb('c', fx(fav, N), 16)} · d. Probabilité d’obtenir un double (deux nombres identiques) : ${tb('d', fx(dbl, N), 16)}</p>`, items,
       hints: ['Chaque case : numéro de la ligne + numéro de la colonne.', 'Nombre d’issues = nombre de cases du tableau.', 'Un double : les deux dés donnent le même nombre.'] };
   };
 
@@ -62,8 +62,8 @@
     TR.c7e4 = R => {
       const N = pick(R, [20, 25, 50]), r = int(R, 3, Math.floor(N / 2)), v = int(R, 2, N - r - 3), b = N - r - v, pr = r / N, pv = v / N;
       return Q('Événement contraire', `Un sac contient ${N} boules indiscernables au toucher : on tire une boule au hasard. R est l’événement « la boule est rouge ».`, [
-        { lab: 'P(R), probabilité de tirer une boule rouge', v: pr, d: 2, x: `${r} boules rouges sur ${N} : ${r} ÷ ${N} = ${fr(pr)}`, err: [{ v: rnd(r / (N - r), 2), m: 'Divise par le nombre total de boules.' }] },
-        { lab: 'P(non R), probabilité de ne pas tirer de boule rouge', v: 1 - pr, d: 2, x: `P(non R) = 1 − P(R) = 1 − ${fr(pr)} = ${fr(1 - pr)}`, err: [{ v: pr, m: 'La probabilité du contraire vaut 1 − P(R).' }] },
+        { lab: 'Probabilité P(R) de tirer une boule rouge', v: pr, d: 2, x: `${r} boules rouges sur ${N} : ${r} ÷ ${N} = ${fr(pr)}`, err: [{ v: rnd(r / (N - r), 2), m: 'Divise par le nombre total de boules.' }] },
+        { lab: 'Probabilité P(non R) de ne pas tirer de boule rouge', v: 1 - pr, d: 2, x: `P(non R) = 1 − P(R) = 1 − ${fr(pr)} = ${fr(1 - pr)}`, err: [{ v: pr, m: 'La probabilité du contraire vaut 1 − P(R).' }] },
         { lab: 'Probabilité de ne pas tirer de boule verte, en % (au dixième)', v: rnd((1 - pv) * 100, 1), d: 1, w: 14, x: `1 − ${v}/${N} = 1 − ${fr(pv)} = ${fr(1 - pv)} soit ${fr(rnd((1 - pv) * 100, 1), 1)} %`, err: [{ v: rnd(pv * 100, 1), m: 'On cherche la probabilité de ne pas tirer de verte : c’est 1 − P(verte).' }] },
         { lab: 'Tirer une boule jaune (il n’y en a aucune) est un événement…', qcm: ['impossible', 'certain', 'ni l’un ni l’autre'], ok: 0, x: 'Aucune boule jaune dans le sac : l’événement ne peut pas se produire, sa probabilité est 0 (événement impossible).' },
         { lab: 'Tirer une boule rouge, verte ou bleue est un événement…', qcm: ['impossible', 'certain', 'ni l’un ni l’autre'], ok: 1, x: `Toutes les boules sont rouges, vertes ou bleues (${r} + ${v} + ${b} = ${N}) : l’événement se produit toujours, sa probabilité est 1 (événement certain).` }],

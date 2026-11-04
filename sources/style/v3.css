@@ -408,3 +408,5 @@ table.evg3{table-layout:fixed;width:100%}
 .colbox .gcard,.cols2 .gcard{padding:1.4mm 3mm 1.6mm}
 .colbox .gc-def,.cols2 .gc-def{font-size:9.8pt;margin:.3mm 0}
 .colbox .gc-ph,.cols2 .gc-ph{font-size:9.2pt;margin:.3mm 0}
+/* problème de type brevet avec programme Scratch : figure un peu plus basse pour que l’en-tête, la bulle et le problème tiennent sur une seule page */
+.pb3 .scr-w svg{max-height:42mm;width:auto;max-width:100%}
