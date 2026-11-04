@@ -77,7 +77,7 @@
   const AUTOS = {};
   const autoApp = c => { if (!window.MCVA) return ''; const seed = AUTOS[c.id] || (AUTOS[c.id] = rnd9()), qs = window.MCVA.gen(c.id, seed, 10);
     return `<article class="auto c-${c.col}" data-c="${c.id}"><div class="ex-h"><span class="num2">⚡</span><span class="ex-t">Automatismes du brevet · 10 minutes, sans calculatrice</span><button class="btn sm ghost" data-auto-new>🔄 Nouvelles questions</button></div><p class="cons">Comme la partie 1 du brevet : les automatismes du chapitre, puis d’autres automatismes. Réponds de tête, puis vérifie.</p><ol class="auto-q">${qs.map((q, j) => `<li class="aq" data-j="${j}"><p>${q.t}</p>${q.choices ? `<span class="chs">${q.choices.map((ch, k) => `<button class="ch" data-ak="${k}">${ch}</button>`).join('')}</span>` : `<input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${j + 1}">`}<span class="afb" aria-live="polite"></span></li>`).join('')}</ol><div class="ex-act"><button class="btn" data-auto-check>Vérifier</button><span class="score"></span></div></article>`; };
-  /* ---------- « Mécanique » : dix petits calculs sans contexte pour chaque notion ---------- */
+  /* ---------- « Mécanique » : cinq petits calculs sans contexte pour chaque notion ---------- */
   const fnv = t => { let h = 2166136261; for (const ch of t) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
   const MSEED = {};
   const mechSet = (c, n) => { const k = c.id + '.' + n; if (!(window.MCVT && window.MCVT.MECH && window.MCVT.MECH[k])) return null; return window.MCVT.mech(c.id, n, MSEED[k] != null ? MSEED[k] : fnv(`${c.id}-m${n}`)); };
@@ -99,7 +99,7 @@
     const m = mechSet(c, n); let ok = 0;
     $$('.mq3', card).forEach((li, j) => { const it = m.items[j], r = mechJudge(it, $('.inp', li).value); li.classList.remove('ok', 'ko', 'cmp'); li.classList.add(r); if (r === 'ok') ok++;
       $('.mfb', li).innerHTML = r === 'ok' ? '✅' : r === 'cmp' ? `🔎 Compare avec : <span class="sol">${it.a}</span>` : `❌ <span class="sol">${it.a}</span>`; });
-    $('.score', card).textContent = `${ok} bonne${ok > 1 ? 's' : ''} réponse${ok > 1 ? 's' : ''} sur 10`; if (window.MCmathrun) window.MCmathrun.run(card); });
+    $('.score', card).textContent = `${ok} bonne${ok > 1 ? 's' : ''} réponse${ok > 1 ? 's' : ''} sur 5`; if (window.MCmathrun) window.MCmathrun.run(card); });
   document.addEventListener('input', e => { if (e.target.id === 'glo-q') { GLO.q = e.target.value; $('#glo-list').innerHTML = gloList(); } });
   document.addEventListener('click', e => { const ak = e.target.closest('.aq [data-ak]'); if (ak) { $$('.ch', ak.parentNode).forEach(b => b.classList.toggle('sel', b === ak)); return; } const t = e.target.closest('[data-auto-check],[data-auto-new]'); if (!t) return; const card = t.closest('.auto'), cid = card.dataset.c;
     if (t.hasAttribute('data-auto-new')) { AUTOS[cid] = rnd9(); const tmp = document.createElement('div'); tmp.innerHTML = autoApp(byId[cid]); card.replaceWith(tmp.firstElementChild); return; }
@@ -140,6 +140,14 @@
       <div class="tp tp-retiens" hidden><div class="lc-r"><span class="lc-t">📌 Je retiens</span>${nt.retiens}</div><div class="att">⚠️ <b>Attention</b> · ${nt.attention}</div></div>
       <div class="tp tp-amoi" hidden><span class="t3">✏️ À moi</span><ol class="amoi">${nt.amoi.map(([q, a], k) => `<li><p>${q}</p><p class="qa-r"><input class="inp" autocomplete="off" aria-label="Ma réponse ${k + 1}" placeholder="ma réponse"><button class="btn sm ghost" data-amoi="${k}">Voir la réponse</button></p><p class="amoi-a" hidden>💬 ${a}</p></li>`).join('')}</ol></div>
       <div class="ex-act"><button class="btn" data-temps="${i + 1}">${TEMPS[1][1]} ▶</button><button class="btn ghost" data-tout="${i + 1}">Tout afficher</button><span class="tpc">1 / 5</span></div></article>`;
+  /* « Ton parcours » : le même guide que dans le manuel imprimé, avec les noms des exercices (et la page du manuel dans la pastille 📖) */
+  const parcoursApp = (c, n) => {
+    const N = c.notions.length, lcOf = lc => (lc >= 1 && lc <= N ? lc : N), base = c.entraine.find(e => lcOf(+e.lc) === n && !e.niv); if (!base) return '';
+    const bt = window.MCVT.tr(base.gen, 1).titre.replace(/<[^>]+>/g, ''), hasM = !!(window.MCVT.MECH && window.MCVT.MECH[c.id + '.' + n]);
+    const oth = [...(c.scratch || []).filter(sx => lcOf(+sx.lc) === n).map(sx => `🐱 « ${sx.titre} »`), ...c.probs.filter(p => lcOf(+p.lc || 1) === n).map(p => `🧩 « ${p.titre} »`)];
+    if (!oth.length) oth.push(`🧩 « ${c.probs[0].titre} »`);
+    const o = oth.join(' ou ');
+    return `<aside class="parc3 c-${c.col}"><div class="pc3-h">🧭 Ton parcours · notion ${n}</div><p><b>Ça va ?</b> Fais ${hasM ? 'les 5 calculs 🔧, puis ' : ''}l’exercice « ${bt} », puis ${o} (onglet 🧩 Problèmes).</p><p><b>Ça bloque ?</b> Relis la méthode ci-dessus et refais l’exemple avec tes mots. Fais seulement ${hasM ? 'les 5 calculs 🔧 et ' : ''}l’exercice « ${bt} ». Quand tu les réussis seul·e, reviens faire ${o}.</p></aside>`; };
   function notionsView(c) {
     const N = c.notions.length, lcOf = lc => (lc >= 1 && lc <= N ? lc : N);
     const ex = n => c.entraine.map((e, i) => [e, i]).filter(([e]) => lcOf(+e.lc) === n);
@@ -148,7 +156,7 @@
       const n = i + 1, es = ex(n), ss = sc(n);
       const exh = es.length || ss.length ? `<div class="nx-h c-${c.col}"><span class="nx-t">✏️ Je m’entraîne · notion ${n}</span><span class="nx-s">${es.length + ss.length} exercice${es.length + ss.length > 1 ? 's' : ''}</span></div>` : '';
       const nxt = n < N ? `<a class="btn ghost nx-next" href="#nt${n + 1}" data-goto="nt${n + 1}"><span>Notion ${n + 1} : ${c.notions[n].titre} ↓</span></a>` : '';
-      return leconArt(c, nt, i) + mechApp(c, n) + exh + es.map(([e, k]) => trCard(c, e, k)).join('') + ss.map(([sx, j]) => scratchCard(c, sx, c.entraine.length + j)).join('') + (nxt ? `<p class="nx-nav">${nxt}</p>` : '');
+      return leconArt(c, nt, i) + parcoursApp(c, n) + mechApp(c, n) + exh + es.map(([e, k]) => trCard(c, e, k)).join('') + ss.map(([sx, j]) => scratchCard(c, sx, c.entraine.length + j)).join('') + (nxt ? `<p class="nx-nav">${nxt}</p>` : '');
     }).join('');
     const mots = `<article class="mk c-${c.col}"><div class="lc-h"><span class="lc-n">🔤</span>Les mots à connaître</div><table class="tbl mkt3"><tr><th>Le mot</th><th>Ce que ça veut dire</th><th>En exemple</th></tr>${c.mots.map(r => `<tr><td class="mk-w">${r[0]}</td><td>${r[1]}</td><td class="mk-x">« ${r[2]} »</td></tr>`).join('')}</table></article>`;
     return `<p class="hint">On avance notion après notion : je lis la question, je découvre la méthode étape par étape, puis je m’entraîne tout de suite sur cette notion. Le numéro 📖 indique la page du manuel imprimé.</p>` + blocks + autoApp(c) + mots;

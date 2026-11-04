@@ -16,7 +16,7 @@ const qv = q => ({ t: q.t, comp: q.comp, pts: q.pts, a: q.a, v: q.v, tol: q.tol,
 const pr = p => ({ id: p.id, etape: p.etape, titre: p.titre, lc: p.lc, pouce: p.pouce, corr: p.corr, cls: p.cls, intro: p.intro, outro: p.outro, seq: p.seq, qs: p.qs, defi: p.defi || 0, bulle: p.bulle || '', autravail: p.autravail || null, hints: p.hints || [] });
 const slim = c => ({ id: c.id, n: c.n, col: c.col, icone: c.icone, dom: c.dom, titre: c.titre, sous: c.sous, travail: c.travail, objectifs: c.objectifs, metier: c.metier, pont: c.pont, parties: c.parties, scene: SC[c.id](), depart: c.depart,
   notions: c.notions.map(n => ({ titre: n.titre, decouvre: n.decouvre, methode: n.methode, vois: n.vois, solution: n.solution, retiens: n.retiens, attention: n.attention, amoi: n.amoi })),
-  mots: c.mots, resolus: c.resolus, entraine: c.entraine, bilan: c.bilan, words: c.words,
+  mots: c.mots, resolus: c.resolus, entraine: c.entraine.filter(e => !e.niv), bilan: c.bilan, words: c.words,
   scratch: (c.scratch || []).map(sx => ({ titre: sx.titre, lc: sx.lc, texte: sx.texte, svg: K.scratchSvg(sx.prog, sx.titre), qs: sx.qs.map(([q, a]) => [q, a]) })),
   probs: c.probs.map(pr),
   eval: { lieu: c.eval.lieu, duree: c.eval.duree, grille: c.eval.grille, redac: c.eval.redac, auto: c.eval.auto.map(qv), exos: c.eval.exos.map(x => ({ t: x.t, intro: x.intro, qs: x.qs.map(qv) })) } });

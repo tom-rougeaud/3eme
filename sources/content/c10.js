@@ -105,7 +105,7 @@ module.exports = function (chk) {
 
   c.mots = [['cylindre', 'solide à deux bases en disques ; V = π × r² × h', 'un seau'], ['cône', 'solide à base en disque et un sommet ; V = π × r² × h ÷ 3', 'un cornet'], ['boule, sphère', 'boule : le solide, V = 4/3 × π × r³ ; sphère : sa surface', 'un ballon'], ['latitude, longitude', 'angles qui repèrent un point de la Terre', 'Tokyo : 35,7° N ; 139,7° E'], ['translation, symétrie, rotation', 'glisser, retourner, tourner : même taille', 'un sprite qui avance'], ['homothétie', 'agrandir ou réduire avec un rapport k', 'un sprite × 2'], ['boucle', 'bloc qui répète des instructions', 'répéter 6 fois']];
 
-  c.scratch = [{ titre: 'le logo du tournoi', lc: 5, texte: 'Voici le programme qui trace un polygone. Lis-le, puis réponds.',
+  c.scratch = [{ titre: 'le logo du tournoi', lc: 5, texte: 'Le logo d’un tournoi de jeux vidéo est dessiné par le lutin de Scratch : il avance, puis tourne, et le bloc « répéter » refait les mêmes instructions plusieurs fois. Lis le programme ci-dessous, puis réponds.',
     prog: prog5,
     qs: [['Quelle figure le lutin dessine-t-il ?', 'un hexagone régulier', '6 côtés égaux de 50 pas et 6 rotations de 60° : 6 × 60 = 360°, le lutin revient au départ.'], ['Quel est son périmètre, en pas ?', '300 pas', '6 × 50 = 300 pas.'], ['Que faut-il modifier pour un carré ?', 'répéter 4 fois, tourner de 90°', '360 ÷ 4 = 90 : on répète 4 fois « avancer de 50, tourner de 90 ».']] }];
 

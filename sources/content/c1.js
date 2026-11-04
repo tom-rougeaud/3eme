@@ -100,7 +100,7 @@ module.exports = function (chk) {
   chk(90 / 30 === 3 && 60 / 30 === 2 && gcd(90, 60) === 30 && 252 / 9 === 28 && 465 % 3 === 0 && 465 % 9 && 91 === 7 * 13, 'c1 « À moi »');
 
   /* Je programme avec Scratch */
-  c.scratch = [{ titre: 'tester un diviseur', lc: 1, texte: 'Le bloc « modulo » donne le reste d’une division. Si le reste vaut 0, la division tombe juste.',
+  c.scratch = [{ titre: 'tester un diviseur', lc: 1, texte: 'Un collectionneur range ses cartes dans un classeur : chaque page contient 9 cartes. Le programme ci-dessous demande combien il a de cartes. Le bloc « modulo » donne le reste d’une division : par exemple, 20 modulo 9 = 2, car 20 = 9 × 2 + 2. Si le reste vaut 0, la division tombe juste.',
     prog: [{ c: 'evt', t: 'quand ⚑ est cliqué' }, { c: 'sns', t: 'demander « Nombre de cartes ? » et attendre' }, { c: 'ctl', t: 'si (réponse modulo 9) = 0 alors', open: 1 }, { c: 'look', t: 'dire « Toutes les pages sont pleines »', d: 1 }, { c: 'ctl', t: 'sinon', open: 1 }, { c: 'look', t: 'dire « La dernière page n’est pas pleine »', d: 1 }, { c: 'ctl', t: '', end: true }],
     qs: [['Que dit le lutin si on répond 360 ?', 'Toutes les pages sont pleines', '360 modulo 9 = 0 (360 = 9 × 40) : la condition est vraie, le lutin dit « Toutes les pages sont pleines ».'], ['Que dit le lutin si on répond 365 ?', 'La dernière page n’est pas pleine', '365 modulo 9 = 5 (365 = 9 × 40 + 5) : la condition est fausse, le lutin dit « La dernière page n’est pas pleine ».'], ['Que faut-il changer pour des pages de 4 cartes ?', 'remplacer 9 par 4', 'Le nombre de cartes par page est le diviseur testé : on remplace « modulo 9 » par « modulo 4 ».']] }];
 

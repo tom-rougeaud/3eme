@@ -95,7 +95,7 @@ function chapter(c) {
   const ntB = [];
   c.notions.forEach((nt, i) => {
     const pi = c.parties.findIndex(p => p.n.includes(i + 1));
-    ntB.push(`<div class="blk nt4 c-${col}" data-lcn="${i + 1}"${i ? '' : ` data-sec="${c.id}-cours"`}><div class="nt3-h"><span class="lc-n">${i + 1}</span><span class="nt3-t">${nt.titre}</span><span class="nt3-ch">Chapitre ${c.n} · ${esc(c.titre)}</span></div>
+    ntB.push(`<div class="blk nt4 c-${col}" data-lcn="${i + 1}" data-pgid="${c.id}-n${i + 1}"${i ? '' : ` data-sec="${c.id}-cours"`}><div class="nt3-h"><span class="lc-n">${i + 1}</span><span class="nt3-t">${nt.titre}</span><span class="nt3-ch">Chapitre ${c.n} · ${esc(c.titre)}</span></div>
 <div class="nt4-d"><div><span class="t3">🔎 Je découvre</span><p>${nt.decouvre.txt}</p></div><div class="nt4-img">${nt.decouvre.img}</div></div>
 <div class="nt4-m"><span class="t3">🧭 La méthode, pas à pas</span><ol class="nt4-s">${nt.methode.map(m => `<li><div>${m}</div></li>`).join('')}</ol><div class="nt4-v">${nt.vois}</div></div>
 <div class="nt4-sa"><div class="nt4-sol"><span class="nt4-sk">✅ La solution</span><div>${nt.solution}</div></div><div class="att">⚠️ <b>Attention</b> · ${nt.attention}</div></div><div class="lc-r nt4-ret"><span class="lc-t">📌 Je retiens</span>${nt.retiens}</div></div>`);
@@ -103,7 +103,7 @@ function chapter(c) {
   /* 5. je m’entraîne : 3 exercices à support visuel (tirage fixe ; d’autres nombres dans l’appli) */
   const byLc = {};
   c.entraine.forEach(e => {
-    if (e.niv < 0) return; /* 🌱 guidé : dans l’appli seulement ; 🚀 défi : l’exercice d’approfondissement de la notion */
+    if (e.niv) return; /* un seul exercice par notion (plus les 5 calculs) : les variantes guidées et les défis ne sont plus proposés ; les problèmes du chapitre jouent le rôle de défi */
     const g = MCVT.tr(e.gen, seedOf(c.id + '-' + e.id)), eid = c.id + '-' + e.id;
     const tp = trParts(g), extra = tp.extra;
     key.push({ eid, titre: g.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> ${nivT(e)}${g.titre}`, g.items.map(it => [`${it.k}.`, it.x || it.a])) });
@@ -111,18 +111,31 @@ function chapter(c) {
     rep.push({ eid, titre: nivT(e) + g.titre, txt: g.items.map(it => `${it.k}. ${it.a}`).join(' ; ') });
   });
 
-  /* 5 bis. la mécanique : dix petits calculs sans contexte, avant les exercices contextualisés de la notion */
+  /* 5 bis. la mécanique : cinq petits calculs sans contexte, avant les exercices contextualisés de la notion */
   c.notions.forEach((nt, i) => {
     const k = i + 1; if (!MCVT.MECH[c.id + '.' + k]) return;
     const eid = `${c.id}-m${k}`, m = MCVT.mech(c.id, k, seedOf(eid));
     key.push({ eid, titre: 'Mécanique · ' + m.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> Mécanique · ${m.titre}`, [['💡', `<i>Méthode :</i> ${(MCVT.MECH_REGLE || {})[c.id + '.' + k] || ''}`]].concat(m.items.map(it => [`${it.k}.`, it.a]))) });
     rep.push({ eid, titre: '🔧 ' + m.titre, txt: m.items.map(it => `${it.k}. ${it.a}`).join(' ; ') });
-    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex mech c-${col}" data-inl="1" data-lcn="${k}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span><span class="mech-b">🔧 Mécanique</span><span class="ext">${m.titre}</span><span class="cps"><span class="lcref">notion ${k}</span><span class="outil">10 calculs · sans contexte</span></span></div><div class="exb"><p class="tr-c">${m.consigne}</p><ol class="mech-l">${m.items.map(it => `<li><span class="mq"><b>${it.k}.</b> ${it.t}</span><span class="bl mech-a" data-a="${esc(it.a)}"></span></li>`).join('')}</ol></div></div>`);
+    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex mech c-${col}" data-inl="1" data-lcn="${k}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span><span class="mech-b">🔧 Mécanique</span><span class="ext">${m.titre}</span><span class="cps"><span class="lcref">notion ${k}</span><span class="outil">5 calculs · sans contexte</span></span></div><div class="exb"><p class="tr-c">${m.consigne}</p><ol class="mech-l${m.items.every(it => it.t.replace(/<[^>]+>/g, '').length < 38 && String(it.a).length < 22) ? ' m3c' : ''}">${m.items.map(it => `<li><span class="mq"><b>${it.k}.</b> ${it.t}</span><span class="bl mech-a" data-a="${esc(it.a)}"></span></li>`).join('')}</ol></div></div>`);
+  });
+
+  /* 5 ter. « Ton parcours » : le guide en début de série d’exercices (aucun exercice en plus : il renvoie, par leur nom et leur page, à ceux qui existent déjà) */
+  c.notions.forEach((nt, i) => {
+    const k = i + 1, base = c.entraine.find(e => e.lc === k && !e.niv); if (!base) return;
+    const tt = e => MCVT.tr(e.gen, seedOf(c.id + '-' + e.id)).titre.replace(/<[^>]+>/g, ''), bid = c.id + '-' + base.id, mid = `${c.id}-m${k}`, hasM = !!MCVT.MECH[c.id + '.' + k];
+    const X = id => `<b data-numof="${id}">00</b>`, P = id => `<b data-pgof="${id}">000</b>`;
+    const others = [];
+    (c.scratch || []).forEach((sx, j) => { if (sx.lc === k) others.push([`${c.id}-s${j + 1}`, sx.titre]); });
+    c.probs.forEach(p => { if (Math.min(p.lc || 1, c.notions.length) === k) others.push([`${c.id}-${p.id}`, p.titre]); });
+    if (!others.length) others.push([`${c.id}-p1`, c.probs[0].titre]);
+    const oth = others.map(([id, t]) => `l’exercice ${X(id)} « ${t.replace(/<[^>]+>/g, '')} » (page ${P(id)})`).join(' ou ');
+    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex parc3 c-${col}" data-inl="1" data-lcn="${k}" data-stage="1"><div class="pc3-h">🧭 Ton parcours · notion ${k}</div><div class="pc3-g"><p><b>Ça va ?</b> Fais ${hasM ? `les 5 calculs 🔧 (exercice ${X(mid)}) puis ` : ''}l’exercice ${X(bid)} « ${tt(base)} », puis ${oth}.</p><p><b>Ça bloque ?</b> Relis la méthode (page ${P(c.id + '-n' + k)}) et refais l’exemple avec tes mots. Fais seulement ${hasM ? `les 5 calculs 🔧 (exercice ${X(mid)}) et ` : ''}l’exercice ${X(bid)}. Quand tu les réussis seul·e, reviens faire ${oth}.</p></div></div>`);
   });
 
   /* réserve : d’autres tirages des exercices « Je m’entraîne ». La mise en page ne les pose que dans la place restée vide d’une page (jamais de page en plus). */
   const evPool = [];
-  {
+  if (false) {
    const base = c.entraine.filter(e => !e.niv), cnt = {}; base.forEach(e => { cnt[e.lc] = (cnt[e.lc] || 0) + 1; });
     const sig = g => g.support + '|' + g.items.map(it => it.a).join(';');
     base.slice().sort((a, b) => cnt[a.lc] - cnt[b.lc]).forEach(e => {
@@ -183,7 +196,7 @@ function chapter(c) {
   const m = c.metier.job;
   ex.push(`<div class="blk ex mt3 keep c-${col}" data-stage="9"><div class="mt3-h">🧑‍🔧 Le métier derrière la scène</div><div class="mt3-g"><div><b class="mt3-n">${m.nom}</b><p>${m.fait}</p><p class="mt3-m">📐 <b>Ses maths</b> · ${m.maths}</p></div><div class="mt3-a"><span class="mt3-k">Après la 3e</span><ul>${m.apres.map(x => `<li>${x}</li>`).join('')}</ul></div></div></div>`);
   const au = AUTO.gen(c.id, seedOf(c.id + '-auto'), 10);
-  FLASH.push(`<template id="flash-${c.id}"><ol>${[1, 2, 3, 4, 5, 6, 7, 8].flatMap(k => AUTO.gen(c.id, seedOf(c.id + "-flash" + k), 40)).filter((q, i, a) => !au.some(z => z.t === q.t) && a.findIndex(z => z.t === q.t) === i).filter((q, i) => i % 2 === 0 || true).slice(0, 130).map(q => `<li><span class="fl-t">${q.t}</span>${q.choices ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(24, q.a)}</li>`).join('')}</ol></template>`);
+  FLASH.push(`<template id="flash-${c.id}"><ol>${[1, 2, 3, 4, 5, 6, 7, 8].flatMap(k => AUTO.gen(c.id, seedOf(c.id + "-flash" + k), 40)).filter((q, i, a) => !au.some(z => z.t === q.t) && a.findIndex(z => z.t === q.t) === i).slice(0, 130).map(q => `<li><span class="fl-t">${q.t}</span>${q.choices ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(24, q.a)}</li>`).join('')}</ol></template>`);
   ex.push(`<div class="blk ex sais3 keep c-${col}" data-stage="9" data-sec="${c.id}-auto" data-det="${c.id}-auto"><div class="exh"><span class="ext">✅ Je fais le point</span></div><div class="exb"><p class="small">Je coche quand je sais faire seul. L’appli coche aussi cette liste au fil des réussites.</p><table class="tbl bilan"><tr><th>Je sais…</th><th>Exercices</th><th>Oui</th><th>Presque</th><th>Pas encore</th></tr>${c.bilan.map(([t, es]) => `<tr><td class="tl">${t.replace(/^Je sais /, '')}</td><td>${es.map(e => /^n\d/.test(e) ? `à moi, notion ${e.slice(1)}` : R(e)).join(', ')}</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>`).join('')}</table>
 <div class="auto4"><div class="auto3-h"><span class="ic">⚡</span>Automatismes du brevet<span class="sec-sub">10 questions · 10 minutes · sans calculatrice · comme la partie 1 du brevet</span></div><ol class="auto3-q">${au.map(q => `<li><span>${q.t}</span>${q.choices ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(26, q.a)}</li>`).join('')}</ol></div></div></div>`);
   key.push({ k: 'auto', det: detBlock(`${c.id}-auto`, '⚡ Automatismes du brevet', au.map((q, i) => [`${i + 1}.`, q.x || q.a])) });
@@ -200,7 +213,7 @@ function chapter(c) {
   key.push({ k: 'ev', det: detBlock(`${c.id}-au`, '🎯 S’évaluer · partie 1 · automatismes', e.auto.map(q => [`${++kq}.`, q.x || q.a, `(${ptsTxt(q.pts)})`])) });
   e.exos.forEach((x, i) => key.push({ k: 'ev', det: detBlock(`${c.id}-ev${i}`, `🎯 S’évaluer · exercice ${i + 1} · ${x.t}`, x.qs.map(q => [`${++kq}.`, q.x || q.a, `(${ptsTxt(q.pts)})`])) }));
   const bilan = `<div class="blk optend c-${col}" data-opt="1"><div class="ob-h">🧭 Mon bilan du chapitre ${c.n}</div><table class="ob-t"><tr><th>Notion</th><th>Seul·e, sans hésiter</th><th>Avec mon cours</th><th>À retravailler</th></tr>${c.notions.map((nt, i) => `<tr><td><b>${i + 1}.</b> ${nt.titre}</td><td><i></i></td><td><i></i></td><td><i></i></td></tr>`).join('')}</table><p class="ob-q">Mes erreurs les plus fréquentes dans ce chapitre :</p><div class="lines"><i></i><i></i><i></i></div><p class="ob-q">Ce que je fais pour progresser (refaire un exercice, relire une méthode, demander de l’aide…) :</p><div class="lines"><i></i><i></i><i></i></div></div>`;
-  return { c, fixed, ex, ev: evh + evRed + evAuto + evx.join('') + evPool.join('') + bilan, key, rep };
+  return { c, fixed, ex, ev: evh + evRed + evAuto + evx.join(''), key, rep };
 }
 const CH = DATA.map(chapter);
 

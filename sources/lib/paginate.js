@@ -188,7 +188,7 @@
         const dst = cont.querySelector('.exb'); moved.forEach(u => dst.appendChild(u)); if (au) cont.appendChild(au); if (dzi) cont.appendChild(dzi); if (b.dataset.det) cont.dataset.det = b.dataset.det;
         queue.splice(0, i + 1, cont); res.splits = (res.splits || 0) + 1; return true;
       };
-      if (el.children.length && half()) continue;
+      if (false && el.children.length && half()) continue;
       // un titre (« Les exercices ») ne reste jamais seul en bas de page
       const carry = []; while (el.lastElementChild && el.lastElementChild.classList.contains('kwn') && el.children.length > 1) carry.unshift(el.removeChild(el.lastElementChild));
       topUp(0); if (fill && queue[0] && queue[0].classList.contains('sais3') && free(el) / MM > 60) addFlash(el); if (fill) addNotes(p);
@@ -214,6 +214,8 @@
   });
   document.querySelectorAll('[data-pageof]').forEach(s => { const v = res.secs[s.dataset.pageof]; if (v) s.textContent = v; else res.errors.push('Renvoi introuvable : ' + s.dataset.pageof); });
   document.querySelectorAll('[data-wordpage]').forEach(s => { const v = res.words[s.dataset.wordpage]; if (v) s.textContent = v; else res.errors.push('Page introuvable : ' + s.dataset.wordpage); });
+  { const pgOf = {}; [...document.querySelectorAll('#out .page')].forEach((pg, i) => pg.querySelectorAll('[data-eid],[data-pgid]').forEach(b => { const id = b.dataset.eid || b.dataset.pgid; if (!(id in pgOf)) pgOf[id] = i + 1; }));
+    document.querySelectorAll('[data-pgof]').forEach(s => { const v = pgOf[s.dataset.pgof]; if (v) s.textContent = v; else res.errors.push('Page introuvable : ' + s.dataset.pgof); }); }
   document.querySelectorAll('[data-numof]').forEach(s => { const v = res.num[s.dataset.numof]; if (v) s.textContent = v; else res.errors.push('Numéro introuvable : ' + s.dataset.numof); });
   document.querySelectorAll('.rp3').forEach(rp => { const ps = [...rp.querySelectorAll(':scope > p')]; ps.sort((x, y) => (+x.querySelector('[data-numof]').textContent || 0) - (+y.querySelector('[data-numof]').textContent || 0)).forEach(x => rp.appendChild(x)); });
   document.querySelectorAll('.bilan td').forEach(td => { const bs = [...td.querySelectorAll('[data-numof]')]; if (bs.length > 1) td.innerHTML = bs.map(b => +b.textContent).sort((a, b) => a - b).map(x => `<b>${x}</b>`).join(', '); });

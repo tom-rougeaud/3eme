@@ -78,7 +78,7 @@ module.exports = function (chk) {
 
   c.mots = [['expression littérale', 'un calcul qui contient une ou plusieurs lettres', '4(x + 3) − 12'], ['développer', 'transformer un produit en somme', '3(x + 4) = 3x + 12'], ['factoriser', 'transformer une somme en produit', '4x + 12 = 4(x + 3)'], ['réduire', 'regrouper les termes de même nature', '5x + 2x = 7x'], ['équation', 'une égalité avec une inconnue', '7x = 42'], ['solution', 'la valeur de l’inconnue qui rend l’égalité vraie', '6 est la solution de 7x = 42.']];
 
-  c.scratch = [{ titre: 'un programme de calcul', lc: 2, texte: 'Le lutin demande un nombre, puis il applique le programme de calcul de l’énigme.',
+  c.scratch = [{ titre: 'un programme de calcul', lc: 2, texte: 'Le lutin demande un nombre, puis il applique ce programme de calcul : ajouter 3, multiplier par 4, puis retirer 12. La variable « résultat » garde le nombre obtenu à chaque étape. Lis le programme, puis réponds (x désigne le nombre choisi).',
     prog: [{ c: 'evt', t: 'quand ⚑ est cliqué' }, { c: 'sns', t: 'demander « Choisis un nombre » et attendre' }, { c: 'var', t: 'mettre résultat à (réponse + 3)' }, { c: 'var', t: 'mettre résultat à (résultat × 4)' }, { c: 'var', t: 'mettre résultat à (résultat − 12)' }, { c: 'look', t: 'dire (regroupe « Résultat : » et résultat)' }],
     qs: [['Que dit le lutin si on répond 7 ?', 'Résultat : 28', '7 + 3 = 10 ; 10 × 4 = 40 ; 40 − 12 = 28.'], ['Et si on répond −2 ?', 'Résultat : −8', '−2 + 3 = 1 ; 1 × 4 = 4 ; 4 − 12 = −8.'], ['Quelle expression en x le programme calcule-t-il ?', '4(x + 3) − 12 = 4x', '4(x + 3) − 12 = 4x + 12 − 12 = 4x : le lutin dit toujours 4 fois le nombre.']] }];
   chk((7 + 3) * 4 - 12 === 28 && (-2 + 3) * 4 - 12 === -8, 'c3 Scratch');
