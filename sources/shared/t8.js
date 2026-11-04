@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 8 — Théorème de Pythagore, réciproque, trigonométrie (cosinus, sinus, tangente). */
+/* 3ème Série Pro · chapitre 8 — Théorème de Pythagore, réciproque, trigonométrie (cosinus, sinus, tangente). */
 (function (root) {
   'use strict';
   const { DEP, TR, H } = typeof module !== 'undefined' ? require('./train.js').MCVT : root.MCVT;
@@ -122,8 +122,8 @@
       const [[s, rect]] = H.shuffle(R, TRIS), [a, b, c] = s;
       return Q('La réciproque, pas à pas', `Un charpentier vérifie un cadre triangulaire dont les côtés mesurent ${a} cm, ${b} cm et ${c} cm. Est-il rectangle ?`, [
         { lab: 'Plus grand côté (il serait l’hypoténuse)', v: c, d: 0, w: 10, x: `Le plus grand des trois côtés est ${c}.` },
-        { lab: `${c}² =`, v: c * c, d: 0, w: 12, x: `${c} × ${c} = ${fr(c * c)}`, err: [{ v: a * a, m: 'On calcule le carré du plus grand côté, ' + c + '.' }] },
-        { lab: `${a}² + ${b}² =`, v: a * a + b * b, d: 0, w: 12, x: `${fr(a * a)} + ${fr(b * b)} = ${fr(a * a + b * b)}`, err: [{ v: (a + b) * (a + b), m: 'Calcule chaque carré séparément, puis additionne.' }] },
+        { lab: 'Le carré du plus grand côté', v: c * c, d: 0, w: 12, x: `${c} × ${c} = ${fr(c * c)}`, err: [{ v: a * a, m: 'On calcule le carré du plus grand côté, ' + c + '.' }] },
+        { lab: 'La somme des carrés des deux autres côtés', v: a * a + b * b, d: 0, w: 12, x: `${fr(a * a)} + ${fr(b * b)} = ${fr(a * a + b * b)}`, err: [{ v: (a + b) * (a + b), m: 'Calcule chaque carré séparément, puis additionne.' }] },
         { lab: 'Les deux résultats sont-ils égaux ?', qcm: ['oui', 'non'], ok: rect ? 0 : 1, x: rect ? `${fr(c * c)} = ${fr(a * a + b * b)} : ils sont égaux.` : `${fr(c * c)} ≠ ${fr(a * a + b * b)} : ils sont différents.` },
         { lab: 'Le triangle est-il rectangle ?', qcm: ['oui', 'non'], ok: rect ? 0 : 1, x: rect ? 'Si c² = a² + b², la réciproque de Pythagore dit que le triangle est rectangle.' : 'Si c² ≠ a² + b², le triangle n’est pas rectangle.' }],
         ['Repère le plus grand côté : c’est le candidat à l’hypoténuse.', 'Calcule c², puis a² + b².', 'Égalité : le triangle est rectangle. Sinon : il ne l’est pas.'],

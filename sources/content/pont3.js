@@ -34,7 +34,7 @@ c3: { de: [d('5e', 'Expressions littérales', 'tu calculais une expression en re
     ex2: 'En 4e : 3(x + 4) = 3x + 12, et 7x = 42 donne x = 6.',
     ex1: 'En 3e : on développe (x + 5)(x + 2), on prouve qu’un programme donne toujours 4x, on résout 14,99x = 7,99x + 42 et (x − 3)(2x + 8) = 0.',
     reste: ['Remplacer une lettre par un nombre.', 'La simple distributivité k(a + b) = ka + kb.', 'Résoudre ax = b.'],
-    change: ['La double distributivité (a + b)(c + d).', 'La factorisation et la preuve avec une lettre.', 'Les équations avec des x des deux côtés, et les équations produit nul.'],
+    change: ['La double distributivité (a + b)(c + d).', 'La factorisation et la preuve avec une lettre.', 'Les équations avec des x des deux côtés, les équations produit nul et une première inéquation.'],
     pourquoi: 'Comparer des tarifs, écrire une formule de devis, trouver une valeur inconnue.',
     prog: ['Utiliser le calcul littéral pour prouver un résultat général', 'Développer, factoriser (facteur commun), réduire une expression', 'Mettre un problème en équation et résoudre une équation du premier degré', 'Résoudre une équation produit nul'],
     reac: ['Calculer la valeur d’une expression (automatisme du brevet).', 'Programmes de calcul (automatisme du brevet).', 'Nombres relatifs : sommes et produits.'],

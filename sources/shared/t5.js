@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 5 — Fonctions : image, antécédent, lecture graphique, fonctions linéaires et affines,
+/* 3ème Série Pro · chapitre 5 — Fonctions : image, antécédent, lecture graphique, fonctions linéaires et affines,
    comparer deux formules. */
 (function (root) {
   'use strict';
@@ -38,7 +38,7 @@
 
   /* e2 · le tableau de valeurs d’une fonction affine */
   TR.c5e2 = R => {
-    const a = pick(R, [1.5, 2, 2.5, 3, 4, 12, 0.5]), b = pick(R, [0, 5, 10, 20, 45]), xs3 = [int(R, 1, 3), int(R, 4, 6), int(R, 8, 10)], k = int(R, 3, 9), yk = a * k + b;
+    const a = pick(R, [1.5, 2, 2.5, 3, 4, 12, 0.5]), b = pick(R, [0, 5, 10, 20, 45]), xs3 = [int(R, 1, 3), int(R, 4, 6), int(R, 8, 10)], k = pick(R, [3, 4, 5, 6, 7, 8, 9].filter(v => !xs3.includes(v))), yk = a * k + b;
     const f = x => rnd(a * x + b, 2), ctx = b ? `un forfait de ${eur(b)} plus ${eur(a)} par unité` : `${eur(a)} par unité, sans forfait`;
     const items = [num('a', f(xs3[0]), 2, fr(f(xs3[0]))), num('b', f(xs3[1]), 2, fr(f(xs3[1]))), num('c', f(xs3[2]), 2, fr(f(xs3[2]))),
       num('d', k, 2, String(k), [{ v: a * yk + b, m: 'On cherche l’antécédent : résous ' + fr(a) + 'x' + sb0(b) + ' = ' + fr(yk) + '.' }]),
@@ -75,13 +75,13 @@
       g += `<polyline points="${X.map((x, i) => px(x) + ',' + py(Y[i])).join(' ')}" fill="none" stroke="#2B59C3" stroke-width="3" stroke-linejoin="round"/>` + X.map((x, i) => `<circle cx="${px(x)}" cy="${py(Y[i])}" r="4.5" fill="#2B59C3"/>`).join('');
       const pic = svg(440, 226, g, 'Courbe de la fonction f : lecture d’images et d’antécédents');
       const i = int(R, 1, 4); let j = int(R, 1, 4); while (j === i) j = int(R, 1, 4);
-      let p = int(R, 1, 4), q = int(R, 1, 4); const yes = R() < .5; if (yes) q = p; else while (q === p) q = int(R, 1, 4);
+      const Sx = shuffle(R, [0, 1, 2, 3, 4].filter(t => t !== i && t !== j)), yes = R() < .5, p = Sx[0], q = yes ? p : Sx[1], r3 = Sx[2];
       const m = pick(R, [1, 2, 3, 4]), xm = X[m - 1] + 1, ym = (Y[m - 1] + Y[m]) / 2;
       return Q('Lire une courbe : image et antécédent', 'Voici la courbe de la fonction f. Les points marqués sont sur des croisements du quadrillage ; entre deux points, la courbe est un segment.', [
         { lab: `Image de ${X[i]} par f : f(${X[i]})`, v: Y[i], d: 0, w: 12, x: `On part de ${X[i]} sur l’axe horizontal, on monte jusqu’à la courbe, puis on lit l’axe vertical : f(${X[i]}) = ${Y[i]}.`, err: [{ v: X[i], m: 'L’image se lit sur l’axe vertical, pas sur l’axe horizontal.' }] },
         { lab: `Antécédent de ${Y[j]} par f`, v: X[j], d: 0, w: 12, x: `On part de ${Y[j]} sur l’axe vertical, on va vers la courbe, puis on lit l’axe horizontal : l’antécédent de ${Y[j]} est ${X[j]}.`, err: [{ v: Y[j], m: 'Un antécédent se lit sur l’axe horizontal.' }] },
         { lab: `Le point de coordonnées (${X[p]} ; ${Y[q]}) est-il sur la courbe ?`, qcm: ['oui', 'non'], ok: yes ? 0 : 1, x: yes ? `f(${X[p]}) = ${Y[p]} : le point (${X[p]} ; ${Y[p]}) est bien sur la courbe.` : `f(${X[p]}) = ${Y[p]}, pas ${Y[q]} : le point n’est pas sur la courbe.` },
-        { lab: `Dans l’égalité f(${X[i]}) = ${Y[i]}, le nombre ${X[i]} est…`, qcm: [`l’image de ${Y[i]}`, `un antécédent de ${Y[i]}`], ok: 1, x: `Dans f(a) = b, b est l’image de a et a est un antécédent de b : ${X[i]} est un antécédent de ${Y[i]}.` },
+        { lab: `Dans l’égalité f(${X[r3]}) = ${Y[r3]}, le nombre ${X[r3]} est…`, qcm: [`l’image de ${Y[r3]}`, `un antécédent de ${Y[r3]}`], ok: 1, x: `Dans f(a) = b, b est l’image de a et a est un antécédent de b : ${X[r3]} est un antécédent de ${Y[r3]}.` },
         { lab: `Image de ${xm} (lecture sur le segment)`, v: ym, d: 0, w: 12, x: `${xm} est au milieu de ${X[m - 1]} et ${X[m]} : la courbe passe à mi-hauteur entre ${Y[m - 1]} et ${Y[m]}, soit (${Y[m - 1]} + ${Y[m]}) ÷ 2 = ${ym}.` }],
         ['L’image se lit sur l’axe vertical, l’antécédent sur l’axe horizontal.', 'Pour une image : pars de x, monte ou descends jusqu’à la courbe.', 'Pour un antécédent : pars de la valeur sur l’axe vertical, va jusqu’à la courbe, puis descends.'], pic);
     };
@@ -123,7 +123,7 @@
       const a = pick(R, [2, 3, 4, 5]), b = pick(R, [5, 10, 20]), [x1, x2, x3] = [int(R, 1, 3), int(R, 4, 6), int(R, 7, 9)], f = x => a * x + b;
       return Q('Un tableau de valeurs, pas à pas', `Un service facture ${fr(b)} € plus ${fr(a)} € par unité : f(x) = ${a}x + ${b}, en euros, pour x unités.`, [
         { lab: `${a} × ${x1} =`, v: a * x1, d: 0, w: 10, x: `${a} × ${x1} = ${a * x1}`, err: [{ v: a + x1, m: 'Le prix des unités se calcule en multipliant.' }] },
-        { lab: `f(${x1}) = ${a * x1} + ${b} =`, v: f(x1), d: 0, w: 10, x: `${a * x1} + ${b} = ${f(x1)}` },
+        { lab: `f(${x1}) = (le résultat de a) + ${b} =`, v: f(x1), d: 0, w: 10, x: `${a * x1} + ${b} = ${f(x1)}` },
         { lab: `f(${x2}) =`, v: f(x2), d: 0, w: 10, x: `${a} × ${x2} + ${b} = ${a * x2} + ${b} = ${f(x2)}`, err: [{ v: a * x2, m: 'N’oublie pas d’ajouter ' + b + '.' }] },
         { lab: `f(${x3}) =`, v: f(x3), d: 0, w: 10, x: `${a} × ${x3} + ${b} = ${a * x3} + ${b} = ${f(x3)}` },
         { lab: 'De x = 1 à x = 2, f(x) augmente de', v: a, d: 0, w: 10, x: `f(2) − f(1) = ${f(2)} − ${f(1)} = ${a} : c’est le coefficient a`, err: [{ v: b, m: 'f(x) augmente du coefficient a quand x augmente de 1.' }] }],
@@ -131,7 +131,7 @@
         table(['x', String(x1), String(x2), String(x3)], [['f(x)', '?', '?', '?']]) + AI('f(x) = 3x + 2 pour x = 4 : 3 × 4 = 12, puis 12 + 2 = 14.'));
     };
     TR.c5e2d = R => {
-      const a = pick(R, [2, 3, 4, 5, 6]), b = int(R, 2, 12), xA = pick(R, [1, 2]), xB = xA + pick(R, [3, 4]), f = x => a * x + b, k = int(R, 6, 12);
+      const a = pick(R, [2, 3, 4, 5, 6]), b = int(R, 2, 12), xA = pick(R, [1, 2]), xB = xA + pick(R, [3, 4]), f = x => a * x + b, k = pick(R, [6, 7, 8, 9, 11, 12]);
       return Q('Retrouver la fonction', `Une fonction affine f vérifie f(${xA}) = ${f(xA)} et f(${xB}) = ${f(xB)}. On cherche f(x) = ax + b.`, [
         { lab: 'Coefficient a', v: a, d: 0, w: 10, x: `a = (${f(xB)} − ${f(xA)}) ÷ (${xB} − ${xA}) = ${f(xB) - f(xA)} ÷ ${xB - xA} = ${a}`, err: [{ v: f(xB) - f(xA), m: 'Divise la variation de f(x) par la variation de x.' }] },
         { lab: 'Nombre b', v: b, d: 0, w: 10, x: `f(${xA}) = ${a} × ${xA} + b = ${f(xA)} donc b = ${f(xA)} − ${a * xA} = ${b}`, err: [{ v: f(xA), m: 'f(' + xA + ') = a × ' + xA + ' + b : retire a × ' + xA + '.' }] },
@@ -168,16 +168,17 @@
     /* e4 · image et antécédent */
     TR.c5e4a = R => {
       const X = [0, 2, 4, 6, 8], Y = shuffle(R, [0, 2, 4, 6, 8, 10, 12]).slice(0, 5).sort((a, b) => a - b), i = int(R, 1, 4); let j = int(R, 1, 4); while (j === i) j = int(R, 1, 4);
+      const r3 = pick(R, [0, 1, 2, 3, 4].filter(t => t !== i && t !== j));
       return Q('Image et antécédent, pas à pas', 'Voici le tableau de valeurs d’une fonction f. La première ligne donne x, la seconde donne f(x).', [
         { lab: `Image de ${X[i]} par f`, v: Y[i], d: 0, w: 10, x: `Dans la colonne de x = ${X[i]}, on lit f(${X[i]}) = ${Y[i]}.`, err: [{ v: X[i], m: 'L’image est dans la seconde ligne, celle de f(x).' }] },
         { lab: `Antécédent de ${Y[j]} par f`, v: X[j], d: 0, w: 10, x: `${Y[j]} est dans la colonne de x = ${X[j]} : l’antécédent de ${Y[j]} est ${X[j]}.`, err: [{ v: Y[j], m: 'L’antécédent est dans la première ligne, celle de x.' }] },
-        { lab: `Dans f(${X[i]}) = ${Y[i]}, le nombre ${X[i]} est…`, qcm: [`l’image de ${Y[i]}`, `un antécédent de ${Y[i]}`], ok: 1, x: `Dans f(a) = b : b est l’image de a, et a est un antécédent de b. Donc ${X[i]} est un antécédent de ${Y[i]}.` },
+        { lab: `Dans f(${X[r3]}) = ${Y[r3]}, le nombre ${X[r3]} est…`, qcm: [`l’image de ${Y[r3]}`, `un antécédent de ${Y[r3]}`], ok: 1, x: `Dans f(a) = b : b est l’image de a, et a est un antécédent de b. Donc ${X[r3]} est un antécédent de ${Y[r3]}.` },
         { lab: `f(${X[i]}) + f(${X[j]}) =`, v: Y[i] + Y[j], d: 0, w: 10, x: `${Y[i]} + ${Y[j]} = ${Y[i] + Y[j]}`, err: [{ v: X[i] + X[j], m: 'Additionne les images (deuxième ligne), pas les valeurs de x.' }] }],
         ['L’image de x se lit dans la ligne de f(x).', 'L’antécédent de y se lit dans la ligne de x, dans la colonne de y.', 'Dans f(a) = b, a est un antécédent de b.'],
         table(['x', ...X.map(String)], [['f(x)', ...Y.map(String)]]) + AI('si f(3) = 7 : 7 est l’image de 3, et 3 est un antécédent de 7.'));
     };
     TR.c5e4d = R => {
-      const L = pick(R, [8, 10]), k = .5, h = t => k * t * (L - t), ts = Array.from({ length: L + 1 }, (_, i) => i), t1 = int(R, 1, L / 2 - 1), ta = int(R, 1, L - 1), tm = L / 2;
+      const L = pick(R, [8, 10]), k = .5, h = t => k * t * (L - t), ts = Array.from({ length: L + 1 }, (_, i) => i), t1 = int(R, 1, L / 2 - 1), tm = L / 2; let ta = int(R, 1, L - 1); while (ta === t1 || ta === L - t1) ta = int(R, 1, L - 1);
       return Q('Le saut : plusieurs antécédents', `La hauteur h(t) d’un personnage qui saute est donnée par ce tableau (t en dixièmes de seconde, h en cases).`, [
         { lab: `Image de ${ta} par h`, v: h(ta), d: 1, w: 10, x: `On lit la colonne t = ${ta} : h(${ta}) = ${fr(h(ta))}.` },
         { lab: `Plus petit antécédent de ${fr(h(t1))} par h`, v: t1, d: 0, w: 10, x: `${fr(h(t1))} apparaît pour t = ${t1} et pour t = ${L - t1} : le plus petit est ${t1}.`, err: [{ v: L - t1, m: 'Il y a deux antécédents : donne le plus petit.' }] },

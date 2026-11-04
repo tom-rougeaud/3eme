@@ -36,7 +36,7 @@ module.exports = function (chk) {
   const vEq = S(600, 230, st(1, SN(1, 22, 30) + T(44, 36, 'x = le nombre de mois d’abonnement', { fs: 14, a: 'start', c: 'ts' }))
     + st(2, SN(2, 22, 74) + T(44, 81, '14,99x = 7,99x + 42', { fs: 19, a: 'start' }) + T(580, 81, 'Standard = pub + 42 €', { fs: 12, a: 'end', c: 'ts' }))
     + st(3, SN(3, 22, 120) + T(44, 127, '14,99x − 7,99x = 42   donc   7x = 42', { fs: 16, a: 'start' }) + T(580, 127, '− 7,99x des deux côtés', { fs: 12, a: 'end', c: 'kt' }))
-    + st(4, Rc(40, 148, 544, 72, { c: 'k', rx: 12 }) + SN(4, 40, 148) + T(312, 178, 'x = 42 ÷ 7 = 6', { fs: 19, c: 'tw' }) + T(312, 206, 'je vérifie : 14,99 × 6 = 89,94 et 7,99 × 6 + 42 = 47,94 + 42 = 89,94 ✓', { fs: 13, c: 'tw' })),
+    + st(4, Rc(44, 148, 540, 72, { c: 'k', rx: 12 }) + SN(4, 22, 184) + T(312, 178, 'x = 42 ÷ 7 = 6', { fs: 19, c: 'tw' }) + T(312, 206, 'je vérifie : 14,99 × 6 = 89,94 et 7,99 × 6 + 42 = 47,94 + 42 = 89,94 ✓', { fs: 13, c: 'tw' })),
   'On écrit l’équation 14,99x = 7,99x + 42, on enlève 7,99x des deux côtés, puis on divise par 7 : x = 6');
   // 4. produit nul
   const vNul = S(600, 230, st(1, SN(1, 128, 50) + Rc(150, 28, 300, 44, { c: 'k2', rx: 10 }) + T(300, 57, '(x − 3)(2x + 8) = 0', { fs: 18 }) + Ar(250, 74, 175, 108, { w: 2.2, h: 8 }) + Ar(350, 74, 425, 108, { w: 2.2, h: 8 }) + T(300, 96, 'un facteur est nul', { fs: 11, c: 'ts' }))
@@ -65,7 +65,7 @@ module.exports = function (chk) {
       methode: ['J’appelle x le nombre de mois.', 'Je traduis l’énoncé par une équation : 14,99x = 7,99x + 42.', 'J’enlève 7,99x des deux côtés : 7x = 42.', 'Je divise les deux côtés par 7 : x = 6. Je vérifie en remplaçant x par 6.'],
       vois: vEq,
       solution: `<p>${FM(R`14{,}99x=7{,}99x+42\iff7x=42\iff x=6`)}</p><p>Sacha est abonné depuis <b>6 mois</b> : 89,94 € en Standard contre 47,94 € avec la pub.</p><p class="srcl">${D.srcNetflix}</p>`,
-      retiens: `<p>Une <b>équation</b> est une égalité avec une inconnue. La <b>résoudre</b>, c’est trouver la valeur de l’inconnue qui la rend vraie.</p><p>On garde l’égalité vraie en faisant la même opération des deux côtés : ajouter, soustraire, multiplier ou diviser (par un nombre non nul).</p>`,
+      retiens: `<p>Une <b>équation</b> est une égalité avec une inconnue. La <b>résoudre</b>, c’est trouver la valeur de l’inconnue qui la rend vraie.</p><p>On garde l’égalité vraie en faisant la même opération des deux côtés : ajouter, soustraire, multiplier ou diviser (par un nombre non nul).</p><p><b>Inéquation</b> (signe &lt;, &gt;, ≤ ou ≥) : même méthode, mais si on multiplie ou divise par un nombre <b>négatif</b>, le sens du signe change. Exemple : −2x &lt; 6 donne x &gt; −3.</p>`,
       attention: 'On fait toujours la même opération des deux côtés du signe =. Pour isoler x dans 7x = 42, on divise par 7 : on ne soustrait pas 7.',
       amoi: [['Résous 3x + 5 = 20.', 'x = 5'], ['Résous 5x − 4 = 2x + 11.', 'x = 5']] },
     { titre: 'Résoudre une équation produit nul', decouvre: { txt: `Dans un escape game, le code du cadenas est un nombre x tel que ${H('(x − 3)(2x + 8) = 0')}. Quelles valeurs faut-il essayer ?`, img: skCadenas() },

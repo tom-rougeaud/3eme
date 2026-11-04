@@ -10,8 +10,10 @@ const hlText = require('../lib/hl');
 module.exports = chk => {
   const EVALS = require('./evals3')(chk);
   const ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter(n => fs.existsSync(path.join(__dirname, `c${n}.js`)));
-  return ids.map(n => {
-    const c = require(`./c${n}.js`)(chk);
+  /* ordre pédagogique : la proportionnalité (fichier c4) précède le calcul littéral (fichier c3) ; les identifiants internes ne changent pas */
+  const ORDER = [1, 2, 4, 3, 5, 6, 7, 8, 9, 10].filter(n => ids.includes(n));
+  return ORDER.map((n, pos) => {
+    const c = require(`./c${n}.js`)(chk); c.n = pos + 1;
     /* niveaux : chaque exercice courant a sa variante 🌱 guidée et sa variante 🚀 défi (id + 'a', id + 'd'), dès que les deux existent */
     c.entraine = c.entraine.filter(e => !e.niv).flatMap(e => [{ ...e, niv: 0 }].concat(TRG[e.gen + 'a'] && TRG[e.gen + 'd'] ? [{ id: e.id + 'a', gen: e.gen + 'a', lc: e.lc, niv: -1, base: e.id }, { id: e.id + 'd', gen: e.gen + 'd', lc: e.lc, niv: 1, base: e.id }] : []));
     chk(c.entraine.filter(e => e.niv).every(e => c.entraine.some(b => b.id === e.base && b.niv === 0)), `${c.id} : chaque variante renvoie à un exercice courant`);

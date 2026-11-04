@@ -38,7 +38,7 @@ module.exports = function (chk) {
   const vSci = S(600, 230, st(1, SN(1, 22, 30) + T(300, 36, '85 milliards = 85 000 000 000', { fs: 17 }))
     + st(2, SN(2, 22, 100) + dg.map((d, i) => T(120 + i * 34, 106, d, { fs: 22, c: i < 2 ? 'kt' : 'tx' })).join('') + T(bx(1), 112, ',', { fs: 26, c: 'kt' }) + T(bx(11) + 2, 112, ',', { fs: 26, c: 'ts' }))
     + st(3, SN(3, 22, 150) + Array.from({ length: 10 }, (_, k) => `<path d="M${bx(k + 2)} 80Q${(bx(k + 1) + bx(k + 2)) / 2} 60 ${bx(k + 1)} 80" fill="none" class="ks" stroke-width="1.8"/>`).join('') + T(300, 156, 'la virgule recule de 10 rangs : 85 000 000 000 = 8,5 × 10¹⁰', { fs: 14, c: 'kt' }))
-    + st(4, Rc(60, 172, 480, 52, { c: 'k', rx: 10 }) + SN(4, 60, 172) + T(300, 194, '8,5 × 10¹⁰ ÷ (6 × 10⁸) ≈ 142', { fs: 15, c: 'tw' }) + T(300, 215, 'environ 142 fois plus de cartes que de mangas', { fs: 13, c: 'tw' })),
+    + st(4, Rc(44, 172, 520, 52, { c: 'k', rx: 10 }) + SN(4, 22, 198) + T(300, 194, '8,5 × 10¹⁰ ÷ (6 × 10⁸) ≈ 142', { fs: 15, c: 'tw' }) + T(300, 215, 'environ 142 fois plus de cartes que de mangas', { fs: 13, c: 'tw' })),
   'On place la virgule après le premier chiffre de 85 000 000 000 : elle recule de 10 rangs, donc 8,5 × 10 puissance 10');
 
   c.notions = [

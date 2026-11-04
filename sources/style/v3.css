@@ -316,8 +316,8 @@ table.evg3{table-layout:fixed;width:100%}
 .fl-q{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:1.6mm 6mm;counter-reset:fl}
 .fl-q li{counter-increment:fl;display:flex;flex-direction:column;gap:.8mm;font-size:10pt;line-height:1.28}
 .fl-q li::before{content:counter(fl) '.';font:800 9pt 'Nunito Sans';color:var(--cc);margin-bottom:-4.4mm}
-.fl-q li .fl-t{padding-left:5mm}.fl-q li .bl{width:100%!important;height:6.6mm;margin:0}
-.fl-q li .opts{padding-left:5mm;gap:.6mm 4mm}
+.fl-q li .fl-t{padding-left:6.2mm}.fl-q li .bl{width:100%!important;height:6.6mm;margin:0}
+.fl-q li .opts{padding-left:6.2mm;gap:.6mm 4mm}
 /* pastille de compétence en fin de question (problèmes vers le brevet) */
 .pb3 .q .cpq{float:right;font-size:7.4pt;padding:.3mm 1.8mm;margin-left:2mm;margin-top:.6mm}
 .pb3 .q .qn{display:inline}

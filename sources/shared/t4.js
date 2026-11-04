@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 4 — Proportionnalité, pourcentages, grandeurs composées, ratio. */
+/* 3ème Série Pro · chapitre 4 — Proportionnalité, pourcentages, grandeurs composées, ratio. */
 (function (root) {
   'use strict';
   const { DEP, TR, H } = typeof module !== 'undefined' ? require('./train.js').MCVT : root.MCVT;

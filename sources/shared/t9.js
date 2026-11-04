@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 9 — Échelles, agrandissements et réductions (longueurs, aires, volumes), théorème de Thalès. */
+/* 3ème Série Pro · chapitre 9 — Échelles, agrandissements et réductions (longueurs, aires, volumes), théorème de Thalès. */
 (function (root) {
   'use strict';
   const { DEP, TR, H } = typeof module !== 'undefined' ? require('./train.js').MCVT : root.MCVT;

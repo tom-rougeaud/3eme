@@ -156,7 +156,7 @@
   /* à la fin d’un onglet : on propose l’étape suivante du chapitre, pas le chapitre suivant */
   function nextStep(c, tab) {
     const k = TABS.findIndex(t => t[0] === tab), nx = TABS[k + 1];
-    const chap = `<p class="chnav2">${c.n > 1 ? `<a href="#/c${c.n - 1}">← Chapitre ${c.n - 1}</a>` : '<span></span>'}${c.n < CH.length ? `<a href="#/c${c.n + 1}">Chapitre ${c.n + 1} →</a>` : ''}</p>`;
+    const chap = `<p class="chnav2">${c.n > 1 ? `<a href="#/${CH[c.n - 2].id}">← Chapitre ${c.n - 1}</a>` : '<span></span>'}${c.n < CH.length ? `<a href="#/${CH[c.n].id}">Chapitre ${c.n + 1} →</a>` : ''}</p>`;
     if (nx) return `<nav class="nextstep c-${c.col}"><p>Étape suivante du chapitre</p><a class="btn big" href="#/${c.id}/${nx[0]}">${nx[1]} →</a></nav>`;
     return `<nav class="nextstep c-${c.col}"><p>Chapitre ${c.n} terminé ? Bravo !</p><a class="btn big" href="#/${c.id}/depart">↺ Revoir le chapitre</a></nav>${chap}`;
   }

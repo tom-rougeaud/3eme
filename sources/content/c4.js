@@ -65,7 +65,7 @@ module.exports = function (chk) {
       methode: ['Je convertis la durée en secondes, l’unité du débit : 22 × 60 = 1 320 s.', 'Données = débit × durée : 5 × 1 320 = 6 600 Mbit.', 'Je convertis en mégaoctets : 1 octet = 8 bits, donc 6 600 ÷ 8 = 825 Mo.', 'Je donne un ordre de grandeur : environ 0,8 Go par épisode.'],
       vois: vDeb,
       solution: `<p>Un épisode en Full HD demande environ <b>825 Mo</b>, soit un peu moins de 1 Go.</p><p class="srcl">${D.srcNetflixDebit}</p>`,
-      retiens: `<p>Une <b>grandeur composée</b> se calcule avec deux grandeurs. Vitesse moyenne : ${FM(R`v=\dfrac dt`)} en km/h ou m/s. Débit : données ÷ durée, en Mbit/s.</p><p>On en déduit : ${FM(R`d=v\times t`)} et données = débit × durée.</p>`,
+      retiens: `<p>Une <b>grandeur composée</b> se calcule avec deux grandeurs. Vitesse moyenne : ${FM(R`v=\dfrac dt`)} en km/h ou m/s. Débit : données ÷ durée, en Mbit/s.</p><p>On en déduit : ${FM(R`d=v\times t`)} et données = débit × durée.</p><p><b>Conversions utiles</b> : 1 h = 60 min = 3 600 s ; 1 km = 1 000 m ; 1 L = 1 000 mL ; 1 Go = 1 000 Mo. Pour passer de km/h à m/s, on divise par 3,6 : 36 km/h = 10 m/s.</p>`,
       attention: 'Les unités doivent aller ensemble : des Mbit/s avec des secondes, des km/h avec des heures. Et 1 octet = 8 bits.',
       amoi: [['Un TGV parcourt 450 km en 1 h 30. Vitesse moyenne ?', '450 ÷ 1,5 = 300 km/h'], ['À 50 km/h, quelle distance en 3 h ?', '150 km']] },
     { titre: 'Partager selon un ratio', decouvre: { txt: `Pour un bol de ramen comme dans un animé, une recette mélange bouillon et sauce dans le ${H('ratio 5 : 1')}. Combien faut-il de bouillon et de sauce pour ${H('1,2 L')} de soupe ?`, img: skRamen() },

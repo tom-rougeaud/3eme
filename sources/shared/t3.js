@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 3 — Calcul littéral et équations : développer, factoriser, prouver, résoudre une équation,
+/* 3ème Série Pro · chapitre 3 — Calcul littéral et équations : développer, factoriser, prouver, résoudre une équation,
    équation produit nul. */
 (function (root) {
   'use strict';
@@ -34,7 +34,7 @@
       num('c', a + b, 0, String(a + b), [{ v: a * b, m: 'On réduit les termes en x : ' + b + 'x + ' + a + 'x.' }]), num('d', v, 0, String(v), [{ v: t * t + a * b, m: 'N’oublie pas les termes en x : ' + (a + b) + ' × ' + t + '.' }])];
     xs(items, { a: `x × ${a} = ${a}x`, b: `${a} × ${b} = ${a * b}`, c: `x² + ${cx(b)} + ${a}x + ${a * b} = x² + ${a + b}x + ${a * b}`, d: `${t}² + ${a + b} × ${t} + ${a * b} = ${t * t} + ${(a + b) * t} + ${a * b} = ${v} ; et (${t} + ${a})(${t} + ${b}) = ${t + a} × ${t + b} = ${v}` });
     return { titre: 'Le rectangle découpé', consigne: `Un poster mesure (x + ${a}) sur (x + ${b}). On le découpe en quatre rectangles pour développer son aire.`,
-      support: svg(W, y0 + hx + hb + 10, s, 'Rectangle découpé en quatre') + `<p class="tr-l">c. (x + ${a})(x + ${b}) = x² + ${tb('c', String(a + b), 10)} x + ${a * b}</p><p class="tr-l">d. Aire pour x = ${t} : ${tb('d', String(v), 14)}</p>`, items,
+      support: svg(W, y0 + hx + hb + 10, s, 'Rectangle découpé en quatre') + `<p class="tr-l">c. Dans le développement réduit de (x + ${a})(x + ${b}), le nombre devant x est : ${tb('c', String(a + b), 10)}</p><p class="tr-l">d. Aire pour x = ${t} : ${tb('d', String(v), 14)}</p>`, items,
       hints: ['L’aire d’un rectangle : longueur × largeur.', 'On additionne les quatre morceaux, puis on regroupe les termes en x.', 'Pour vérifier, remplace x par ' + t + ' dans les deux écritures.'] };
   };
 
@@ -74,8 +74,8 @@
       return Q('Un produit nul', 'Pour résoudre une équation produit nul, on cherche la valeur de x qui annule chaque facteur.', [
         { lab: 'Valeur de x qui annule le premier facteur', v: r1, d: 0, w: 14, x: solv(m1, r1), err: [{ v: -r1, m: 'Attention au signe : isole x en passant le nombre de l’autre côté.' }] },
         { lab: 'Valeur de x qui annule le second facteur', v: r2, d: 0, w: 14, x: solv(m2, r2), err: [{ v: -r2, m: 'Attention au signe : isole x en passant le nombre de l’autre côté.' }] },
-        { lab: 'La plus petite des deux solutions', v: lo, d: 0, w: 14, x: `Les solutions sont ${fr(r1, 0)} et ${fr(r2, 0)} : la plus petite est ${fr(lo, 0)}.` },
-        { lab: 'La plus grande des deux solutions', v: hi, d: 0, w: 14, x: `Les solutions sont ${fr(r1, 0)} et ${fr(r2, 0)} : la plus grande est ${fr(hi, 0)}.` },
+        { lab: 'La plus petite solution', v: lo, d: 0, w: 14, x: `Les solutions sont ${fr(r1, 0)} et ${fr(r2, 0)} : la plus petite est ${fr(lo, 0)}.` },
+        { lab: 'La plus grande solution', v: hi, d: 0, w: 14, x: `Les solutions sont ${fr(r1, 0)} et ${fr(r2, 0)} : la plus grande est ${fr(hi, 0)}.` },
         { lab: 'Combien de solutions cette équation a-t-elle ?', qcm: ['une', 'deux', 'aucune'], ok: 1, x: `Un produit est nul si l’un de ses facteurs est nul : x = ${fr(r1, 0)} ou x = ${fr(r2, 0)}. L’équation a deux solutions.` }],
         ['Un produit est nul si l’un des facteurs est nul.', 'Écris « premier facteur = 0 », puis « second facteur = 0 ».', 'Résous chaque petite équation séparément.'],
         table(['Équation'], [[`${fac(m1, r1)} × ${fac(m2, r2)} = 0`]]));
@@ -92,7 +92,7 @@
         { lab: `Le morceau x sur ${a} a pour aire ? × x. Le nombre est`, v: a, d: 0, w: 10, x: `x × ${a} = ${a}x : le morceau a pour aire ${a}x.`, err: [{ v: a * b, m: 'Ce morceau mesure x sur ' + a + ' : x × ' + a + ' = ' + a + 'x.' }] },
         { lab: `Le morceau ${b} sur x a pour aire ? × x. Le nombre est`, v: b, d: 0, w: 10, x: `${b} × x = ${b}x` },
         { lab: `Le petit rectangle ${a} sur ${b} a pour aire`, v: a * b, d: 0, w: 10, x: `${a} × ${b} = ${a * b}`, err: [{ v: a + b, m: 'Pour une aire, on multiplie.' }] },
-        { lab: `Après réduction : (x + ${a})(x + ${b}) = x² + ? x + ${a * b}. Le nombre est`, v: a + b, d: 0, w: 10, x: `${b}x + ${a}x = ${a + b}x : (x + ${a})(x + ${b}) = x² + ${a + b}x + ${a * b}`, err: [{ v: a * b, m: 'On additionne les termes en x : ' + b + 'x + ' + a + 'x.' }] },
+        { lab: `Après réduction de (x + ${a})(x + ${b}), le nombre devant x est`, v: a + b, d: 0, w: 10, x: `${b}x + ${a}x = ${a + b}x : (x + ${a})(x + ${b}) = x² + ${a + b}x + ${a * b}`, err: [{ v: a * b, m: 'On additionne les termes en x : ' + b + 'x + ' + a + 'x.' }] },
         { lab: `Aire pour x = ${t}`, v, d: 0, w: 12, x: `${t * t} + ${(a + b) * t} + ${a * b} = ${v} ; et (${t} + ${a})(${t} + ${b}) = ${t + a} × ${t + b} = ${v}` }],
         ['L’aire d’un rectangle : longueur × largeur.', 'Additionne les quatre morceaux : x², ' + a + 'x, ' + b + 'x et ' + a * b + '.', 'Pour vérifier, remplace x par ' + t + ' dans les deux écritures.'],
         table(['×', 'x', String(a)], [['x', 'x²', '?x'], [String(b), '?x', String(a * b)]]) + AI('(x + 2)(x + 3) : x² + 3x + 2x + 6 = x² + 5x + 6.'));
@@ -143,7 +143,7 @@
       const m = pick(R, [4, 5, 6]), k = int(R, 2, m - 2), p = int(R, 2, 5), q = int(R, 1, 5), x0 = int(R, 2, 9), s = (m - k) * x0 + m * p - q, A = x => (x + p) * m - q, B = x => k * x + s;
       return Q('Deux programmes qui se rencontrent', `A : ajouter ${p}, multiplier par ${m}, soustraire ${q}. B : multiplier par ${k}, ajouter ${s}. Quel départ donne le même résultat ?`, [
         { lab: `Le programme A donne ${m}x + ?. Le nombre est`, v: m * p - q, d: 0, w: 10, x: `${m}(x + ${p}) − ${q} = ${m}x + ${m * p} − ${q} = ${m}x + ${m * p - q}`, err: [{ v: p - q, m: 'Développe : ' + m + ' × ' + p + ' = ' + m * p + '.' }] },
-        { lab: `A = B s’écrit ${m}x + ${m * p - q} = ${k}x + ${s}. Après regroupement, ?x = ${s - (m * p - q)}. Le nombre est`, v: m - k, d: 0, w: 10, x: `${m}x − ${k}x = ${m - k}x et ${s} − ${m * p - q} = ${s - (m * p - q)}`, err: [{ v: m + k, m: 'On enlève ' + k + 'x des deux côtés.' }] },
+        { lab: `A = B s’écrit ${m}x + (le résultat de a) = ${k}x + ${s}. Après regroupement des x, le nombre devant x est`, v: m - k, d: 0, w: 10, x: `${m}x − ${k}x = ${m - k}x et ${s} − ${m * p - q} = ${s - (m * p - q)}`, err: [{ v: m + k, m: 'On enlève ' + k + 'x des deux côtés.' }] },
         { lab: 'Nombre de départ qui donne le même résultat', v: x0, d: 0, w: 10, x: `${s - (m * p - q)} ÷ ${m - k} = ${x0}`, err: [{ v: s - (m * p - q), m: 'Divise par le coefficient de x.' }] },
         { lab: 'Résultat commun des deux programmes', v: A(x0), d: 0, w: 10, x: `A : (${x0} + ${p}) × ${m} − ${q} = ${A(x0)} et B : ${k} × ${x0} + ${s} = ${B(x0)}` }],
         ['Écris chaque programme avec la lettre x, puis développe.', 'Écris l’équation « résultat de A = résultat de B » et regroupe les x d’un côté.', 'Vérifie avec le nombre trouvé dans les deux programmes.']);

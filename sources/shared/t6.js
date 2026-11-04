@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 6 — Statistiques : moyenne (simple et pondérée), médiane, étendue, diagrammes, fréquences. */
+/* 3ème Série Pro · chapitre 6 — Statistiques : moyenne (simple et pondérée), médiane, étendue, diagrammes, fréquences. */
 (function (root) {
   'use strict';
   const { DEP, TR, H } = typeof module !== 'undefined' ? require('./train.js').MCVT : root.MCVT;
@@ -90,18 +90,20 @@
         table(['Partie', '1', '2', '3', '4'], [['Score', ...v.map(String)]]) + AI('scores 8, 10, 12 : somme 8 + 10 + 12 = 30 ; moyenne 30 ÷ 3 = 10.'));
     };
     TR.c6e1d = R => {
-      let vals, cf, S, N, k, need, T, tries = 0;
+      let vals, cf, S, N, k, need, T, tries = 0, cand = [];
       do {
         vals = shuffle(R, [10, 11, 12, 13, 14, 15, 16]).slice(0, 3).sort((a, b) => a - b); cf = [int(R, 1, 3), int(R, 1, 3), int(R, 1, 3)];
         S = vals.reduce((a, x, i) => a + x * cf[i], 0); N = sum(cf); k = pick(R, [2, 3]); need = int(R, 9, 18); T = (S + k * need) / (N + k); tries++;
-      } while (!(Number.isInteger(T) && T >= 10 && T <= 17) && tries < 5000);
+        cand = [10, 11, 12, 13, 14, 15, 16, 17].filter(t => { const n2 = (t * (N + k) - S) / k; return t !== T && Number.isInteger(n2) && n2 >= 8 && n2 <= 20 && n2 !== need; });
+      } while (!(Number.isInteger(T) && T >= 10 && T <= 17 && cand.length) && tries < 20000);
+      const T2 = pick(R, cand), need2 = (T2 * (N + k) - S) / k;
       const mp = S / N;
       return Q('Moyenne pondérée et note à viser', 'Voici trois notes avec leur coefficient. Un dernier contrôle, de coefficient ' + k + ', reste à passer.', [
         { lab: 'Somme des notes × coefficients', v: S, d: 0, w: 12, x: vals.map((x, i) => `${x} × ${cf[i]}`).join(' + ') + ` = ${S}`, err: [{ v: sum(vals), m: 'Chaque note compte autant de fois que son coefficient.' }] },
         { lab: 'Somme des coefficients', v: N, d: 0, w: 10, x: `${cf.join(' + ')} = ${N}` },
         { lab: 'Moyenne pondérée actuelle, au centième', v: mp, d: 2, w: 12, x: `${S} ÷ ${N} ${Number.isInteger(S * 100 / N) ? '=' : '≈'} ${fr(rnd(mp, 2))}`, err: [{ v: rnd(sum(vals) / 3, 2), m: 'Divise par la somme des coefficients, ' + N + ', pas par 3.' }] },
         { lab: `Moyenne obtenue avec ${need} au dernier contrôle (coefficient ${k})`, v: T, d: 2, w: 12, a: fr(T), x: `(${S} + ${need} × ${k}) ÷ (${N} + ${k}) = ${S + need * k} ÷ ${N + k} = ${fr(T)}`, err: [{ v: rnd((mp + need) / 2, 2), m: 'Le dernier contrôle compte ' + k + ' fois : ajoute ' + need + ' × ' + k + ' et divise par ' + (N + k) + '.' }] },
-        { lab: `Note à obtenir au dernier contrôle pour avoir exactement ${T} de moyenne`, v: need, d: 1, w: 12, a: fr(need), x: `${T} × ${N + k} = ${T * (N + k)} ; ${T * (N + k)} − ${S} = ${T * (N + k) - S} ; ${T * (N + k) - S} ÷ ${k} = ${need}`, err: [{ v: T, m: 'Le dernier contrôle a un coefficient : calcule le total de points attendu, soustrais ce que tu as déjà, puis divise par ' + k + '.' }] }],
+        { lab: `Note à obtenir au dernier contrôle pour avoir exactement ${T2} de moyenne`, v: need2, d: 1, w: 12, a: fr(need2), x: `${T2} × ${N + k} = ${T2 * (N + k)} ; ${T2 * (N + k)} − ${S} = ${T2 * (N + k) - S} ; ${T2 * (N + k) - S} ÷ ${k} = ${need2}`, err: [{ v: T2, m: 'Le dernier contrôle a un coefficient : calcule le total de points attendu, soustrais ce que tu as déjà, puis divise par ' + k + '.' }] }],
         ['Moyenne pondérée = (somme des notes × coefficients) ÷ (somme des coefficients).', 'Le dernier contrôle ajoute sa note × son coefficient au total.', 'Pour viser une moyenne : total attendu = moyenne × somme des coefficients.'],
         table(['Note', ...vals.map(String)], [['Coefficient', ...cf.map(String)]]));
     };

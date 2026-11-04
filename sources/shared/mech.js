@@ -1,4 +1,4 @@
-/* Maths · 3ème Prépa-Métiers — « Je m’entraîne à la mécanique » : cinq petits calculs sans contexte pour chaque notion.
+/* Maths · 3ème Série Pro — « Je m’entraîne à la mécanique » : cinq petits calculs sans contexte pour chaque notion.
    Commun au manuel (tirage fixe) et à l’appli (nouveau tirage au choix).
    MCVT.mech('c3', 1, seed) → { titre, consigne, items:[{ k, t, a, v?, vs?, tol? }] }
      t : énoncé court (les formules sont mises en forme automatiquement) ; a : réponse affichée ;
@@ -67,17 +67,17 @@
   def('c1', 4, 'Rendre une fraction irréductible', 'Simplifie au maximum : la fraction obtenue ne peut plus être simplifiée.', (() => {
     const mk = (p, q, ks) => R => { const k = pick(R, ks); return it(`Simplifie la fraction ${p * k}/${q * k} : écris-la sous forme de fraction irréductible.`, sf(p, q), fv(p, q)); };
     return [mk(1, 2, [6, 8, 12]), mk(3, 4, [6, 8, 12]), mk(2, 3, [10, 12, 14]), mk(5, 6, [4, 6, 7]), mk(3, 5, [12, 14, 16]), mk(7, 9, [3, 4, 6]), mk(4, 7, [5, 6, 8]), mk(5, 8, [6, 7, 9]),
-      R => { const [a, b] = pick(R, [[35, 42], [21, 28], [45, 60], [36, 48]]); return it(`Quel est le plus grand diviseur commun de ${a} et ${b} ?`, gcd(a, b), gcd(a, b)); },
+      R => { const [a, b] = pick(R, [[35, 42], [21, 28], [45, 60], [33, 55]]); return it(`Quel est le plus grand diviseur commun de ${a} et ${b} ?`, gcd(a, b), gcd(a, b)); },
       R => { const [a, b] = pick(R, [[14, 21], [15, 28], [18, 35], [22, 45], [9, 14], [10, 21]]); return it(`La fraction ${a}/${b} est-elle irréductible ? Réponds par oui ou par non.`, yn(gcd(a, b) === 1) + (gcd(a, b) > 1 ? ` (on peut diviser par ${gcd(a, b)})` : ''), null); }];
   })());
   def('c1', 5, 'Diviseurs communs et PGCD', 'Cherche le plus grand diviseur commun, puis utilise-le pour partager.', [
     R => { const [a, b] = pick(R, [[12, 18], [18, 30], [20, 28], [24, 36]]); return it(`Écris les diviseurs communs de ${a} et ${b}.`, divs(a).filter(d => b % d === 0).join(' ; '), null); },
-    R => { const [a, b] = pick(R, [[12, 18], [16, 24], [20, 30], [14, 35]]); return num(`Quel est le PGCD (plus grand diviseur commun) de ${a} et ${b} ?`, gcd(a, b), 0); },
+    R => { const [a, b] = pick(R, [[18, 30], [22, 33], [26, 39], [34, 51]]); return num(`Quel est le PGCD (plus grand diviseur commun) de ${a} et ${b} ?`, gcd(a, b), 0); },
     R => { const [a, b] = pick(R, [[36, 48], [42, 56], [45, 60], [54, 72]]); return num(`Quel est le PGCD (plus grand diviseur commun) de ${a} et ${b} ?`, gcd(a, b), 0); },
     R => { const [a, b] = pick(R, [[84, 126], [90, 150], [96, 144], [120, 168]]); return num(`Quel est le PGCD (plus grand diviseur commun) de ${a} et ${b} ?`, gcd(a, b), 0); },
     R => { const [a, b] = pick(R, [[17, 51], [13, 39], [19, 57], [11, 44]]); return num(`Quel est le PGCD (plus grand diviseur commun) de ${a} et ${b} ?`, gcd(a, b), 0); },
     R => { const [a, b] = pick(R, [[24, 36], [32, 48], [40, 60], [30, 45]]); return num(`On a ${a} billes rouges et ${b} billes bleues. On les répartit en lots tous identiques, sans qu’il reste de billes. Quel est le plus grand nombre de lots possible ?`, gcd(a, b), 0); },
-    R => { const [a, b] = pick(R, [[24, 36], [32, 48], [40, 60], [30, 45]]), g = gcd(a, b); return it(`On répartit ${a} billes rouges et ${b} billes bleues en ${g} lots tous identiques. Combien de billes de chaque couleur y a-t-il dans un lot ?`, `${a / g} rouges et ${b / g} bleues`, null); },
+    R => { const [a, b] = pick(R, [[18, 27], [28, 42], [35, 56], [50, 80]]), g = gcd(a, b); return it(`On répartit ${a} billes rouges et ${b} billes bleues en ${g} lots tous identiques. Combien de billes de chaque couleur y a-t-il dans un lot ?`, `${a / g} rouges et ${b / g} bleues`, null); },
     R => { const [a, b, k] = pick(R, [[18, 24, 4], [20, 30, 5], [28, 42, 7], [16, 40, 4]]); return it(`Peut-on faire ${k} lots identiques avec ${a} cartes et ${b} cartes, sans reste ?`, yn(a % k === 0 && b % k === 0), null); },
     R => { const [a, b] = pick(R, [[48, 72], [60, 90], [75, 100], [64, 96]]); return it(`Simplifie ${a}/${b} avec leur PGCD.`, sf(a, b), fv(a, b)); },
     R => { const [a, b] = pick(R, [[8, 15], [9, 28], [14, 25], [16, 35]]); return it(`Calcule le PGCD de ${a} et ${b}. Peut-on simplifier la fraction ${a}/${b} ?`, `PGCD = 1 : non, on ne peut pas la simplifier (elle est irréductible)`, null); }
@@ -88,7 +88,7 @@
     const add = (b, d, sub) => R => { const D = lcm(b, d); const a = R2(R, 1, b - 1), c = R2(R, 1, d - 1); const n1 = a * D / b, n2 = c * D / d; if (sub && n1 <= n2) return add(b, d, false)(R); const n = sub ? n1 - n2 : n1 + n2; return it(`Calcule ${a}/${b} ${sub ? M : '+'} ${c}/${d}. Donne le résultat sous la forme d’une fraction irréductible.`, sf(n, D), fv(n, D)); };
     const same = (b, sub) => R => { const a = sub ? R2(R, 3, b - 1) : R2(R, 1, b - 2), c = sub ? R2(R, 1, a - 1) : R2(R, 1, b - 1 - a); const n = sub ? a - c : a + c; return it(`Calcule ${a}/${b} ${sub ? M : '+'} ${c}/${b}. Donne le résultat sous la forme d’une fraction irréductible.`, sf(n, b), fv(n, b)); };
     return [same(7, false), same(9, true), add(2, 3, false), add(4, 3, false), add(2, 5, true), add(6, 4, false), add(5, 10, true), add(3, 4, true), add(6, 9, false),
-      R => { const a = R2(R, 1, 3), n = (10 - a * 2) / 10; return it(`Calcule 1 ${M} ${a}/5. Donne le résultat sous la forme d’une fraction irréductible.`, sf(5 - a, 5), fv(5 - a, 5)); }];
+      R => { const a = R2(R, 1, 3); return it(`Calcule 1 ${M} ${a}/7. Donne le résultat sous la forme d’une fraction irréductible.`, sf(7 - a, 7), fv(7 - a, 7)); }];
   })());
   def('c2', 2, 'Prendre une fraction d’une quantité', 'Divise par le dénominateur, puis multiplie par le numérateur.', [
     R => { const b = pick(R, [3, 4, 5]), q = b * R2(R, 4, 12); return num(`Calcule 1/${b} de ${q}.`, q / b, 0); },
@@ -107,8 +107,8 @@
     R => { const p = R2(R, 6, 9), q = R2(R, 6, 9); return it(`Calcule 10${sup(p)} × 10${sup(q)}. Écris le résultat sous la forme d’une puissance de 10.`, `10${sup(p + q)}`, null); },
     R => { const p = R2(R, 7, 9), q = R2(R, 2, 5); return it(`10${sup(p)} ÷ 10${sup(q)} =`, `10${sup(p - q)}`, null); },
     R => { const p = R2(R, 2, 4), q = R2(R, 5, 8); return it(`10${sup(p)} ÷ 10${sup(q)} =`, `10${sup(p - q)}`, null); },
-    R => { const n = R2(R, 1, 4); return it(`Écris 10${sup(-n)} en écriture décimale.`, fr(10 ** -n), 10 ** -n); },
-    R => { const n = pick(R, [0.01, 0.001, 0.0001, 0.00001]); return it(`Écris ${fr(n)} sous la forme d’une puissance de 10 (le nombre 10 avec un exposant).`, `10${sup(Math.round(Math.log10(n)))}`, null); },
+    R => { const n = R2(R, 1, 3); return it(`Écris 10${sup(-n)} en écriture décimale.`, fr(10 ** -n), 10 ** -n); },
+    R => { const n = pick(R, [0.0001, 0.00001, 0.000001]); return it(`Écris ${fr(n)} sous la forme d’une puissance de 10 (le nombre 10 avec un exposant).`, `10${sup(Math.round(Math.log10(n)))}`, null); },
     R => { const k = R2(R, 2, 90), p = R2(R, 2, 4); return num(`${k} × 10${sup(p)} =`, k * 10 ** p, 0); },
     R => { const k = pick(R, [0.5, 1.5, 2.5, 3.2, 4.8]), p = R2(R, 2, 4); return num(`${fr(k)} × 10${sup(p)} =`, k * 10 ** p, 0); },
     R => { const k = R2(R, 2, 9) * 5, [n, u, e] = pick(R, [['kilo', 'ko', 3], ['méga', 'Mo', 6], ['giga', 'Go', 9]]); return it(`Un fichier pèse ${k} ${u} (${k} ${n}octets). On écrit sa taille ${k} × 10 puissance n octets. Quelle est la valeur de n ?`, e, e); },
@@ -139,7 +139,7 @@
     R => { const a = R2(R, 2, 9); return it(`(x ${M} ${a})²`, pl([1, 'x²'], [-2 * a, 'x'], [a * a, '']), null); }
   ]);
   def('c3', 2, 'Factoriser et prouver', 'Factorise l’expression (ou développe puis réduis quand c’est demandé).', [
-    R => { const k = R2(R, 2, 9), m = R2(R, 2, 9); return it(`Factorise l’expression ${pl([k, 'x'], [k * m, ''])}.`, `${k}(x + ${m})`, null); },
+    R => { const k = R2(R, 7, 12), m = R2(R, 2, 9); return it(`Factorise l’expression ${pl([k, 'x'], [k * m, ''])}.`, `${k}(x + ${m})`, null); },
     R => { const k = R2(R, 2, 9), m = R2(R, 2, 9); return it(`Factorise ${pl([k, 'x'], [-k * m, ''])}.`, `${k}(x ${M} ${m})`, null); },
     R => { const k = R2(R, 3, 7), m = R2(R, 2, 5); return it(`Factorise ${pl([k * m, 'x'], [k, ''])}.`, `${k}(${m}x + 1)`, null); },
     R => { const a = R2(R, 2, 9); return it(`Factorise l’expression ${pl([1, 'x²'], [a, 'x'])}.`, `x(x + ${a})`, null); },
@@ -218,11 +218,11 @@
     R => { const [a, b] = pick(R, [[3, 2], [4, 1], [5, 3], [3, 4]]), p = (a + b) * R2(R, 5, 15); return num(`Partage ${p} € dans le ratio ${a} : ${b}. Quelle est la plus grande part ?`, p / (a + b) * Math.max(a, b), 0, '€'); },
     R => { const [a, b] = pick(R, [[1, 2], [2, 3], [3, 4]]), p = (a + b) * R2(R, 6, 14); return it(`Partage ${p} dans le ratio ${a} : ${b}. Donne les deux parts.`, `${p / (a + b) * a} et ${p / (a + b) * b}`, null); },
     R => { const [a, b] = pick(R, [[2, 3], [3, 4], [1, 5]]), p = a + b; return num(`Dans le ratio ${a} : ${b}, combien de parts en tout ?`, p, 0); },
-    R => { const [a, b] = pick(R, [[2, 3], [3, 5], [4, 7]]), k = R2(R, 3, 9); return num(`Deux quantités sont dans le ratio ${a} : ${b}. La première vaut ${a * k}. Quelle est la valeur de la seconde ?`, b * k, 0); },
+    R => { const [a, b] = pick(R, [[4, 7], [5, 9], [3, 8], [2, 7]]), k = R2(R, 3, 9); return num(`Deux quantités sont dans le ratio ${a} : ${b}. La première vaut ${a * k}. Quelle est la valeur de la seconde ?`, b * k, 0); },
     R => { const [a, b] = pick(R, [[3, 2], [5, 4], [7, 3]]), k = R2(R, 3, 9); return num(`Deux quantités sont dans le ratio ${a} : ${b}. La seconde vaut ${b * k}. Combien vaut la première ?`, a * k, 0); },
     R => { const k = pick(R, [2, 3, 4, 6]), a = pick(R, [2, 3, 5]), b = pick(R, [7, 9, 4]); return it(`Simplifie le ratio ${a * k} : ${b * k}.`, `${a} : ${b}`, null); },
-    R => { const [a, b] = pick(R, [[3, 2], [4, 3], [5, 2]]), t = (a + b) * R2(R, 5, 10); return num(`Une peinture mélange 2 couleurs dans le ratio ${a} : ${b}. Pour ${t} L, combien de litres de la première ?`, t / (a + b) * a, 1, 'L'); },
-    R => { const [a, b] = pick(R, [[1, 3], [2, 3], [3, 7]]), g = pick(R, [6, 9, 12]); return num(`Pour préparer une boisson, on mélange du sirop et de l’eau dans le ratio ${a} : ${b} (${a} volume${a > 1 ? 's' : ''} de sirop pour ${b} volumes d’eau). On utilise ${g * b} mL d’eau. Quel volume de sirop faut-il, en mL ?`, g * a, 0, 'mL'); },
+    R => { const [a, b] = pick(R, [[4, 3], [5, 2], [7, 2]]), t = (a + b) * R2(R, 5, 10); return num(`Une peinture mélange 2 couleurs dans le ratio ${a} : ${b}. Pour ${t} L, combien de litres de la première ?`, t / (a + b) * a, 1, 'L'); },
+    R => { const [a, b] = pick(R, [[1, 3], [1, 5], [3, 7]]), g = pick(R, [6, 9, 12]); return num(`Pour préparer une boisson, on mélange du sirop et de l’eau dans le ratio ${a} : ${b} (${a} volume${a > 1 ? 's' : ''} de sirop pour ${b} volumes d’eau). On utilise ${g * b} mL d’eau. Quel volume de sirop faut-il, en mL ?`, g * a, 0, 'mL'); },
     R => { const [a, b, c] = pick(R, [[1, 2, 3], [2, 3, 5], [1, 1, 2]]), p = (a + b + c) * R2(R, 4, 9); return num(`On partage ${p} en trois parts dans le ratio ${a} : ${b} : ${c} (${a} part${a > 1 ? 's' : ''}, ${b} part${b > 1 ? 's' : ''} et ${c} part${c > 1 ? 's' : ''}, toutes les parts étant égales). Quelle est la valeur de la plus grande part ?`, p / (a + b + c) * c, 0); }
   ]);
 
@@ -265,14 +265,14 @@
     R => { const a = R2(R, 2, 5), b = R2(R, 5, 30), x = R2(R, 4, 12); return num(`Un forfait coûte ${b} € puis ${a} € par séance. Prix pour ${x} séances :`, a * x + b, 0, '€'); }
   ]);
   def('c5', 4, 'Comparer deux formules', 'Résous f(x) = g(x) pour trouver quand les deux formules coûtent autant.', [
-    R => { const x = R2(R, 3, 10), c = R2(R, 2, 4), a = c + R2(R, 2, 5), b = (a - c) * x; return it(`Deux formules de prix : f(x) = ${a}x et g(x) = ${c}x + ${b}. Pour quelle valeur de x les deux prix sont-ils égaux ? (Résous f(x) = g(x).)`, `x = ${x}`, x); },
+    R => { const x = R2(R, 5, 12), c = R2(R, 2, 4), a = c + R2(R, 2, 5), b = (a - c) * x; return it(`Deux formules de prix : f(x) = ${a}x et g(x) = ${c}x + ${b}. Pour quelle valeur de x les deux prix sont-ils égaux ? (Résous f(x) = g(x).)`, `x = ${x}`, x); },
     R => { const x = R2(R, 3, 10), c = R2(R, 2, 4), a = c + R2(R, 2, 5), b = (a - c) * x; return it(`f(x) = ${a}x et g(x) = ${c}x + ${b}. Pour x = ${x}, calcule f(x) puis g(x).`, `${a * x} et ${a * x}`, null); },
     R => { const x = R2(R, 4, 12), c = 5, a = 8 + R2(R, 0, 3), k = (a - c) * x; return it(`Tarif A : ${a} € la séance. Tarif B : ${c} € la séance + ${k} € d’abonnement. À partir de combien de séances B est-il moins cher ?`, `à partir de ${x + 1} séances (égalité pour ${x})`, null); },
-    R => { const x = R2(R, 2, 9), a = R2(R, 3, 6), b = R2(R, 1, 9), c = R2(R, 1, 2); return it(`Résous l’équation ${lf(a, b)} = ${lf(c, a * x + b - c * x)}.`, `x = ${x}`, x); },
+    R => { const x = R2(R, 5, 12), a = R2(R, 3, 6), b = R2(R, 1, 9), c = R2(R, 1, 2); return it(`Résous l’équation ${lf(a, b)} = ${lf(c, a * x + b - c * x)}.`, `x = ${x}`, x); },
     R => { const x = R2(R, 2, 9), a = R2(R, 4, 8), c = R2(R, 1, 3); return it(`${a}x = ${c}x + ${(a - c) * x}`, `x = ${x}`, x); },
     R => { const x = R2(R, 2, 9), a = R2(R, 4, 8), c = R2(R, 1, 3), b = R2(R, 3, 12); return it(`${a}x ${M} ${b} = ${c}x + ${(a - c) * x - b}`, `x = ${x}`, x); },
     R => { const x = R2(R, 3, 10), a = R2(R, 5, 9), c = R2(R, 2, 4); return it(`f(x) = ${a}x et g(x) = ${c}x + ${(a - c) * x}. Pour x = ${x + 2}, quelle formule est la plus basse ?`, 'g (la droite de g est en dessous après le point d’intersection)', null); },
-    R => { const x = R2(R, 3, 10), a = R2(R, 5, 9), c = R2(R, 2, 4); return it(`Deux formules de prix : f(x) = ${a}x et g(x) = ${c}x + ${(a - c) * x}. Pour x = ${Math.max(1, x - 2)}, quelle formule donne le prix le plus bas : f ou g ?`, 'f', null); },
+    R => { const x = R2(R, 8, 12), y = R2(R, 1, 4), a = R2(R, 5, 9), c = R2(R, 2, 4); return it(`Deux formules de prix : f(x) = ${a}x et g(x) = ${c}x + ${(a - c) * x}. Pour x = ${y}, quelle formule donne le prix le plus bas : f ou g ?`, 'f', null); },
     R => { const x = R2(R, 5, 10), a = R2(R, 9, 12), c = R2(R, 4, 7); return num(`Sans abonnement, une séance coûte ${a} €. Avec un abonnement de ${(a - c) * x} € (payé une seule fois), une séance coûte ${c} €. Pour combien de séances le prix total est-il le même dans les deux cas ?`, x, 0); },
     R => { const x = R2(R, 3, 8), a = R2(R, 2, 5); return it(`Les droites de f(x) = ${a}x + ${a * x} et g(x) = ${2 * a}x se coupent en un point. Donne son abscisse.`, `x = ${x}`, x); }
   ]);
@@ -367,13 +367,13 @@
     R => { const n = pick(R, [2, 3]); return num(`On lance une pièce ${n} fois. Combien d’issues possibles ?`, 2 ** n, 0); }
   ]);
   def('c7', 4, 'Fréquence et probabilité', 'Fréquence observée = effectif ÷ nombre d’essais.', [
-    R => { const n = pick(R, [100, 200, 500]), e = pick(R, [31, 54, 112]); return num(`Une expérience est répétée ${n} fois et réussit ${e} fois. Quelle est la fréquence de réussite ? Écris-la sous forme décimale.`, e / n, 3); },
+    R => { const n = pick(R, [125, 250, 500]), e = pick(R, [31, 54, 112]); return num(`Une expérience est répétée ${n} fois et réussit ${e} fois. Quelle est la fréquence de réussite ? Écris-la sous forme décimale.`, e / n, 3); },
     R => { const n = pick(R, [50, 200, 250]), e = pick(R, [13, 40, 70]); return num(`${e} succès sur ${n} essais. Fréquence en % ?`, e / n * 100, 1, '%'); },
     R => { const p = pick(R, [0.25, 0.3, 0.5]), n = pick(R, [200, 400, 1000]); return num(`La probabilité de réussir une expérience est ${fr(p)}. On répète cette expérience ${n} fois. Environ combien de réussites peut-on attendre ?`, p * n, 0); },
     R => { const n = pick(R, [100, 250, 500]), e = pick(R, [0.42, 0.6, 0.36]); return num(`Fréquence ${fr(e)} sur ${n} essais. Combien de succès ?`, e * n, 0); },
     R => it('Quand on répète une expérience un très grand nombre de fois, vers quel nombre la fréquence observée se rapproche-t-elle ?', 'de la probabilité', null),
     R => { const f = [0.6, 0.35, 0.31]; return it(`Fréquences après 10, 100 et 1 000 essais : ${lst(f.map(fr))}. La probabilité théorique est 0,3. Quelle fréquence est la plus proche ?`, '0,31 (après 1 000 essais)', null); },
-    R => { const n = pick(R, [20, 50, 80]); return it(`On répète une expérience seulement ${n} fois. La fréquence observée est-elle toujours proche de la probabilité ? Réponds par oui ou par non.`, 'non, elle peut en être éloignée', null); },
+    R => { const n = pick(R, [20, 50, 80]); return it(`On répète une expérience seulement ${n} fois. La fréquence observée est-elle toujours très proche du résultat théorique ? Réponds par oui ou par non.`, 'non, elle peut en être éloignée', null); },
     R => { const p = pick(R, [1 / 6, 1 / 4, 1 / 3]); return num(`P(A) = ${sf(Math.round(p * 12), 12)}. Valeur décimale arrondie à 0,01 :`, p, 2); },
     R => it('Quel outil permet de simuler 1 000 lancers de dé ?', 'un tableur ou un programme Scratch', null),
     R => { const e = pick(R, [18, 27, 36]), n = 100; return num(`Sur ${n} lancers, ${e} résultats favorables. Quelle est la fréquence en % ?`, e, 0, '%'); }
@@ -386,7 +386,7 @@
     R => { const k = R2(R, 1, 3); return num(`AB = ${5 * k} cm, AC = ${12 * k} cm. Calcule BC.`, 13 * k, 0, 'cm'); },
     R => { const a = R2(R, 3, 9), b = R2(R, 3, 9); return num(`AB = ${a} cm, AC = ${b} cm. Calcule BC (arrondi à 0,1).`, hyp(a, b), 1, 'cm'); },
     R => { const a = R2(R, 5, 12), b = R2(R, 5, 12); return num(`AB = ${a} cm, AC = ${b} cm. Calcule BC (arrondi à 0,1).`, hyp(a, b), 1, 'cm'); },
-    R => { const k = R2(R, 1, 4); return num(`Le triangle ABC est rectangle en A. On a BC = ${5 * k} cm (l’hypoténuse) et AB = ${3 * k} cm. Calcule la longueur AC.`, 4 * k, 0, 'cm'); },
+    R => { const k = R2(R, 1, 2); return num(`Le triangle ABC est rectangle en A. On a BC = ${25 * k} cm (l’hypoténuse) et AB = ${7 * k} cm. Calcule la longueur AC.`, 24 * k, 0, 'cm'); },
     R => { const k = R2(R, 1, 3); return num(`BC = ${13 * k} cm, AC = ${12 * k} cm. Calcule AB.`, 5 * k, 0, 'cm'); },
     R => { const h = R2(R, 9, 15), b = R2(R, 4, 8); return num(`BC = ${h} cm, AB = ${b} cm. Calcule AC (arrondi à 0,1).`, cote(h, b), 1, 'cm'); },
     R => { const a = R2(R, 6, 10); return num(`Un carré a un côté de ${a} cm. Calcule la longueur de sa diagonale. Arrondis au dixième de centimètre.`, hyp(a, a), 1, 'cm'); },
@@ -434,11 +434,11 @@
     R => { const e = pick(R, [100, 200, 500]), l = R2(R, 3, 12); return num(`Échelle 1/${e} : ${l} cm sur le plan. Longueur réelle, en m :`, l * e / 100, 1, 'm'); },
     R => { const e = pick(R, [1000, 2000, 5000]), l = R2(R, 2, 8); return num(`Échelle 1/${e} : ${l} cm sur la carte. Longueur réelle, en m :`, l * e / 100, 0, 'm'); },
     R => { const e = pick(R, [25000, 50000, 100000]), l = R2(R, 2, 9); return num(`Échelle 1/${fr(e)} : ${l} cm sur la carte. Distance réelle, en km :`, l * e / 100000, 2, 'km'); },
-    R => { const e = pick(R, [50, 100, 200]), L2 = R2(R, 3, 10) * e; return num(`Un plan est à l’échelle 1/${e}. Une longueur mesure ${fr(L2)} cm dans la réalité. Quelle est sa longueur sur le plan, en cm ?`, L2 / e, 1, 'cm'); },
+    R => { const e = pick(R, [20, 25, 40]), L2 = R2(R, 3, 10) * e; return num(`Un plan est à l’échelle 1/${e}. Une longueur mesure ${fr(L2)} cm dans la réalité. Quelle est sa longueur sur le plan, en cm ?`, L2 / e, 1, 'cm'); },
     R => { const e = pick(R, [100, 250, 500]), m = R2(R, 5, 25); return num(`Échelle 1/${e} : ${m} m en réalité. Longueur sur le plan, en cm :`, m * 100 / e, 1, 'cm'); },
-    R => { const [p, r] = pick(R, [[4, 800], [5, 1000], [2, 600], [6, 300]]); return it(`Sur un plan, une longueur de ${p} cm représente ${r} cm dans la réalité. Quelle est l’échelle du plan ? Écris-la sous la forme 1/…`, `1/${r / p}`, null); },
+    R => { const [p, r] = pick(R, [[4, 1000], [5, 2500], [2, 300], [6, 1800]]); return it(`Sur un plan, une longueur de ${p} cm représente ${r} cm dans la réalité. Quelle est l’échelle du plan ? Écris-la sous la forme 1/…`, `1/${r / p}`, null); },
     R => { const [p, r] = pick(R, [[3, 150], [2, 400], [5, 250]]); return it(`${p} cm sur le plan représentent ${r} m en vrai. Quelle est l’échelle ?`, `1/${r * 100 / p}`, null); },
-    R => it('Un plan est à l’échelle 1/50. Ce plan est-il un agrandissement ou une réduction de la réalité ?', 'une réduction', null),
+    R => it('Un plan est à l’échelle 1/25. Ce plan est-il un agrandissement ou une réduction de la réalité ?', 'une réduction', null),
     R => it('Que signifie l’échelle 2/1 ?', 'on agrandit : 1 cm en vrai est dessiné sur 2 cm', null)
   ]);
   def('c9', 2, 'Agrandissements et réductions', 'Toutes les longueurs sont multipliées par le même coefficient k.', [
@@ -548,7 +548,7 @@
   /* quatre calculs par notion (et non dix) : on garde ceux qui couvrent des difficultés différentes, sans doublon */
   const PICK = {
     'c1.1': [0, 3, 5, 6, 8], 'c1.2': [1, 2, 4, 6, 8], 'c1.3': [0, 3, 4, 6, 8], 'c1.4': [0, 4, 7, 8, 9], 'c1.5': [1, 3, 5, 6, 9],
-    'c2.1': [1, 2, 4, 6, 9], 'c2.2': [0, 3, 5, 7, 9], 'c2.3': [0, 2, 4, 5, 8], 'c2.4': [0, 2, 4, 6, 8],
+    'c2.1': [1, 2, 5, 6, 9], 'c2.2': [0, 3, 5, 7, 9], 'c2.3': [0, 2, 4, 5, 8], 'c2.4': [0, 2, 4, 6, 8],
     'c3.1': [0, 2, 4, 5, 8], 'c3.2': [0, 2, 3, 6, 8], 'c3.3': [0, 3, 5, 8, 9], 'c3.4': [0, 3, 4, 7, 9],
     'c4.1': [0, 2, 3, 5, 6], 'c4.2': [0, 2, 3, 6, 8], 'c4.3': [0, 1, 4, 6, 7], 'c4.4': [0, 2, 4, 8, 9],
     'c5.1': [0, 2, 3, 5, 8], 'c5.2': [0, 2, 3, 5, 6], 'c5.3': [0, 2, 5, 6, 8], 'c5.4': [0, 2, 3, 7, 8],

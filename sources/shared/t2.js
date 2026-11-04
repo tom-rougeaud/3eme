@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 2 — Fractions, puissances de 10 et écriture scientifique :
+/* 3ème Série Pro · chapitre 2 — Fractions, puissances de 10 et écriture scientifique :
    additionner des fractions, prendre une fraction d’une quantité, puissances de 10 et préfixes, écriture scientifique. */
 (function (root) {
   'use strict';
@@ -108,9 +108,9 @@
       const mult = n => [1, 2, 3, 4, 5, 6].map(k => n * k).join(' · '), [x, y] = pick(R, [['de jus', 'de lait'], ['de peinture bleue', 'de peinture blanche'], ['de sirop', 'd’eau']]);
       return Q('Additionner deux fractions, pas à pas', `Un mélange contient ${MCF(a, b)} L ${x} et ${MCF(c, d)} L ${y}. Calcule ${MCF(a, b)} + ${MCF(c, d)}.`, [
         { lab: `Plus petit multiple commun de ${b} et ${d}`, v: D, d: 0, w: 12, x: `Multiples de ${b} : ${mult(b)} ; multiples de ${d} : ${mult(d)} ; le premier en commun est ${D}.`, err: [{ v: b + d, m: 'On additionne les fractions, pas les dénominateurs. Cherche un multiple commun.' }] },
-        { lab: `${MCF(a, b)} s’écrit ?/${D}. Quel est le numérateur`, v: n1, d: 0, w: 12, x: `${a} × ${D / b} = ${n1} : ${MCF(a, b)} = ${MCF(n1, D)}`, err: [{ v: a, m: 'Multiplie le numérateur par le même nombre que le dénominateur.' }] },
-        { lab: `${MCF(c, d)} s’écrit ?/${D}. Quel est le numérateur`, v: n2, d: 0, w: 12, x: `${c} × ${D / d} = ${n2} : ${MCF(c, d)} = ${MCF(n2, D)}`, err: [{ v: c, m: 'Multiplie le numérateur par le même nombre que le dénominateur.' }] },
-        { lab: `Numérateur de la somme ${MCF(n1, D)} + ${MCF(n2, D)}, en litres`, v: S, d: 0, w: 12, x: `${n1} + ${n2} = ${S} : le dénominateur ne change pas, ${MCF(a, b)} + ${MCF(c, d)} = ${MCF(S, D)}`, err: [{ v: a + c, m: 'Additionne les numérateurs qui ont le même dénominateur ' + D + '.' }] }],
+        { lab: `${MCF(a, b)} s’écrit avec le dénominateur commun trouvé en a. Quel est le numérateur`, v: n1, d: 0, w: 12, x: `${a} × ${D / b} = ${n1} : ${MCF(a, b)} = ${MCF(n1, D)}`, err: [{ v: a, m: 'Multiplie le numérateur par le même nombre que le dénominateur.' }] },
+        { lab: `${MCF(c, d)} s’écrit avec le dénominateur commun trouvé en a. Quel est le numérateur`, v: n2, d: 0, w: 12, x: `${c} × ${D / d} = ${n2} : ${MCF(c, d)} = ${MCF(n2, D)}`, err: [{ v: c, m: 'Multiplie le numérateur par le même nombre que le dénominateur.' }] },
+        { lab: `Numérateur de la somme des deux fractions écrites avec le même dénominateur (résultats de b et c), en litres`, v: S, d: 0, w: 12, x: `${n1} + ${n2} = ${S} : le dénominateur ne change pas, ${MCF(a, b)} + ${MCF(c, d)} = ${MCF(S, D)}`, err: [{ v: a + c, m: 'Additionne les numérateurs qui ont le même dénominateur ' + D + '.' }] }],
         ['Cherche un nombre qui est dans la table de ' + b + ' et dans la table de ' + d + '.', 'Pour changer de dénominateur, multiplie le haut et le bas par le même nombre.', 'Quand les dénominateurs sont égaux, on additionne les numérateurs.'],
         AI(`${MCF(1, 2)} + ${MCF(1, 3)} : multiples de 2 : 2, 4, 6 ; multiples de 3 : 3, 6 ; dénominateur commun 6 ; ${MCF(1, 2)} = ${MCF(3, 6)} et ${MCF(1, 3)} = ${MCF(2, 6)} ; la somme est ${MCF(5, 6)}.`));
     };
@@ -120,8 +120,8 @@
       const nom = pick(R, [['cartes', 'rares', 'brillantes', 'communes'], ['épisodes', 'd’action', 'comiques', 'dramatiques'], ['morceaux', 'rap', 'pop', 'rock']]);
       return Q('Trois fractions et le reste', `Sur ${N} ${nom[0]}, ${MCF(a, b)} sont ${nom[1]}, ${MCF(c, d)} ${nom[2]} et ${MCF(e, f)} ${nom[3]}. Les autres sont neutres.`, [
         { lab: `Dénominateur commun aux trois fractions`, v: D, d: 0, w: 12, x: `${D} est le plus petit multiple commun de ${b}, ${d} et ${f}.`, err: [{ v: b * d * f, m: 'Ce nombre convient, mais il y en a un plus petit : cherche le plus petit multiple commun.' }] },
-        { lab: `Numérateur de la somme des trois fractions, sur ${D}`, v: S, d: 0, w: 12, x: `${MCF(a, b)} = ${MCF(n[0], D)}, ${MCF(c, d)} = ${MCF(n[1], D)}, ${MCF(e, f)} = ${MCF(n[2], D)} ; ${n[0]} + ${n[1]} + ${n[2]} = ${S}.`, err: [{ v: a + c + e, m: 'Remplace d’abord chaque fraction par une fraction de dénominateur ' + D + '.' }] },
-        { lab: `Numérateur des neutres, sur ${D}`, v: rest, d: 0, w: 12, x: `Le tout vaut ${D}/${D} : ${D} − ${S} = ${rest}.`, err: [{ v: S, m: 'C’est la part des trois autres types. Le reste : ' + D + ' − ' + S + '.' }] },
+        { lab: `Numérateur de la somme des trois fractions, écrites avec le dénominateur commun trouvé en a`, v: S, d: 0, w: 12, x: `${MCF(a, b)} = ${MCF(n[0], D)}, ${MCF(c, d)} = ${MCF(n[1], D)}, ${MCF(e, f)} = ${MCF(n[2], D)} ; ${n[0]} + ${n[1]} + ${n[2]} = ${S}.`, err: [{ v: a + c + e, m: 'Remplace d’abord chaque fraction par une fraction de dénominateur ' + D + '.' }] },
+        { lab: `Numérateur des neutres, avec le même dénominateur commun`, v: rest, d: 0, w: 12, x: `Le tout vaut ${D}/${D} : ${D} − ${S} = ${rest}.`, err: [{ v: S, m: 'C’est la part des trois autres types. Le reste : ' + D + ' − ' + S + '.' }] },
         { lab: `Nombre de ${nom[0]} neutres`, v: rest * k, d: 0, w: 12, x: `Une part de ${D} vaut ${N} ÷ ${D} = ${k} ${nom[0]} ; ${rest} × ${k} = ${rest * k} ${nom[0]}.`, err: [{ v: rest, m: 'Une part vaut ' + k + ' ' + nom[0] + '. Multiplie le nombre de parts par ' + k + '.' }] }],
         ['Cherche le plus petit nombre qui est dans les trois tables.', 'Passe les trois fractions au même dénominateur, puis additionne les numérateurs.', 'Le reste, c’est le tout (D/D) moins la somme. Une part vaut N ÷ D.']);
     };

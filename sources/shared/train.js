@@ -1,4 +1,4 @@
-/* Maths · 3ème Prépa-Métiers — documents « Point de départ » et exercices « Je m’entraîne » à support visuel.
+/* Maths · 3ème Série Pro — documents « Point de départ » et exercices « Je m’entraîne » à support visuel.
    Commun au manuel (tirage fixe) et à l’appli (nouveau tirage à chaque essai).
    Un exercice = { titre, consigne, support (HTML ou SVG avec des cases lettrées), items:[{k, a, v, tol, err:[{v, m}], qcm?}], hints:[…] }.
    Un point de départ = { titre, doc (HTML), qs:[{t, a, v, tol, kind:'num'|'qcm'|'tap', choices, ok, cell}] }.

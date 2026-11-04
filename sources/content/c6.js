@@ -29,10 +29,10 @@ module.exports = function (chk) {
   // 1. moyenne des saisons 1 à 10
   const S10 = SIMP.slice(0, 10);
   const g1 = MCVP.plot({ W: 600, H: 230, x: [0, 10, 1], y: [0, 26, 2], ml: 36, mr: 230, mt: 12, mb: 30, fs: 10, ly: 2, yl: 'épisodes', xt: S10.map((_, i) => [i + .5, String(i + 1)]) });
-  const vMoy = g1.wrap(g1.base + st(1, S10.map((v, i) => `<rect x="${g1.X(i + .15)}" y="${g1.Y(v)}" width="${g1.X(.7) - g1.X(0)}" height="${g1.Y(0) - g1.Y(v)}" class="k2 ks" stroke-width="1.2"/>`).join('') + SN(1, 386, 28) + side(404, 33, 'les 10 saisons'))
-    + st(2, SN(2, 386, 72) + side(404, 77, 'somme : 226 épisodes'))
-    + st(3, SN(3, 386, 116) + side(404, 121, '226 ÷ 10 = 22,6', { c: 'kt' }) + g1.seg(0, 22.6, 10, 22.6, { stroke: '#C2332A', w: 2.6, dash: '8 5' }) + g1.txt(10, 22.6, '22,6', { dx: 4, dy: -4, a: 'start', fill: '#C2332A' }))
-    + st(4, SN(4, 386, 160) + side(404, 165, '13 ×1, 22 ×3, 23 ×1,') + side(404, 185, '24 ×1, 25 ×4 : même total')));
+  const vMoy = g1.wrap(g1.base + st(1, S10.map((v, i) => `<rect x="${g1.X(i + .15)}" y="${g1.Y(v)}" width="${g1.X(.7) - g1.X(0)}" height="${g1.Y(0) - g1.Y(v)}" class="k2 ks" stroke-width="1.2"/>`).join('') + SN(1, 386, 48) + side(404, 53, 'les 10 saisons'))
+    + st(2, SN(2, 386, 92) + side(404, 97, 'somme : 226 épisodes'))
+    + st(3, SN(3, 386, 136) + side(404, 141, '226 ÷ 10 = 22,6', { c: 'kt' }) + g1.seg(0, 22.6, 10, 22.6, { stroke: '#C2332A', w: 2.6, dash: '8 5' }) + g1.txt(10, 22.6, '22,6', { dx: 4, dy: -4, a: 'start', fill: '#C2332A' }))
+    + st(4, SN(4, 386, 180) + side(404, 185, '13 ×1, 22 ×3, 23 ×1,') + side(404, 205, '24 ×1, 25 ×4 : même total')));
   // 2. médiane et étendue du top 10
   const bx = i => 22 + i * 56;
   const vMed = S(600, 230, st(1, SN(1, 22, 24) + T(44, 30, 'je range les entrées (en millions) dans l’ordre croissant', { fs: 14, a: 'start', c: 'ts' }) + TS.map((v, i) => Rc(bx(i), 46, 50, 40, { c: i === 4 || i === 5 ? 'k' : 'k2', rx: 6 }) + T(bx(i) + 25, 72, String(v).replace('.', ','), { fs: 14, c: i === 4 || i === 5 ? 'tw' : 'tx' })).join(''))
@@ -42,17 +42,17 @@ module.exports = function (chk) {
   'Les entrées des dix films rangées ; la médiane 2,96 est entre la 5e et la 6e valeur ; l’étendue vaut 3,72');
   // 3. les entrées 2024 et 2025, mois par mois
   const MO = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-  const g3 = MCVP.plot({ W: 600, H: 230, x: [0, 12, 1], y: [0, 22, 2], ml: 36, mr: 12, mt: 34, mb: 26, fs: 10, ly: 2, xt: MO.map((m, i) => [i + .5, m]) });
+  const g3 = MCVP.plot({ W: 600, H: 230, x: [0, 12, 1], y: [0, 26, 2], ml: 36, mr: 12, mt: 34, mb: 26, fs: 10, ly: 2, xt: MO.map((m, i) => [i + .5, m]) });
   const b3 = (arr, off, cls) => arr.map((v, i) => `<rect x="${g3.X(i + off)}" y="${g3.Y(v)}" width="${g3.X(.36) - g3.X(0)}" height="${g3.Y(0) - g3.Y(v)}" class="${cls} ks" stroke-width="1"/>`).join('');
   const vDia = g3.wrap(g3.base + st(1, SN(1, 22, 15) + MCVP.T(40, 20, 'millions d’entrées par mois', { fs: 12, a: 'start', c: 'ts' }) + `<rect x="330" y="9" width="14" height="14" class="k ks"/><rect x="420" y="9" width="14" height="14" class="k2 ks"/>` + MCVP.T(350, 20, '2025', { fs: 12, a: 'start' }) + MCVP.T(440, 20, '2024', { fs: 12, a: 'start' }))
-    + st(2, b3(M25, .5, 'k') + SN(2, g3.X(11.5) + 4, g3.Y(20.73) - 6))
-    + st(3, b3(M24, .14, 'k2') + SN(3, g3.X(6.3), g3.Y(17.9) - 14))
-    + st(4, SN(4, 64, 52) + MCVP.T(82, 57, '2025 : 156,8 M · 2024 : 181,5 M · − 13,6 %', { fs: 13, a: 'start', c: 'kt' })));
+    + st(2, b3(M25, .5, 'k') + SN(2, g3.X(11.5) + 4, g3.Y(20.73) - 18))
+    + st(3, b3(M24, .14, 'k2') + SN(3, g3.X(6.3), g3.Y(17.9) - 18))
+    + st(4, SN(4, 64, g3.Y(24.4)) + MCVP.T(82, g3.Y(24.4) + 5, '2025 : 156,8 M · 2024 : 181,5 M · − 13,6 %', { fs: 13, a: 'start', c: 'kt' })));
   // 4. fréquences et tableur
   const VAL = [13, 18, 20, 21, 22, 23, 24, 25], EFF = VAL.map(v => SIMP.filter(x => x === v).length);
   chk(sum(EFF) === 36 && EFF[4] === 21 && EFF.join() === '1,1,1,4,21,3,1,4', 'c6 tableau des effectifs');
   const cw = 58, cx0 = 116;
-  const vFreq = S(600, 230, st(1, SN(1, 22, 30) + Rc(20, 18, 96, 30, { c: 'k2', rx: 0 }) + T(68, 38, 'épisodes', { fs: 12 }) + Rc(20, 48, 96, 30, { c: 'k2', rx: 0 }) + T(68, 68, 'effectif', { fs: 12 }) + VAL.map((v, i) => Rc(cx0 + i * cw, 18, cw, 30, { c: 'wh', rx: 0 }) + T(cx0 + i * cw + cw / 2, 38, String(v), { fs: 14 }) + Rc(cx0 + i * cw, 48, cw, 30, { c: i === 4 ? 'k' : 'wh', rx: 0 }) + T(cx0 + i * cw + cw / 2, 68, String(EFF[i]), { fs: 14, c: i === 4 ? 'tw' : 'tx' })).join(''))
+  const vFreq = S(600, 230, st(1, SN(1, 22, 30) + Rc(42, 18, 74, 30, { c: 'k2', rx: 0 }) + T(79, 38, 'épisodes', { fs: 12 }) + Rc(42, 48, 74, 30, { c: 'k2', rx: 0 }) + T(79, 68, 'effectif', { fs: 12 }) + VAL.map((v, i) => Rc(cx0 + i * cw, 18, cw, 30, { c: 'wh', rx: 0 }) + T(cx0 + i * cw + cw / 2, 38, String(v), { fs: 14 }) + Rc(cx0 + i * cw, 48, cw, 30, { c: i === 4 ? 'k' : 'wh', rx: 0 }) + T(cx0 + i * cw + cw / 2, 68, String(EFF[i]), { fs: 14, c: i === 4 ? 'tw' : 'tx' })).join(''))
     + st(2, SN(2, 22, 104) + T(44, 109, 'total : 1 + 1 + 1 + 4 + 21 + 3 + 1 + 4 = 36 saisons', { fs: 14, a: 'start' }))
     + st(3, SN(3, 22, 142) + T(44, 147, 'fréquence de 22 : 21 ÷ 36 ≈ 0,583, soit 58,3 %', { fs: 15, a: 'start', c: 'kt' }))
     + st(4, SN(4, 22, 196) + Rc(44, 172, 260, 46, { c: 'k2', rx: 8 }) + T(174, 191, '=NB.SI(B2:B37;22)', { fs: 13 }) + T(174, 210, '→ 21', { fs: 13, c: 'kt' }) + Rc(316, 172, 264, 46, { c: 'k2', rx: 8 }) + T(448, 191, '=MOYENNE(B2:B37)', { fs: 13 }) + T(448, 210, '→ 21,94', { fs: 13, c: 'kt' })),

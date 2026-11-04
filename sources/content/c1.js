@@ -40,7 +40,7 @@ module.exports = function (chk) {
     + st(1, [0, 1, 2, 3, 4].map(row).join('') + SN(1, 30, 58) + T(48, 63, '÷ 2 cinq fois', { fs: 13, a: 'start', c: 'ts' }))
     + st(2, [5, 6].map(row).join('') + SN(2, 30, 160) + T(48, 165, '25 impair : ÷ 5', { fs: 13, a: 'start', c: 'ts' }))
     + st(3, row(7) + SN(3, 268, 203) + T(284, 208, 'on arrive à 1', { fs: 13, a: 'start', c: 'ts' }))
-    + st(4, SN(4, 362, 72) + Rc(370, 72, 210, 96, { c: 'k', rx: 12 }) + T(475, 108, '800 = 2⁵ × 5²', { fs: 22, c: 'tw' }) + T(475, 134, '5 fois le facteur 2', { fs: 13, c: 'tw' }) + T(475, 154, '2 fois le facteur 5', { fs: 13, c: 'tw' })),
+    + st(4, SN(4, 350, 120) + Rc(370, 72, 210, 96, { c: 'k', rx: 12 }) + T(475, 108, '800 = 2⁵ × 5²', { fs: 22, c: 'tw' }) + T(475, 134, '5 fois le facteur 2', { fs: 13, c: 'tw' }) + T(475, 154, '2 fois le facteur 5', { fs: 13, c: 'tw' })),
   'Escalier des divisions de 800 : cinq fois par 2, deux fois par 5 ; 800 = 2 puissance 5 × 5 au carré');
   chk(L800.slice(0, 7).every((v, i) => v / F800[i] === L800[i + 1]), 'c1 escalier de 800');
   // 4. simplifier 252/360 avec les décompositions
@@ -56,8 +56,8 @@ module.exports = function (chk) {
   const line = (y, lab, ds) => T(36, y + 18, lab, { fs: 13, a: 'start', c: 'kt' }) + ds.map((d, i) => `<rect x="${124 + i * 38}" y="${y}" width="34" height="26" rx="5" class="${com.includes(d) ? 'k2' : 'wh'} ks" stroke-width="1.2"/>` + T(141 + i * 38, y + 18, d, { fs: 13 })).join('');
   const lots = S(600, 230, st(1, SN(1, 18, 33) + line(20, '126', d126))
     + st(2, SN(2, 18, 77) + line(64, '84', d84))
-    + st(3, SN(3, 70, 116) + T(320, 121, 'diviseurs communs (fond coloré) : ' + com.join(', '), { fs: 14 }) + `<rect x="${124 + d126.indexOf(42) * 38 - 3}" y="17" width="40" height="32" rx="7" fill="none" stroke="#C2332A" stroke-width="3"/><rect x="${124 + d84.indexOf(42) * 38 - 3}" y="61" width="40" height="32" rx="7" fill="none" stroke="#C2332A" stroke-width="3"/>`)
-    + st(4, Rc(60, 142, 480, 76, { c: 'k', rx: 12 }) + SN(4, 60, 142) + T(300, 170, '42 pochettes au maximum', { fs: 18, c: 'tw' }) + T(300, 198, '126 ÷ 42 = 3 cartes et 84 ÷ 42 = 2 badges par pochette', { fs: 14, c: 'tw' })),
+    + st(3, SN(3, 18, 116) + T(300, 121, 'diviseurs communs (fond coloré) : ' + com.join(', '), { fs: 14 }) + `<rect x="${124 + d126.indexOf(42) * 38 - 3}" y="17" width="40" height="32" rx="7" fill="none" stroke="#C2332A" stroke-width="3"/><rect x="${124 + d84.indexOf(42) * 38 - 3}" y="61" width="40" height="32" rx="7" fill="none" stroke="#C2332A" stroke-width="3"/>`)
+    + st(4, Rc(40, 142, 520, 76, { c: 'k', rx: 12 }) + SN(4, 18, 180) + T(300, 170, '42 pochettes au maximum', { fs: 18, c: 'tw' }) + T(300, 198, '126 ÷ 42 = 3 cartes et 84 ÷ 42 = 2 badges par pochette', { fs: 14, c: 'tw' })),
   'Les diviseurs de 126 et de 84 ; les diviseurs communs sont colorés ; le plus grand, 42, donne 42 pochettes');
   chk(com.join() === '1,2,3,6,7,14,21,42' && 124 + 11 * 38 + 34 <= 600, 'c1 diviseurs communs de 126 et 84');
 

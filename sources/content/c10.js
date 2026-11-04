@@ -52,10 +52,10 @@ module.exports = function (chk) {
   chk(Math.max(...PD.map(p => p[0])) <= 27 && Math.max(...PD.map(p => p[1])) <= 9 && Math.max(...PC.map(p => p[0])) < 19, 'c10 sprite dans la grille');
   const cap = (x, s) => T(20 + x * cs, 12 + 9.7 * cs, s, { fs: 11, c: 'ts' });
   const vTrans = S(600, 222, pg + P0.map(([x, y]) => cell(x, y, 'k')).join('') + cap(2.5, 'départ')
-    + st(1, SN(1, 20 + 7 * cs, 12 + 6.2 * cs) + PA.map(([x, y]) => cell(x, y, 'k2')).join('') + cap(6.5, 'translation'))
-    + st(2, `<line x1="${20 + 9 * cs}" y1="12" x2="${20 + 9 * cs}" y2="${12 + 7 * cs}" stroke="#C2332A" stroke-width="2.4" stroke-dasharray="6 4"/>` + SN(2, 20 + 11 * cs, 12 + 6.2 * cs) + PB2.map(([x, y]) => cell(x, y, 'k2')).join('') + cap(11, 'symétrie'))
-    + st(3, SN(3, 20 + 15 * cs, 12 + 6.2 * cs) + PC.map(([x, y]) => cell(x, y, 'k2')).join('') + cap(15, 'rotation'))
-    + st(4, SN(4, 20 + 23 * cs, 12 + 8.6 * cs) + PD.map(([x, y]) => cell(x, y, 'k')).join('') + cap(23, 'homothétie × 2')),
+    + st(1, SN(1, 20 + 7 * cs, 12 + 7.2 * cs) + PA.map(([x, y]) => cell(x, y, 'k2')).join('') + cap(6.5, 'translation'))
+    + st(2, `<line x1="${20 + 9 * cs}" y1="12" x2="${20 + 9 * cs}" y2="${12 + 7 * cs}" stroke="#C2332A" stroke-width="2.4" stroke-dasharray="6 4"/>` + SN(2, 20 + 11 * cs, 12 + 7.2 * cs) + PB2.map(([x, y]) => cell(x, y, 'k2')).join('') + cap(11, 'symétrie'))
+    + st(3, SN(3, 20 + 15 * cs, 12 + 7.2 * cs) + PC.map(([x, y]) => cell(x, y, 'k2')).join('') + cap(15, 'rotation'))
+    + st(4, SN(4, 20 + 23 * cs, 22) + PD.map(([x, y]) => cell(x, y, 'k')).join('') + cap(23, 'homothétie × 2')),
   'Un sprite en pixel art : il glisse (translation), se retourne (symétrie), tourne (rotation) et s’agrandit (homothétie)');
   // 5. Scratch : l’hexagone
   const hx = Array.from({ length: 7 }, (_, i) => [210 + 70 * Math.cos(-PI / 2 + i * PI / 3 + PI / 6), 116 + 70 * Math.sin(-PI / 2 + i * PI / 3 + PI / 6)]);
@@ -98,7 +98,7 @@ module.exports = function (chk) {
       methode: ['Je reconnais la figure : un hexagone régulier, 6 côtés égaux.', 'À chaque coin, le lutin tourne de 360 ÷ 6 = 60°.', 'Je répète 6 fois le même couple d’instructions : avancer de 50, tourner de 60°.', 'Pour changer la taille, je change seulement le nombre de pas.'],
       vois: vHex,
       solution: '<p>Le programme « répéter 6 fois : avancer de 50, tourner de 60° » trace l’hexagone. Son périmètre est 6 × 50 = 300 pas.</p>',
-      retiens: '<p>Une <b>boucle</b> « répéter n fois » évite d’écrire n fois les mêmes blocs.</p><p>Pour un polygone régulier à n côtés, le lutin tourne de 360 ÷ n degrés à chaque coin.</p>',
+      retiens: '<p>Une <b>boucle</b> « répéter n fois » évite d’écrire n fois les mêmes blocs.</p><p>Pour un polygone régulier à n côtés, le lutin tourne de 360 ÷ n degrés à chaque coin.</p><p>Une <b>variable</b> garde une valeur qui change (un score, un compteur). Une <b>condition</b> « si … alors … sinon » choisit entre deux actions, selon que le test est vrai ou faux.</p>',
       attention: 'L’angle de rotation n’est pas l’angle intérieur du polygone : pour l’hexagone, on tourne de 60°, alors que l’angle intérieur mesure 120°.',
       amoi: [['Pour un triangle équilatéral, de combien tourner ?', '120°'], ['Pour un octogone régulier ?', '360 ÷ 8 = 45°']] }];
   chk(10 * 5 * 4 === 200 && 30 * 10 / 3 === 100 && r0(4 / 3 * PI * 27) === 113 && Math.round(62.8 / (2 * PI)) === 10 && Math.abs(74 + 2.3 - 76.3) < 1e-9 && 360 / 8 === 45, 'c10 « À moi »');

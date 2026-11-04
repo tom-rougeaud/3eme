@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 10 — Espace et transformations : volumes (pavé, cylindre, cône, pyramide, boule),
+/* 3ème Série Pro · chapitre 10 — Espace et transformations : volumes (pavé, cylindre, cône, pyramide, boule),
    repérage sur la sphère (latitude, longitude), transformations (translation, symétrie, rotation, homothétie), Scratch. */
 (function (root) {
   'use strict';
@@ -61,7 +61,7 @@
     items.push(num('d', tx, 0, String(tx), [{ v: tx + 1, m: 'Compte les cases entre une case du départ et la même case de l’image.' }]));
     xs(items, { d: `chaque case avance de ${tx} cases vers la droite` });
     return { titre: 'Les transformations du sprite', consigne: 'Dans un jeu en pixel art, le sprite de départ (foncé) est transformé trois fois. Reconnais chaque transformation.',
-      support: svg(600, 12 + 9 * cs + 10, s, 'Un sprite et trois images transformées sur une grille') + `<p class="tr-l">a. A est obtenu par : · b. B par : · c. C par :</p><p class="tr-l">d. Pour la translation, de combien de cases le sprite a-t-il avancé ? ${tb('d', String(tx), 10)}</p>`, items,
+      support: svg(600, 12 + 9 * cs + 10, s, 'Un sprite et trois images transformées sur une grille') + `<p class="tr-l">a. A est obtenu par : · b. B par : · c. C par :</p><p class="tr-l">d. Une seule image est obtenue en faisant simplement glisser le sprite, sans le retourner ni le tourner. De combien de cases a-t-il avancé ? ${tb('d', String(tx), 10)}</p>`, items,
       hints: ['Translation : le sprite glisse, sans tourner ni se retourner.', 'Symétrie axiale : le sprite est retourné, comme dans un miroir.', 'Rotation : le sprite a tourné d’un quart de tour.'] };
   };
   /* ===== exercices ajoutés : notions 2 (volume d’une boule) et 5 (boucle Scratch) ===== */
@@ -81,7 +81,7 @@
         ['V = 4/3 × π × r × r × r.', 'L’aire de la sphère est 4 × π × r².', 'Le rayon est la moitié du diamètre.'], svg(300, 200, g, `Une boule de rayon ${r} cm`));
     };
     TR.c10e5 = R => {
-      const n = pick(R, [3, 4, 5, 6, 8, 9, 10, 12]), L = pick(R, [30, 40, 50, 60]), m = pick(R, [5, 6, 8, 9, 10, 12].filter(x => x !== n)), a2 = pick(R, [60, 72, 90, 120]), n2 = 360 / a2;
+      const n = pick(R, [3, 4, 5, 6, 8, 9, 10, 12]), L = pick(R, [30, 40, 50, 60]), m = pick(R, [5, 6, 8, 9, 10, 12].filter(x => x !== n)), a2 = pick(R, [45, 60, 72, 120]), n2 = 360 / a2;
       return Q('Une boucle Scratch', `Un script Scratch dessine une figure : « répéter ${n} fois : avancer de ${L} pas, tourner de ${rnd(360 / n, 2)} degrés ».`, [
         { lab: 'Nombre de côtés de la figure tracée', v: n, d: 0, w: 12, x: `La boucle répète ${n} fois « avancer » : la figure a ${n} côtés.` },
         { lab: 'Longueur totale parcourue par le lutin, en pas', v: n * L, d: 0, w: 14, x: `${n} × ${L} = ${n * L}`, err: [{ v: L, m: 'Le lutin avance de ' + L + ' pas à chaque répétition : multiplie par le nombre de répétitions.' }] },
@@ -140,7 +140,7 @@
         { lab: `Écart de longitude entre ${A[0]} et ${B[0]}, en degrés`, v: e1, d: 1, w: 12, x: A[2] * B[2] < 0 ? `Longitudes de part et d’autre de Greenwich : on additionne ${fr(Math.abs(A[2]))} + ${fr(Math.abs(B[2]))} = ${fr(e1)}°` : `Même côté de Greenwich : on soustrait ${fr(Math.max(Math.abs(A[2]), Math.abs(B[2])))} − ${fr(Math.min(Math.abs(A[2]), Math.abs(B[2])))} = ${fr(e1)}°`, err: [{ v: rnd(Math.abs(Math.abs(A[2]) - Math.abs(B[2])), 1), m: 'Si les villes sont de part et d’autre de Greenwich (E et O), on additionne les longitudes.' }, { v: rnd(Math.abs(A[2]) + Math.abs(B[2]), 1), m: 'Si les villes sont du même côté de Greenwich, on soustrait les longitudes.' }] },
         { lab: 'Décalage horaire théorique, en heures (au dixième)', v: rnd(ec / 15, 1), d: 1, w: 12, x: `${fr(e1)} ÷ 15 ≈ ${fr(rnd(ec / 15, 1))} h`, err: [{ v: e1, m: 'La Terre tourne de 15° par heure : divise l’écart par 15.' }] },
         { lab: 'Quelle ville est la plus à l’est ?', qcm: [A[0], B[0]], ok: est === A ? 0 : 1, x: `${est[0]} (${fr(Math.abs(est[2]))}° ${est[2] >= 0 ? 'E' : 'O'}) est plus à l’est que ${ouest[0]} (${fr(Math.abs(ouest[2]))}° ${ouest[2] >= 0 ? 'E' : 'O'}).` },
-        { lab: `Quand il est midi à ${ouest[0]}, à ${est[0]} il est…`, qcm: ['plus de midi', 'moins de midi'], ok: 0, x: `${est[0]} est plus à l’est : le soleil s’y lève plus tôt, il y est plus tard qu’à ${ouest[0]}.` }],
+        { lab: `Quand il est midi à ${A[0]}, à ${B[0]} il est…`, qcm: ['plus de midi', 'moins de midi'], ok: est === B ? 0 : 1, x: `${est[0]} est plus à l’est : le soleil s’y lève plus tôt, il y est plus tard qu’à ${ouest[0]}.` }],
         ['Même côté de Greenwich : on soustrait. De part et d’autre : on additionne.', 'Décalage horaire = écart de longitude ÷ 15.', 'À l’est, il est plus tard.'],
         table(['Ville', 'Latitude ; longitude'], [[A[0], cgp(A[1], A[2])], [B[0], cgp(B[1], B[2])]]));
     };
@@ -180,8 +180,8 @@
       const r = pick(R, [2, 3, 4, 5, 6]), V = 4 / 3 * PI * r ** 3, D = pick(R, [8, 10, 12, 14, 16]);
       const g = `<circle cx="150" cy="95" r="70" fill="#EEF2FB" stroke="#1D2240" stroke-width="2.4"/><ellipse cx="150" cy="95" rx="70" ry="18" fill="none" stroke="#1D2240" stroke-width="1.6" stroke-dasharray="5 4"/><line x1="150" y1="95" x2="220" y2="95" stroke="#B4501E" stroke-width="2.6"/><circle cx="150" cy="95" r="3.5" fill="#1D2240"/>` + T(186, 86, `r = ${r} cm`, { fs: 13, c: 'tx' }) + T(150, 186, 'une boule', { fs: 12, c: 'ts' });
       return Q('Le volume d’une boule, pas à pas', `Une boule métallique a un rayon de ${r} cm. Volume d’une boule : 4/3 × π × r × r × r. Arrondis au dixième.`, [
-        { lab: `r × r × r = ${r} × ${r} × ${r}`, v: r ** 3, d: 0, w: 12, x: `${r} × ${r} × ${r} = ${r ** 3}`, err: [{ v: r * r, m: 'Le rayon est multiplié trois fois : r × r × r.' }] },
-        { lab: `4 × π × ${r ** 3}`, v: rnd(4 * PI * r ** 3, 1), d: 1, w: 14, x: `4 × π × ${r ** 3} ≈ ${fr(rnd(4 * PI * r ** 3, 1))}`, err: [{ v: rnd(PI * r ** 3, 1), m: 'N’oublie pas le facteur 4.' }] },
+        { lab: `r × r × r, avec r = ${r}`, v: r ** 3, d: 0, w: 12, x: `${r} × ${r} × ${r} = ${r ** 3}`, err: [{ v: r * r, m: 'Le rayon est multiplié trois fois : r × r × r.' }] },
+        { lab: 'Calcule 4 × π × r³ (r³ est le résultat de a)', v: rnd(4 * PI * r ** 3, 1), d: 1, w: 14, x: `4 × π × ${r ** 3} ≈ ${fr(rnd(4 * PI * r ** 3, 1))}`, err: [{ v: rnd(PI * r ** 3, 1), m: 'N’oublie pas le facteur 4.' }] },
         { lab: 'Volume de la boule (le résultat précédent ÷ 3), en cm³', v: rnd(V, 1), d: 1, w: 14, x: `${fr(rnd(4 * PI * r ** 3, 1))} ÷ 3 ≈ ${fr(rnd(V, 1))} cm³`, err: [{ v: rnd(4 * PI * r ** 3, 1), m: 'Divise par 3 : le volume est 4/3 × π × r³.' }] },
         { lab: `Une autre boule a un diamètre de ${D} cm : son rayon, en cm`, v: D / 2, d: 0, w: 12, x: `${D} ÷ 2 = ${D / 2}`, err: [{ v: D, m: 'Le rayon est la moitié du diamètre.' }] },
         { lab: 'Le volume d’une boule s’exprime en', qcm: ['cm³', 'cm²', 'cm'], ok: 0, x: 'Un volume s’exprime en unités cubes : cm³.' }],

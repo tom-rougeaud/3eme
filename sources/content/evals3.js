@@ -230,7 +230,7 @@ const yn = ['oui', 'non'];
 
 /* ---------- chapitre 9 · échelles et Thalès ---------- */
 {
-  chk0.push(2 * 100 === 200 && 3 ** 2 === 9 && 2 ** 3 === 8 && 288 / 144 === 2 && 6 * 1.5 === 9 && 12 * 8 === 96 && 24 * 16 === 384 && 96 * 40000 / 10000 === 384 && 1.2 * 7.5 / 3 === 3 && 2.5 ** 2 === 6.25);
+  chk0.push(2 * 100 === 200 && 3 ** 2 === 9 && 2 ** 3 === 8 && 288 / 144 === 2 && 6 * 1.5 === 9 && 12 * 8 === 96 && 24 * 16 === 384 && 96 * 40000 / 10000 === 384 && 1.2 * 7.5 / 3 === 3 && 2.5 ** 2 === 6.25 && Math.abs(Math.sqrt(9 + 2.56) - 3.4) < 1e-9);
   E.c9 = { lieu: 'Atelier décors et ciné-club', duree: '55 min', grille: GR.c9, redac: 2,
     auto: [
       { t: 'Un plan est à l’échelle 1/100. Une longueur de 2 cm sur le plan représente combien de cm dans la réalité ?', comp: 'cal', pts: 1, a: '200 cm', v: 200, tol: .01, w: 20 },
@@ -242,14 +242,14 @@ const yn = ['oui', 'non'];
     exos: [
       { t: 'Le plan de la salle', intro: `<p>Le plan d’une salle de cinéma est à l’échelle ${H('1/200')}. Sur le plan, la salle est un rectangle de ${H('12 cm')} sur ${H('8 cm')}, et l’écran mesure ${H('7 cm')}.</p>`, qs: [
         { t: 'Calculer la largeur réelle de l’écran, en mètres.', comp: 'cal', pts: 1.5, a: '7 × 200 = 1 400 cm = 14 m', v: 14, tol: .01, w: 20, lab: 'en m :' },
-        { t: 'Calculer la longueur réelle de la salle, en mètres.', comp: 'cal', pts: 1, a: '12 × 200 = 2 400 cm = 24 m', v: 24, tol: .01, w: 20, lab: 'en m :' },
-        { t: 'Calculer l’aire réelle de la salle, sachant que sa largeur réelle est 16 m.', comp: 'mod', pts: 1.5, a: '24 × 16 = 384 m²', v: 384, tol: .01, w: 22, lab: 'en m² :' },
+        { t: 'Calculer l’aire réelle de la salle, sachant que sa largeur réelle est 16 m.', comp: 'mod', pts: 2.5, a: 'longueur : 12 × 200 = 2 400 cm = 24 m ; aire : 24 × 16 = 384 m²', v: 384, tol: .01, w: 22, lab: 'en m² :' },
         { t: 'Retrouver ce résultat autrement : l’aire de la salle sur le plan est 96 cm², et les longueurs réelles sont 200 fois plus grandes. Par quel nombre l’aire est-elle multipliée ? Calculer l’aire réelle, en m².', comp: 'rai', pts: 2, a: '96 × 200² = 96 × 40 000 = 3 840 000 cm² = 384 m²', v: null, lines: 2 }] },
       { t: 'Le projecteur', intro: `<p>Un projecteur S éclaire un mur. À ${H('3 m')} du projecteur, l’image mesure ${H('1,2 m')} de large. On recule le mur à ${H('7,5 m')} du projecteur. Les images sont parallèles.</p>`, qs: [
         { t: 'Justifier qu’on peut utiliser le théorème de Thalès.', comp: 'rai', pts: 1, a: 'Les rayons partent du même point S et les deux images sont parallèles.', v: null, lines: 1 },
         { t: 'Calculer la largeur de l’image à 7,5 m.', comp: 'cal', pts: 2, a: '1,2 × 7,5 ÷ 3 = 3 m', v: 3, tol: .01, w: 20, lab: 'en m :' },
-        { t: 'Quand le mur passe de 3 m à 7,5 m du projecteur, par combien l’aire de l’image est-elle multipliée ?', comp: 'mod', pts: 1.5, a: 'k = 7,5 ÷ 3 = 2,5 ; aire × 2,5² = 6,25', v: 6.25, tol: .006, w: 20 },
-        { t: 'Rédiger une phrase de conclusion pour le ciné-club.', comp: 'com', pts: 1.5, a: 'À 7,5 m, l’image mesure 3 m de large, et son aire est 6,25 fois plus grande qu’à 3 m.', v: null, lines: 1 }] }] };
+        { t: 'Quand le mur passe de 3 m à 7,5 m du projecteur, par combien l’aire de l’image est-elle multipliée ?', comp: 'mod', pts: 1, a: 'k = 7,5 ÷ 3 = 2,5 ; aire × 2,5² = 6,25', v: 6.25, tol: .006, w: 20 },
+        { t: 'À 7,5 m, l’image est un rectangle de 3 m de large et 1,6 m de haut. Calculer sa diagonale avec le théorème de Pythagore.', comp: 'cal', pts: 1, a: 'd² = 3² + 1,6² = 9 + 2,56 = 11,56 ; d = 3,4 m', v: 3.4, tol: .01, w: 20, lab: 'en m :' },
+        { t: 'Rédiger une phrase de conclusion pour le ciné-club.', comp: 'com', pts: 1, a: 'À 7,5 m, l’image mesure 3 m de large, et son aire est 6,25 fois plus grande qu’à 3 m.', v: null, lines: 1 }] }] };
 }
 
 /* ---------- chapitre 10 · espace, transformations, programmes ---------- */

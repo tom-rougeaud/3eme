@@ -1,4 +1,4 @@
-/* 3ème Prépa-Métiers · chapitre 1 — Nombres entiers et arithmétique : multiples, diviseurs, critères de divisibilité,
+/* 3ème Série Pro · chapitre 1 — Nombres entiers et arithmétique : multiples, diviseurs, critères de divisibilité,
    nombres premiers, décomposition en produit de facteurs premiers, fraction irréductible, partage en lots identiques. */
 (function (root) {
   'use strict';
@@ -165,7 +165,7 @@
         { lab: `Exposant du facteur ${D[0][0]}`, v: D[0][1], d: 0, w: 12, x: `${fr(N)} = ${decTxt(N)} : le facteur ${D[0][0]} a pour exposant ${D[0][1]}.` },
         { lab: 'Nombre de facteurs premiers différents', v: D.length, d: 0, w: 12, x: `Les facteurs sont ${D.map(d => d[0]).join(', ')} : ${D.length} différents.`, err: [{ v: D.reduce((a, d) => a + d[1], 0), m: 'Compte chaque facteur une seule fois, sans tenir compte des exposants.' }] },
         { lab: `Plus petit nombre par lequel multiplier ${fr(N)} pour obtenir un carré parfait`, v: mult, d: 0, w: 12, x: `Exposants impairs : ${D.filter(([p, e]) => e % 2).map(([p, e]) => `${p}${e > 1 ? H.arith.sup(e) : ''}`).join(', ')}. Il manque un facteur ${D.filter(([p, e]) => e % 2).map(d => d[0]).join(' × ')} = ${mult} pour que tous les exposants soient pairs.`, err: [{ v: D.reduce((a, [p]) => a * p, 1), m: 'On ne complète que les facteurs dont l’exposant est impair.' }] },
-        { lab: `Le carré parfait obtenu, ${fr(N)} × ${mult}`, v: sq, d: 0, w: 16, x: `${fr(N)} × ${mult} = ${fr(sq)}`, err: [{ v: N + mult, m: 'Multiplie, ne fais pas la somme.' }] }],
+        { lab: `Le carré parfait obtenu en multipliant ${fr(N)} par le nombre trouvé en c`, v: sq, d: 0, w: 16, x: `${fr(N)} × ${mult} = ${fr(sq)}`, err: [{ v: N + mult, m: 'Multiplie, ne fais pas la somme.' }] }],
         ['Les exposants de la décomposition sont les petits nombres écrits en haut.', 'Pour un carré parfait, chaque exposant doit être pair.', 'Multiplie par les facteurs dont l’exposant est impair.']);
     };
     /* e3 · lots identiques */

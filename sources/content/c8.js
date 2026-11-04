@@ -52,7 +52,7 @@ module.exports = function (chk) {
       methode: ['La diagonale coupe l’écran en deux triangles rectangles : elle en est l’hypoténuse.', 'J’écris le théorème de Pythagore : d² = 121,8² + 68,5².', 'Je calcule : d² = 14 835,24 + 4 692,25 = 19 527,49.', 'Je prends la racine carrée, puis je convertis : d ≈ 139,7 cm, et 139,7 ÷ 2,54 = 55.'],
       vois: vEcr,
       solution: `<p>${FM(R`d=\sqrt{121{,}8^2+68{,}5^2}=\sqrt{19\,527{,}49}\approx139{,}7\text{ cm}`)}</p><p>139,7 ÷ 2,54 = 55 : c’est bien un écran de <b>55 pouces</b>.</p>`,
-      retiens: `<p><b>Théorème de Pythagore</b> : si le triangle ABC est rectangle en A, alors ${FM(R`BC^2=AB^2+AC^2`)}.</p><p>[BC] est l’<b>hypoténuse</b> : le côté opposé à l’angle droit, le plus long.</p>`,
+      retiens: `<p><b>Théorème de Pythagore</b> : si le triangle ABC est rectangle en A, alors ${FM(R`BC^2=AB^2+AC^2`)}.</p><p>[BC] est l’<b>hypoténuse</b> : le côté opposé à l’angle droit, le plus long.</p><p><b>Arrondir</b> : on regarde le chiffre suivant. De 0 à 4, on garde ; de 5 à 9, on ajoute 1. √4 680,85 ≈ 68,4 au dixième.</p>`,
       attention: 'Pour un côté de l’angle droit, on soustrait : AC² = BC² − AB². Et on n’oublie pas la racine carrée.',
       amoi: [['Côtés de l’angle droit 6 et 8 : hypoténuse ?', '√100 = 10'], ['Hypoténuse 13, un côté 5 : l’autre côté ?', '√144 = 12']] },
     { titre: 'Prouver qu’un triangle est rectangle', decouvre: { txt: `Pour accrocher un poster géant, un charpentier fabrique un cadre en bois. Il mesure un triangle de ${H('45 cm')}, ${H('60 cm')} et ${H('75 cm')}. Son angle est-il droit ?`, img: skCadre() },

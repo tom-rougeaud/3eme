@@ -80,7 +80,7 @@ function cover(o = {}) {
   R = rng(7);
   const qr = o.qr || '';
   const NAVY = o.prof ? PR.ink : '#1D2240';
-  let s = `<svg viewBox="0 0 840 1188" xmlns="http://www.w3.org/2000/svg" class="cvsvg"><rect width="840" height="1188" fill="${o.prof ? PR.bg : '#F5A300'}"/>`;
+  let s = `<svg viewBox="0 0 840 1188" xmlns="http://www.w3.org/2000/svg" class="cvsvg"><rect width="840" height="1188" fill="${o.prof ? PR.bg : '#FFC21F'}"/>`;
   // motifs : [nom, x, y, rotation, échelle, opacité]
   const L = [['card', 140, 160, -8, .95, .24], ['ecran', 640, 150, 5, .95, .22], ['facto', 400, 120, -4, .7, .18], ['star', 290, 50, 0, 1, .3],
     ['d20', 130, 360, 6, .85, .22], ['clap', 720, 370, -6, .9, .22], ['sqrt', 330, 320, -6, .7, .16], ['pct', 560, 300, 10, .8, .16],
