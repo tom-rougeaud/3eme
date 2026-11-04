@@ -74,12 +74,7 @@ const M = {
 
 /* version « spécimen enseignant » : fond rouge brique sombre, bandeau discret, pastille aux couleurs du niveau */
 const PR = { bg: '#9B2335', ink: '#3B0F18', cream: '#FFF1DC', rose: '#F6CFC6' };
-function profLayer(book) {
-  /* discret : un bandeau fin en haut, une pastille aux couleurs du niveau sous le titre */
-  let s = `<rect x="0" y="0" width="840" height="62" fill="${PR.ink}"/><text x="420" y="40" font-family="Inter" font-size="22" font-weight="800" fill="${PR.cream}" text-anchor="middle" letter-spacing="7">SPÉCIMEN ENSEIGNANT</text>`;
-  s += `<rect x="70" y="788" width="480" height="52" rx="26" fill="${book}"/><text x="310" y="822" font-family="Inter" font-size="22" font-weight="800" fill="#1D2240" text-anchor="middle">Livre du professeur · corrigés détaillés</text>`;
-  return s;
-}
+function profLayer(book) { return ''; }
 
 function cover(o = {}) {
   R = rng(7);
@@ -96,15 +91,15 @@ function cover(o = {}) {
   // titre
   s += `<g font-family="Inter">`;
   s += `<rect x="70" y="420" width="700" height="300" rx="40" fill="${NAVY}" opacity=".92"/>`;
-  s += `<text x="110" y="492" font-size="24" font-weight="800" fill="${YEL}" letter-spacing="3" textLength="620" lengthAdjust="spacingAndGlyphs">MATHÉMATIQUES · 3E PRÉPA-MÉTIERS</text>`;
-  s += `<text x="106" y="596" font-size="92" font-weight="800" fill="${W}" letter-spacing="-2" textLength="620" lengthAdjust="spacingAndGlyphs">3ème Série Pro</text>`;
+  s += `<text x="110" y="492" font-size="24" font-weight="800" fill="${YEL}" letter-spacing="3" textLength="620" lengthAdjust="spacingAndGlyphs">MANUEL DE MATHÉMATIQUES</text>`;
+  s += `<text x="106" y="596" font-size="76" font-weight="800" fill="${W}" letter-spacing="-2" textLength="620" lengthAdjust="spacingAndGlyphs">3ème Prépa-Métiers</text>`;
   s += `</g>` + `<path d="${line(110, 628, 470, 622, 2.5)}" fill="none" stroke="${YEL}" stroke-width="9" stroke-linecap="round"/>`;
-  s += `<g font-family="Inter"><text x="110" y="690" font-size="38" font-weight="700" fill="${W}">Brevet série professionnelle</text></g>`;
+  s += `<g font-family="Inter"><text x="110" y="690" font-size="36" font-weight="700" fill="${W}">DNB Série Professionnelle</text></g>`;
   // bas de page : auteur et QR code
   s += `<rect x="0" y="1040" width="840" height="148" fill="${NAVY}" opacity=".9"/>`;
-  s += `<g font-family="Inter">` + (o.prof ? '' : `<text x="70" y="1108" font-size="26" font-weight="800" fill="${W}">Tom Rougeaud</text>`);
-  s += `<text x="70" y="${o.prof ? 1124 : 1140}" font-size="20" font-weight="700" fill="#FCE7A0">${o.prof ? 'Tom Rougeaud' : 'Manuel de l’élève et appli en ligne'}</text></g>`;
-  if (qr) { s += `<rect x="636" y="958" width="152" height="182" rx="18" fill="${W}"/><g transform="translate(648 970) scale(${(128 / +qr.vb.split(' ')[2]).toFixed(4)})">${qr.body}</g><text x="712" y="1124" font-family="Inter" font-size="17" font-weight="800" fill="#1D2240" text-anchor="middle">L’appli · 3e</text>`; }
+  s += `<rect x="70" y="748" width="${o.prof ? 330 : 290}" height="52" rx="26" fill="${o.prof ? '#F5A300' : NAVY}"/><text x="${o.prof ? 235 : 215}" y="783" font-family="Inter" font-size="24" font-weight="800" fill="${o.prof ? '#1D2240' : W}" text-anchor="middle">${o.prof ? 'Spécimen enseignant' : 'Manuel de l’élève'}</text>`;
+  s += `<text x="70" y="1124" font-family="Inter" font-size="22" font-weight="700" fill="#FCE7A0">Tom Rougeaud</text>`;
+  if (qr) { const Q = 214, bx = 840 - 56 - (Q + 28); s += `<rect x="${bx}" y="880" width="${Q + 28}" height="${Q + 78}" rx="22" fill="${W}"/><g transform="translate(${bx + 14} 894) scale(${(Q / +qr.vb.split(' ')[2]).toFixed(4)})">${qr.body}</g><text x="${bx + (Q + 28) / 2}" y="${894 + Q + 38}" font-family="Inter" font-size="23" font-weight="800" fill="#1D2240" text-anchor="middle">Ouvrir l’appli</text>`; }
   if (o.prof) s += profLayer('#F5A300');
   return s + '</svg>';
 }
