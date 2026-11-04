@@ -402,3 +402,9 @@ table.evg3{table-layout:fixed;width:100%}
 
 /* ouverture + point de départ sur une seule page */
 .op3-sc svg{max-height:34mm}.op3-sc{margin:2mm 0;padding:1mm 4mm}.op3{margin-bottom:2.4mm}
+
+/* glossaire plus fin : illustrations réduites, 8 mots par page au lieu de 6 */
+.colbox .gc-ill,.cols2 .gc-ill{height:21mm!important;margin-bottom:1mm}
+.colbox .gcard,.cols2 .gcard{padding:1.4mm 3mm 1.6mm}
+.colbox .gc-def,.cols2 .gc-def{font-size:9.8pt;margin:.3mm 0}
+.colbox .gc-ph,.cols2 .gc-ph{font-size:9.2pt;margin:.3mm 0}

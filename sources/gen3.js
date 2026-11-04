@@ -127,7 +127,7 @@ function chapter(c) {
     const others = [];
     (c.scratch || []).forEach((sx, j) => { if (sx.lc === k) others.push([`${c.id}-s${j + 1}`, sx.titre]); });
     c.probs.forEach(p => { if (Math.min(p.lc || 1, c.notions.length) === k) others.push([`${c.id}-${p.id}`, p.titre]); });
-    if (!others.length) others.push([`${c.id}-p1`, c.probs[0].titre]);
+    if (!others.length) others.push([`${c.id}-${c.probs[0].id}`, c.probs[0].titre]);
     const oth = others.map(([id, t]) => `l’exercice ${X(id)} « ${t.replace(/<[^>]+>/g, '')} » (page ${P(id)})`).join(' ou ');
     (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex parc3 c-${col}" data-inl="1" data-lcn="${k}" data-stage="1"><div class="pc3-h">🧭 Ton parcours · notion ${k}</div><div class="pc3-g"><p><b>Ça va ?</b> Fais ${hasM ? `les 4 calculs 🔧 (exercice ${X(mid)}) puis ` : ''}l’exercice ${X(bid)} « ${tt(base)} », puis ${oth}.</p><p><b>Ça bloque ?</b> Relis la méthode (page ${P(c.id + '-n' + k)}) et refais l’exemple avec tes mots. Fais seulement ${hasM ? `les 4 calculs 🔧 (exercice ${X(mid)}) et ` : ''}l’exercice ${X(bid)}. Quand tu les réussis seul·e, reviens faire ${oth}.</p></div></div>`);
   });

@@ -24,9 +24,9 @@ module.exports = chk => {
     chk(c.notions.length >= 3 && c.notions.length <= 6, `${c.id} : 3 à 6 notions`);
     chk(!!c.parties && c.parties.flatMap(p => p.n).join() === c.notions.map((_, i) => i + 1).join(), `${c.id} : les parties couvrent toutes les notions, dans l’ordre`);
     chk(c.entraine.length >= 3 && c.probs.length === 3, `${c.id} : 3 exercices et 3 problèmes`);
-    /* deux problèmes par chapitre : le petit problème (p1) et le sujet « vers le brevet » (p3) ; le cas pratique (p2) n’est plus proposé */
-    c.probs = c.probs.filter(p => p.id !== 'p2');
-    c.bilan = c.bilan.map(([t, es]) => { const r = es.filter(e => e !== 'p2'); return [t, r.length ? r : ['p1']]; });
+    /* un seul problème par chapitre : le sujet « vers le brevet » (p3) ; le petit problème (p1) et le cas pratique (p2) ne sont plus proposés */
+    c.probs = c.probs.filter(p => p.id === 'p3');
+    c.bilan = c.bilan.map(([t, es]) => { const r = es.filter(e => e !== 'p1' && e !== 'p2'); return [t, r.length ? r : ['p3']]; });
     chk(c.resolus.length === 2 && !!c.resolus[1].trous, `${c.id} : un résolu complet et un à trous`);
     return TEX.deep(c);
   });

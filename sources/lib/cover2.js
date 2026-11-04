@@ -103,7 +103,7 @@ function cover(o = {}) {
   // bas de page : auteur et QR code
   s += `<rect x="0" y="1040" width="840" height="148" fill="${NAVY}" opacity=".9"/>`;
   s += `<g font-family="Inter">` + (o.prof ? '' : `<text x="70" y="1108" font-size="26" font-weight="800" fill="${W}">Tom Rougeaud</text>`);
-  s += `<text x="70" y="${o.prof ? 1124 : 1140}" font-size="${o.prof ? 22 : 20}" font-weight="700" fill="#FCE7A0">${o.prof ? 'Exemplaire de l’enseignant · ne pas distribuer' : 'Manuel de l’élève et appli en ligne'}</text></g>`;
+  s += `<text x="70" y="${o.prof ? 1124 : 1140}" font-size="20" font-weight="700" fill="#FCE7A0">${o.prof ? 'Tom Rougeaud' : 'Manuel de l’élève et appli en ligne'}</text></g>`;
   if (qr) { s += `<rect x="636" y="958" width="152" height="182" rx="18" fill="${W}"/><g transform="translate(648 970) scale(${(128 / +qr.vb.split(' ')[2]).toFixed(4)})">${qr.body}</g><text x="712" y="1124" font-family="Inter" font-size="17" font-weight="800" fill="#1D2240" text-anchor="middle">L’appli · 3e</text>`; }
   if (o.prof) s += profLayer('#F5A300');
   return s + '</svg>';
