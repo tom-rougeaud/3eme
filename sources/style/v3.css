@@ -399,3 +399,6 @@ table.evg3{table-layout:fixed;width:100%}
 .scr4 .scr-w svg{width:100%;max-width:96mm;height:auto;max-height:none}
 .scr4-q .bl{display:block!important;width:auto!important;height:8.4mm;border:none;border-bottom:1.3px solid #9AA4CC;margin:0;background:none;border-radius:0}
 .prof .scr4-q .bl[data-a]::after{left:1mm;bottom:.8mm;font-size:10pt;white-space:normal;max-width:none}
+
+/* ouverture + point de départ sur une seule page */
+.op3-sc svg{max-height:34mm}.op3-sc{margin:2mm 0;padding:1mm 4mm}.op3{margin-bottom:2.4mm}

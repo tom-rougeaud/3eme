@@ -77,7 +77,7 @@
   const AUTOS = {};
   const autoApp = c => { if (!window.MCVA) return ''; const seed = AUTOS[c.id] || (AUTOS[c.id] = rnd9()), qs = window.MCVA.gen(c.id, seed, 10);
     return `<article class="auto c-${c.col}" data-c="${c.id}"><div class="ex-h"><span class="num2">⚡</span><span class="ex-t">Automatismes du brevet · 10 minutes, sans calculatrice</span><button class="btn sm ghost" data-auto-new>🔄 Nouvelles questions</button></div><p class="cons">Comme la partie 1 du brevet : les automatismes du chapitre, puis d’autres automatismes. Réponds de tête, puis vérifie.</p><ol class="auto-q">${qs.map((q, j) => `<li class="aq" data-j="${j}"><p>${q.t}</p>${q.choices ? `<span class="chs">${q.choices.map((ch, k) => `<button class="ch" data-ak="${k}">${ch}</button>`).join('')}</span>` : `<input class="inp" inputmode="decimal" autocomplete="off" aria-label="Réponse ${j + 1}">`}<span class="afb" aria-live="polite"></span></li>`).join('')}</ol><div class="ex-act"><button class="btn" data-auto-check>Vérifier</button><span class="score"></span></div></article>`; };
-  /* ---------- « Mécanique » : cinq petits calculs sans contexte pour chaque notion ---------- */
+  /* ---------- « Mécanique » : quatre petits calculs sans contexte pour chaque notion ---------- */
   const fnv = t => { let h = 2166136261; for (const ch of t) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
   const MSEED = {};
   const mechSet = (c, n) => { const k = c.id + '.' + n; if (!(window.MCVT && window.MCVT.MECH && window.MCVT.MECH[k])) return null; return window.MCVT.mech(c.id, n, MSEED[k] != null ? MSEED[k] : fnv(`${c.id}-m${n}`)); };
@@ -99,7 +99,7 @@
     const m = mechSet(c, n); let ok = 0;
     $$('.mq3', card).forEach((li, j) => { const it = m.items[j], r = mechJudge(it, $('.inp', li).value); li.classList.remove('ok', 'ko', 'cmp'); li.classList.add(r); if (r === 'ok') ok++;
       $('.mfb', li).innerHTML = r === 'ok' ? '✅' : r === 'cmp' ? `🔎 Compare avec : <span class="sol">${it.a}</span>` : `❌ <span class="sol">${it.a}</span>`; });
-    $('.score', card).textContent = `${ok} bonne${ok > 1 ? 's' : ''} réponse${ok > 1 ? 's' : ''} sur 5`; if (window.MCmathrun) window.MCmathrun.run(card); });
+    $('.score', card).textContent = `${ok} bonne${ok > 1 ? 's' : ''} réponse${ok > 1 ? 's' : ''} sur 4`; if (window.MCmathrun) window.MCmathrun.run(card); });
   document.addEventListener('input', e => { if (e.target.id === 'glo-q') { GLO.q = e.target.value; $('#glo-list').innerHTML = gloList(); } });
   document.addEventListener('click', e => { const ak = e.target.closest('.aq [data-ak]'); if (ak) { $$('.ch', ak.parentNode).forEach(b => b.classList.toggle('sel', b === ak)); return; } const t = e.target.closest('[data-auto-check],[data-auto-new]'); if (!t) return; const card = t.closest('.auto'), cid = card.dataset.c;
     if (t.hasAttribute('data-auto-new')) { AUTOS[cid] = rnd9(); const tmp = document.createElement('div'); tmp.innerHTML = autoApp(byId[cid]); card.replaceWith(tmp.firstElementChild); return; }
@@ -147,7 +147,7 @@
     const oth = [...(c.scratch || []).filter(sx => lcOf(+sx.lc) === n).map(sx => `🐱 « ${sx.titre} »`), ...c.probs.filter(p => lcOf(+p.lc || 1) === n).map(p => `🧩 « ${p.titre} »`)];
     if (!oth.length) oth.push(`🧩 « ${c.probs[0].titre} »`);
     const o = oth.join(' ou ');
-    return `<aside class="parc3 c-${c.col}"><div class="pc3-h">🧭 Ton parcours · notion ${n}</div><p><b>Ça va ?</b> Fais ${hasM ? 'les 5 calculs 🔧, puis ' : ''}l’exercice « ${bt} », puis ${o} (onglet 🧩 Problèmes).</p><p><b>Ça bloque ?</b> Relis la méthode ci-dessus et refais l’exemple avec tes mots. Fais seulement ${hasM ? 'les 5 calculs 🔧 et ' : ''}l’exercice « ${bt} ». Quand tu les réussis seul·e, reviens faire ${o}.</p></aside>`; };
+    return `<aside class="parc3 c-${c.col}"><div class="pc3-h">🧭 Ton parcours · notion ${n}</div><p><b>Ça va ?</b> Fais ${hasM ? 'les 4 calculs 🔧, puis ' : ''}l’exercice « ${bt} », puis ${o} (onglet 🧩 Problèmes).</p><p><b>Ça bloque ?</b> Relis la méthode ci-dessus et refais l’exemple avec tes mots. Fais seulement ${hasM ? 'les 4 calculs 🔧 et ' : ''}l’exercice « ${bt} ». Quand tu les réussis seul·e, reviens faire ${o}.</p></aside>`; };
   function notionsView(c) {
     const N = c.notions.length, lcOf = lc => (lc >= 1 && lc <= N ? lc : N);
     const ex = n => c.entraine.map((e, i) => [e, i]).filter(([e]) => lcOf(+e.lc) === n);

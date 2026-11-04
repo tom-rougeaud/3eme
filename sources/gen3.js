@@ -85,8 +85,7 @@ function chapter(c) {
   fixed.push(`<div class="blk op3 c-${col}"><div class="op3-h"><div><div class="ch-k">Chapitre ${c.n} · ${esc(c.dom)}</div><h2 class="fit">${c.titre}</h2><div class="op3-sous">${esc(c.sous)}</div></div><div class="qrbox">${QR[c.id].svg}<span>Ce chapitre<br>dans l’appli</span></div></div>
     <div class="op3-sc">${SC[c.id]()}</div>
     <div class="op3-q"><span class="op3-k">🎬 La scène</span><span class="mt-r">${c.metier.roles.map(r => `<span>${r}</span>`).join('')}</span><p>${c.travail.question}</p></div>
-    <div class="op3-o"><b>Le plan du chapitre</b><div class="plan3">${c.parties.map((p, k) => `<div class="plan3-p${p.n.some(j => c.notions[j - 1].hp) ? ' hp' : ''}"><span class="plan3-l">${'ABCDE'[k]}</span><div><b>${p.t}</b><span>${p.n.map(j => `${j}. ${c.notions[j - 1].titre}`).join(' · ')}</span></div></div>`).join('')}</div><b>Dans ce chapitre</b><ul>${c.objectifs.map(o => `<li>${o}</li>`).join('')}</ul></div></div>`);
-  fixed.push(pontBox(c));
+    <div class="op3-o"><b>Dans ce chapitre</b><ul>${c.objectifs.map(o => `<li>${o}</li>`).join('')}</ul></div></div>`);
   /* 2. point de départ : un document du métier, 5 questions */
   const dp = MCVT.dep(c.depart, seedOf(c.id + '-dep'));
   fixed.push(`<div class="blk dep3 c-${col}" data-sec="${c.id}-dep" data-det="${c.id}-dep"><div class="dep3-h"><span class="ic">🚀</span>Point de départ<span class="sec-sub">un document · 5 questions · sans calculatrice</span></div><div class="dep3-g"><div class="dep3-doc"><div class="dep3-t">${dp.titre}</div>${dp.doc}</div><ol class="dep3-q">${dp.qs.map(q => `<li><span class="dq-t">${q.t}</span>${q.kind === 'qcm' ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(24, q.a)}</li>`).join('')}</ol></div></div>`);
@@ -103,7 +102,7 @@ function chapter(c) {
   /* 5. je m’entraîne : 3 exercices à support visuel (tirage fixe ; d’autres nombres dans l’appli) */
   const byLc = {};
   c.entraine.forEach(e => {
-    if (e.niv) return; /* un seul exercice par notion (plus les 5 calculs) : les variantes guidées et les défis ne sont plus proposés ; les problèmes du chapitre jouent le rôle de défi */
+    if (e.niv) return; /* un seul exercice par notion (plus les 4 calculs) : les variantes guidées et les défis ne sont plus proposés ; les problèmes du chapitre jouent le rôle de défi */
     const g = MCVT.tr(e.gen, seedOf(c.id + '-' + e.id)), eid = c.id + '-' + e.id;
     const tp = trParts(g), extra = tp.extra;
     key.push({ eid, titre: g.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> ${nivT(e)}${g.titre}`, g.items.map(it => [`${it.k}.`, it.x || it.a])) });
@@ -111,13 +110,13 @@ function chapter(c) {
     rep.push({ eid, titre: nivT(e) + g.titre, txt: g.items.map(it => `${it.k}. ${it.a}`).join(' ; ') });
   });
 
-  /* 5 bis. la mécanique : cinq petits calculs sans contexte, avant les exercices contextualisés de la notion */
+  /* 5 bis. la mécanique : quatre petits calculs sans contexte, avant les exercices contextualisés de la notion */
   c.notions.forEach((nt, i) => {
     const k = i + 1; if (!MCVT.MECH[c.id + '.' + k]) return;
     const eid = `${c.id}-m${k}`, m = MCVT.mech(c.id, k, seedOf(eid));
     key.push({ eid, titre: 'Mécanique · ' + m.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> Mécanique · ${m.titre}`, [['💡', `<i>Méthode :</i> ${(MCVT.MECH_REGLE || {})[c.id + '.' + k] || ''}`]].concat(m.items.map(it => [`${it.k}.`, it.a]))) });
     rep.push({ eid, titre: '🔧 ' + m.titre, txt: m.items.map(it => `${it.k}. ${it.a}`).join(' ; ') });
-    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex mech c-${col}" data-inl="1" data-lcn="${k}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span><span class="mech-b">🔧 Mécanique</span><span class="ext">${m.titre}</span><span class="cps"><span class="lcref">notion ${k}</span><span class="outil">5 calculs · sans contexte</span></span></div><div class="exb"><p class="tr-c">${m.consigne}</p><ol class="mech-l${m.items.every(it => it.t.replace(/<[^>]+>/g, '').length < 38 && String(it.a).length < 22) ? ' m3c' : ''}">${m.items.map(it => `<li><span class="mq"><b>${it.k}.</b> ${it.t}</span><span class="bl mech-a" data-a="${esc(it.a)}"></span></li>`).join('')}</ol></div></div>`);
+    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex mech c-${col}" data-inl="1" data-lcn="${k}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span><span class="mech-b">🔧 Mécanique</span><span class="ext">${m.titre}</span><span class="cps"><span class="lcref">notion ${k}</span><span class="outil">4 calculs · sans contexte</span></span></div><div class="exb"><p class="tr-c">${m.consigne}</p><ol class="mech-l${m.items.every(it => it.t.replace(/<[^>]+>/g, '').length < 38 && String(it.a).length < 22) ? ' m3c' : ''}">${m.items.map(it => `<li><span class="mq"><b>${it.k}.</b> ${it.t}</span><span class="bl mech-a" data-a="${esc(it.a)}"></span></li>`).join('')}</ol></div></div>`);
   });
 
   /* 5 ter. « Ton parcours » : le guide en début de série d’exercices (aucun exercice en plus : il renvoie, par leur nom et leur page, à ceux qui existent déjà) */
@@ -130,7 +129,7 @@ function chapter(c) {
     c.probs.forEach(p => { if (Math.min(p.lc || 1, c.notions.length) === k) others.push([`${c.id}-${p.id}`, p.titre]); });
     if (!others.length) others.push([`${c.id}-p1`, c.probs[0].titre]);
     const oth = others.map(([id, t]) => `l’exercice ${X(id)} « ${t.replace(/<[^>]+>/g, '')} » (page ${P(id)})`).join(' ou ');
-    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex parc3 c-${col}" data-inl="1" data-lcn="${k}" data-stage="1"><div class="pc3-h">🧭 Ton parcours · notion ${k}</div><div class="pc3-g"><p><b>Ça va ?</b> Fais ${hasM ? `les 5 calculs 🔧 (exercice ${X(mid)}) puis ` : ''}l’exercice ${X(bid)} « ${tt(base)} », puis ${oth}.</p><p><b>Ça bloque ?</b> Relis la méthode (page ${P(c.id + '-n' + k)}) et refais l’exemple avec tes mots. Fais seulement ${hasM ? `les 5 calculs 🔧 (exercice ${X(mid)}) et ` : ''}l’exercice ${X(bid)}. Quand tu les réussis seul·e, reviens faire ${oth}.</p></div></div>`);
+    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex parc3 c-${col}" data-inl="1" data-lcn="${k}" data-stage="1"><div class="pc3-h">🧭 Ton parcours · notion ${k}</div><div class="pc3-g"><p><b>Ça va ?</b> Fais ${hasM ? `les 4 calculs 🔧 (exercice ${X(mid)}) puis ` : ''}l’exercice ${X(bid)} « ${tt(base)} », puis ${oth}.</p><p><b>Ça bloque ?</b> Relis la méthode (page ${P(c.id + '-n' + k)}) et refais l’exemple avec tes mots. Fais seulement ${hasM ? `les 4 calculs 🔧 (exercice ${X(mid)}) et ` : ''}l’exercice ${X(bid)}. Quand tu les réussis seul·e, reviens faire ${oth}.</p></div></div>`);
   });
 
   /* réserve : d’autres tirages des exercices « Je m’entraîne ». La mise en page ne les pose que dans la place restée vide d’une page (jamais de page en plus). */

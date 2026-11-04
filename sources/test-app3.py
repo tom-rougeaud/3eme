@@ -129,14 +129,14 @@ async def run(p, vw, vh, label, full):
                     ans = await page.evaluate("""([cid, n]) => { const h = s => { let x = 2166136261; for (const ch of s) { x ^= ch.charCodeAt(0); x = Math.imul(x, 16777619); } return x >>> 0; };
                       return window.MCVT.mech(cid, n, h(`${cid}-m${n}`)).items.map(it => it.vs ? it.vs.join(' ; ') : it.v != null ? String(it.v).replace('.', ',') : it.a); }""", [cid, n])
                     inputs = await page.query_selector_all(f'{card} .mq3 .inp')
-                    if len(inputs) != 5: bad(f'{label} {cid} notion {n} : {len(inputs)} cases'); continue
+                    if len(inputs) != 4: bad(f'{label} {cid} notion {n} : {len(inputs)} cases'); continue
                     for inp, a in zip(inputs, ans): await inp.fill(a)
                     await page.click(f'{card} [data-mech-check]')
                     sc = await page.inner_text(f'{card} .score')
-                    if sc.split(' ')[0] != '5': bad(f'{label} {cid} notion {n} mécanique : {sc}')
+                    if sc.split(' ')[0] != '4': bad(f'{label} {cid} notion {n} mécanique : {sc}')
                     else: stats['mech'] = stats.get('mech', 0) + 1
                     await page.click(f'{card} [data-mech-new]')
-                    if len(await page.query_selector_all(f'{card} .mq3')) != 5: bad(f'{label} {cid} notion {n} : autres calculs')
+                    if len(await page.query_selector_all(f'{card} .mq3')) != 4: bad(f'{label} {cid} notion {n} : autres calculs')
             if t == 'problemes':
                 for pr in c['probs']:
                     card = f'#ex-{pr["id"]}'

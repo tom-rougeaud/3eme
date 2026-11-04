@@ -545,7 +545,7 @@
     R => { const a = pick(R, [20, 40, 60]); return num(`Un lutin tourne de ${a}° à chaque coin d’un polygone régulier. Combien de côtés a-t-il ?`, 360 / a, 0); }
   ]);
 
-  /* cinq calculs par notion (et non dix) : on garde ceux qui couvrent des difficultés différentes, sans doublon */
+  /* quatre calculs par notion (et non dix) : on garde ceux qui couvrent des difficultés différentes, sans doublon */
   const PICK = {
     'c1.1': [0, 3, 5, 6, 8], 'c1.2': [1, 2, 4, 6, 8], 'c1.3': [0, 3, 4, 6, 8], 'c1.4': [0, 4, 7, 8, 9], 'c1.5': [1, 3, 5, 6, 9],
     'c2.1': [1, 2, 4, 6, 9], 'c2.2': [0, 3, 5, 7, 9], 'c2.3': [0, 2, 4, 5, 8], 'c2.4': [0, 2, 4, 6, 8],
@@ -560,7 +560,7 @@
   };
   const mech = (cid, k, seed) => {
     const m = MECH[cid + '.' + k]; if (!m) throw new Error('mécanique inconnue : ' + cid + '.' + k);
-    const R = MC.rng(seed), idx = PICK[cid + '.' + k] || [0, 2, 4, 6, 8];
+    const R = MC.rng(seed), idx = (PICK[cid + '.' + k] || [0, 2, 4, 6, 8]).filter((_, i) => i !== 1);
     return { titre: m.titre, consigne: m.consigne, items: idx.map((j, i) => { const o = m.mk[j](R); o.k = L[i]; return o; }) };
   };
   MCVT.MECH = MECH; MCVT.mech = mech;
