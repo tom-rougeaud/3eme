@@ -1,5 +1,5 @@
-/* 3ème Série Pro — la scène de pop culture de chaque chapitre (roles : les références de la scène, txt : ce que l’on fait avec)
-   et « Le métier derrière la scène » : un métier (hors commerce et vente), ce qu’il fait, ses maths, et des formations possibles après la 3e. */
+/* 3ème Série Pro — la référence de pop culture de chaque chapitre (roles : les références citées, txt : ce que l’on fait avec)
+   et « Les maths dans un contexte professionnel » : un métier (hors commerce et vente), ce qu’il fait, ses maths, et des formations possibles après la 3e. */
 'use strict';
 module.exports = {
   c1: { roles: ['🃏 Cartes à collectionner', '📚 Manga', '📺 Les Simpson'], txt: 'Ranger une collection, partager des lots pour un tournoi, compter les épisodes d’une série culte.',

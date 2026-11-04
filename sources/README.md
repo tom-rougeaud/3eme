@@ -5,7 +5,7 @@ Programme : cycle 4 (arrêté du 17 juillet 2020, BO n° 31 du 30 juillet 2020),
 Tous les résultats sont calculés et contrôlés par programme (`chk`) : une erreur de calcul arrête la construction.
 
 ## Organisation
-- `content/` : les 10 chapitres (`c1.js` … `c10.js`), le glossaire visuel (`gl_c1.js` … `gl_c10.js`), les évaluations sur 20 (`evals3.js`), les trois sujets blancs (`dnb3.js`), « Ce que tu sais déjà » (`pont3.js`), les métiers (`metiers3.js`), les dessins et les données réelles (`sk3.js`, `kit3e.js`), les corrigés détaillés de la version professeur (`det3.js`) ; `index.js` charge et vérifie le tout.
+- `content/` : les 10 chapitres (`c1.js` … `c10.js`), le glossaire visuel (`gl_c1.js` … `gl_c10.js`), les évaluations sur 20 (`evals3.js`), les trois sujets blancs (`dnb3.js`), « Ce que tu sais déjà » (`pont3.js`), les métiers (`metiers3.js`), les dessins et les données réelles (`sk3.js`, `kit3e.js`) ; `index.js` charge et vérifie le tout.
 - `shared/` : `train.js` (moteur des exercices), `t1.js` … `t10.js` (documents de départ et exercices à support visuel, communs au manuel et à l’appli), `auto3.js` (automatismes du brevet).
 - `lib/` : scènes au trait (`scenes3e.js`), pagination A4 (`paginate.js`), couverture, QR codes, KaTeX.
 - `app/` : l’appli (`app3.js`, `app3.css`, `widgets.js` pour les simulateurs « Je manipule »).

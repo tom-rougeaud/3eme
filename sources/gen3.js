@@ -81,10 +81,10 @@ function chapter(c) {
   const nivNote = e => e.niv ? `<p class="niv-n">${e.niv > 0 ? `Tu as réussi l’exercice ${R(e.base)} ? Voici le même thème, avec un défi en plus.` : `Si l’exercice ${R(e.base)} te résiste, commence ici : même thème, nombres plus simples, début déjà fait.`}</p>` : '';
   const nivT = e => e.niv ? (e.niv > 0 ? '🚀 ' : '🌱 ') : '';
   const fixed = [], ex = [], key = [], rep = [];
-  /* 1. ouverture : la scène de pop culture */
+  /* 1. ouverture : une référence de la pop culture */
   fixed.push(`<div class="blk op3 c-${col}"><div class="op3-h"><div><div class="ch-k">Chapitre ${c.n} · ${esc(c.dom)}</div><h2 class="fit">${c.titre}</h2><div class="op3-sous">${esc(c.sous)}</div></div><div class="qrbox">${QR[c.id].svg}<span>Ce chapitre<br>dans l’appli</span></div></div>
     <div class="op3-sc">${SC[c.id]()}</div>
-    <div class="op3-q"><span class="op3-k">🎬 La scène</span><span class="mt-r">${c.metier.roles.map(r => `<span>${r}</span>`).join('')}</span><p>${c.travail.question}</p></div>
+    <div class="op3-q"><span class="op3-k">🎬 La référence</span><span class="mt-r">${c.metier.roles.map(r => `<span>${r}</span>`).join('')}</span><p>${c.travail.question}</p></div>
     <div class="op3-o"><b>Dans ce chapitre</b><ul>${c.objectifs.map(o => `<li>${o}</li>`).join('')}</ul></div></div>`);
   /* 2. point de départ : un document du métier, 5 questions */
   const dp = MCVT.dep(c.depart, seedOf(c.id + '-dep'));
@@ -117,19 +117,6 @@ function chapter(c) {
     key.push({ eid, titre: 'Mécanique · ' + m.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> Mécanique · ${m.titre}`, [['💡', `<i>Méthode :</i> ${(MCVT.MECH_REGLE || {})[c.id + '.' + k] || ''}`]].concat(m.items.map(it => [`${it.k}.`, it.a]))) });
     rep.push({ eid, titre: '🔧 ' + m.titre, txt: m.items.map(it => `${it.k}. ${it.a}`).join(' ; ') });
     (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex mech c-${col}" data-inl="1" data-lcn="${k}" data-eid="${eid}" data-det="${eid}" data-stage="1"><div class="exh"><span class="num">·</span><span class="mech-b">🔧 Mécanique</span><span class="ext">${m.titre}</span><span class="cps"><span class="lcref">notion ${k}</span><span class="outil">4 calculs · sans contexte</span></span></div><div class="exb"><p class="tr-c">${m.consigne}</p><ol class="mech-l${m.items.every(it => it.t.replace(/<[^>]+>/g, '').length < 38 && String(it.a).length < 22) ? ' m3c' : ''}">${m.items.map(it => `<li><span class="mq"><b>${it.k}.</b> ${it.t}</span><span class="bl mech-a" data-a="${esc(it.a)}"></span></li>`).join('')}</ol></div></div>`);
-  });
-
-  /* 5 ter. « Ton parcours » : le guide en début de série d’exercices (aucun exercice en plus : il renvoie, par leur nom et leur page, à ceux qui existent déjà) */
-  c.notions.forEach((nt, i) => {
-    const k = i + 1, base = c.entraine.find(e => e.lc === k && !e.niv); if (!base) return;
-    const tt = e => MCVT.tr(e.gen, seedOf(c.id + '-' + e.id)).titre.replace(/<[^>]+>/g, ''), bid = c.id + '-' + base.id, mid = `${c.id}-m${k}`, hasM = !!MCVT.MECH[c.id + '.' + k];
-    const X = id => `<b data-numof="${id}">00</b>`, P = id => `<b data-pgof="${id}">000</b>`;
-    const others = [];
-    (c.scratch || []).forEach((sx, j) => { if (sx.lc === k) others.push([`${c.id}-s${j + 1}`, sx.titre]); });
-    c.probs.forEach(p => { if (Math.min(p.lc || 1, c.notions.length) === k) others.push([`${c.id}-${p.id}`, p.titre]); });
-    if (!others.length) others.push([`${c.id}-${c.probs[0].id}`, c.probs[0].titre]);
-    const oth = others.map(([id, t]) => `l’exercice ${X(id)} « ${t.replace(/<[^>]+>/g, '')} » (page ${P(id)})`).join(' ou ');
-    (byLc[k] = byLc[k] || []).unshift(`<div class="blk ex parc3 c-${col}" data-inl="1" data-lcn="${k}" data-stage="1"><div class="pc3-h">🧭 Ton parcours · notion ${k}</div><div class="pc3-g"><p><b>Ça va ?</b> Fais ${hasM ? `les 4 calculs 🔧 (exercice ${X(mid)}) puis ` : ''}l’exercice ${X(bid)} « ${tt(base)} », puis ${oth}.</p><p><b>Ça bloque ?</b> Relis la méthode (page ${P(c.id + '-n' + k)}) et refais l’exemple avec tes mots. Fais seulement ${hasM ? `les 4 calculs 🔧 (exercice ${X(mid)}) et ` : ''}l’exercice ${X(bid)}. Quand tu les réussis seul·e, reviens faire ${oth}.</p></div></div>`);
   });
 
   /* réserve : d’autres tirages des exercices « Je m’entraîne ». La mise en page ne les pose que dans la place restée vide d’une page (jamais de page en plus). */
@@ -191,9 +178,9 @@ function chapter(c) {
     ex.push(`<div class="blk ex pb3${p.cls ? ' ' + p.cls : ''} c-${col}" data-eid="${eid}" data-det="${eid}" data-stage="${p.etape}"><div class="exh"><span class="num">·</span>${badge}<span class="ext">${p.titre}</span><span class="cps">${p.lc ? `<span class="lcref">notion ${Math.min(p.lc, c.notions.length)}</span>` : ''}${(p.comps || []).map(cp).join('')}</span></div><div class="exb">${p.etape === 4 || p.defi ? pastQ(p.body) : p.body}</div>${autr}${pouce}</div>`);
     key.push({ eid, titre: p.titre, det: detBlock(eid, `<b class="cn" data-numof="${eid}">·</b> ${p.titre}`, p.qs.map(q => [/[.)]$/.test(q.l) ? q.l : q.l + '.', q.x || q.a])) });
   });
-  /* 7. le métier derrière la scène, et je sais faire */
+  /* 7. les maths dans un contexte professionnel, et je sais faire */
   const m = c.metier.job;
-  ex.push(`<div class="blk ex mt3 keep c-${col}" data-stage="9"><div class="mt3-h">🧑‍🔧 Le métier derrière la scène</div><div class="mt3-g"><div><b class="mt3-n">${m.nom}</b><p>${m.fait}</p><p class="mt3-m">📐 <b>Ses maths</b> · ${m.maths}</p></div><div class="mt3-a"><span class="mt3-k">Après la 3e</span><ul>${m.apres.map(x => `<li>${x}</li>`).join('')}</ul></div></div></div>`);
+  ex.push(`<div class="blk ex mt3 keep c-${col}" data-stage="9"><div class="mt3-h">🧑‍🔧 Les maths dans un contexte professionnel</div><div class="mt3-g"><div><b class="mt3-n">${m.nom}</b><p>${m.fait}</p><p class="mt3-m">📐 <b>Ses maths</b> · ${m.maths}</p></div><div class="mt3-a"><span class="mt3-k">Après la 3e</span><ul>${m.apres.map(x => `<li>${x}</li>`).join('')}</ul></div></div></div>`);
   const au = AUTO.gen(c.id, seedOf(c.id + '-auto'), 10);
   FLASH.push(`<template id="flash-${c.id}"><ol>${[1, 2, 3, 4, 5, 6, 7, 8].flatMap(k => AUTO.gen(c.id, seedOf(c.id + "-flash" + k), 40)).filter((q, i, a) => !au.some(z => z.t === q.t) && a.findIndex(z => z.t === q.t) === i).slice(0, 130).map(q => `<li><span class="fl-t">${q.t}</span>${q.choices ? `<span class="opts">${q.choices.map((x, j) => opt(x, j === q.ok)).join('')}</span>` : bl(24, q.a)}</li>`).join('')}</ol></template>`);
   ex.push(`<div class="blk ex sais3 keep c-${col}" data-stage="9" data-sec="${c.id}-auto" data-det="${c.id}-auto"><div class="exh"><span class="ext">✅ Je fais le point</span></div><div class="exb"><p class="small">Je coche quand je sais faire seul. L’appli coche aussi cette liste au fil des réussites.</p><table class="tbl bilan"><tr><th>Je sais…</th><th>Exercices</th><th>Oui</th><th>Presque</th><th>Pas encore</th></tr>${c.bilan.map(([t, es]) => `<tr><td class="tl">${t.replace(/^Je sais /, '')}</td><td>${es.map(e => /^n\d/.test(e) ? `à moi, notion ${e.slice(1)}` : R(e)).join(', ')}</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>`).join('')}</table>
@@ -221,11 +208,11 @@ const QV = s => ({ vb: s.match(/viewBox="([^"]+)"/)[1], body: s.replace(/^<svg[^
 const pCover = `<div class="page cover2"><div class="cvfull">${cover({ qr: QV(QR.home.svg) })}</div></div>`;
 const pCoverP = `<div class="page cover2"><div class="cvfull">${cover({ qr: QV(QR.home.svg), prof: true })}</div></div>`;
 /* le schéma du chapitre */
-const STEPS = [['🎬', 'La scène', 'de la pop culture|et une question'], ['🚀', 'Point de départ', 'un document|5 questions'], ['📘', 'La leçon', 'une notion|par page'], ['🧭', 'Méthodes', 'un résolu, puis|un à compléter'], ['✏️', 'Je m’entraîne', 'des supports|à compléter'], ['🧩', 'Je résous', 'des situations|du métier'], ['🎯', 'S’évaluer', 'au format du brevet|55 min (une séance), sur 20']];
+const STEPS = [['🎬', 'La référence', 'de la pop culture|et une question'], ['🚀', 'Point de départ', 'un document|5 questions'], ['📘', 'La leçon', 'une notion|par page'], ['🧭', 'Méthodes', 'un résolu, puis|un à compléter'], ['✏️', 'Je m’entraîne', 'des supports|à compléter'], ['🧩', 'Je résous', 'des situations|du métier'], ['🎯', 'S’évaluer', 'au format du brevet|55 min (une séance), sur 20']];
 const flow = S(600, 250, STEPS.map(([ic, t, s], i) => { const x = 10 + (i % 4) * 150, y = i < 4 ? 20 : 140, w = 130; return Rc(x, y, w, 86, { c: i === 2 ? 'k' : 'k2', rx: 14 }) + `<text x="${x + w / 2}" y="${y + 30}" font-size="22" text-anchor="middle">${ic}</text>` + T(x + w / 2, y + 50, t, { fs: 14, c: i === 2 ? 'tw' : 'tx' }) + s.split('|').map((l, j) => T(x + w / 2, y + 68 + j * 12, l, { fs: 10, c: i === 2 ? 'tw' : 'ts', w: 600 })).join('') + (i < 3 ? Ar(x + w + 2, y + 43, x + w + 18, y + 43, { w: 2.4, h: 8 }) : '') + (i >= 4 && i < 6 ? Ar(x + w + 2, y + 43, x + w + 18, y + 43, { w: 2.4, h: 8 }) : ''); }).join('') + `<path d="M535 106 C 560 125, 90 112, 75 134" fill="none" class="ks" stroke-width="2.4" stroke-dasharray="6 4"/><path d="M75 138 l-6 -10 h12 z" class="k"/>` + T(527, 196, 'Une notion, une page :', { fs: 12, c: 'kt', a: 'middle' }) + T(527, 214, 'je découvre → la méthode', { fs: 10.5, w: 600 }) + T(527, 229, '→ la solution → je retiens', { fs: 10.5, w: 600 }) + T(527, 244, '→ à moi', { fs: 10.5, w: 600 }), 'Le déroulé d’un chapitre');
 const pGuide = `<div class="page c-nombre" data-recto="0"><div class="inner" data-sec="guide">
   <h1 class="pg-t">Ton manuel : comment ça marche ?</h1>
-  <p class="pg-p">Chaque chapitre suit toujours le même chemin. On part d’une scène de pop culture, avec de vraies données, on comprend, puis on s’entraîne et on résout.</p>
+  <p class="pg-p">Chaque chapitre suit toujours le même chemin. On part d’une référence de la pop culture, avec de vraies données, on comprend, puis on s’entraîne et on résout.</p>
   <div class="flow3">${flow}</div>
   <h2 class="pg-s">Ma routine de lecture, en 3 étapes</h2>
   <div class="rout3"><div><span class="gn">1</span><b>Je lis tout</b><span>Je lis l’énoncé une fois en entier, sans calculer. Je regarde les documents.</span></div><div><span class="gn">2</span><b>Je surligne</b><span>Je repère les données utiles (elles sont souvent <mark class="hl">surlignées</mark>) et ce qu’on me demande.</span></div><div><span class="gn">3</span><b>Je dis ce que je cherche</b><span>Avec mes mots : « Je cherche le prix d’un paquet ». Puis je choisis la méthode.</span></div></div>

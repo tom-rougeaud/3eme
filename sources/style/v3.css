@@ -387,11 +387,6 @@ table.evg3{table-layout:fixed;width:100%}
 .auto4 .auto3-q{gap:1.2mm 6mm}
 .sais3 .exb .small{margin:0 0 1mm}
 
-/* parcours guidé, en début de série d’exercices */
-.parc3{border:1.4px dashed var(--cc);border-radius:3mm;background:rgba(255,255,255,.7);padding:2.2mm 4mm 2.4mm;margin:2.5mm 0 2mm;break-inside:avoid}
-.parc3 .pc3-h{font:800 10pt 'Inter',sans-serif;color:var(--cc);margin-bottom:.8mm}
-.parc3 .pc3-g p{margin:.5mm 0;font-size:9.4pt;line-height:1.35}
-.parc3 .pc3-g b{color:var(--cc)}
 .mech-l.m3c{grid-template-columns:1fr 1fr 1fr;column-gap:5mm}
 
 /* Scratch : le programme est toujours affiché à côté des questions, réponses sur des lignes pleines */
@@ -410,3 +405,16 @@ table.evg3{table-layout:fixed;width:100%}
 .colbox .gc-ph,.cols2 .gc-ph{font-size:9.2pt;margin:.3mm 0}
 /* problème de type brevet avec programme Scratch : figure un peu plus basse pour que l’en-tête, la bulle et le problème tiennent sur une seule page */
 .pb3 .scr-w svg{max-height:42mm;width:auto;max-width:100%}
+/* version professeur : corrigé d’un problème plus compact (l’en-tête, la bulle et le problème tiennent sur une page) */
+.prof .pb3 .dq{font-size:8.5pt;line-height:1.18;margin-top:.3mm;padding:.2mm 2mm .3mm}
+.prof .pb3 .pq,.prof .pb3 .q{margin-top:1mm}
+.prof .pb3 .dz-in{margin-top:.8mm;padding:.6mm 2.4mm}.prof .pb3 .dz-in .dz-l li{font-size:8.5pt;line-height:1.18}
+.prof .palh3{padding-top:.6mm;padding-bottom:.6mm}.prof .palh3>span:last-child{display:none}
+.prof .bulle{padding:.5mm 3mm}.prof .bulle p{font-size:9.4pt;margin:.4mm 0}
+.prof .pb3 .exh{margin-bottom:.8mm}
+.prof .palh3{margin:0 0 .4mm;line-height:1.1}.prof .palh3 b{font-size:11pt}
+.prof .pb3 p.ans{margin:.2mm 0}.prof .pb3 .pq{margin-top:.5mm}.prof .pb3 .dq{margin-top:.1mm}
+.prof .bulle{margin:.4mm 0}
+.prof .pb3 .dq{font-size:8.2pt;line-height:1.14;padding:.1mm 2mm .2mm}.prof .pb3 .dq i{font-size:7.8pt}
+.prof .pb3 .dz-in .dz-l li{font-size:8.2pt;line-height:1.14}.prof .pb3 .pq-h{line-height:1.2}
+.prof .pb3 .scr-w svg{max-height:36mm}
