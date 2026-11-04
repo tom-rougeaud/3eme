@@ -4,7 +4,7 @@
 const { Sketch, esc } = require('../lib/visu');
 const { MCVP } = require('../shared/g1.js');
 const SV = (body, lab, w = 200, h = 130) => `<svg viewBox="0 0 ${w} ${h}" class="pic scene" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(lab)}">${body}</svg>`;
-const tt = (x, y, s, fs = 13, o = {}) => `<text x="${x}" y="${y}" font-family="Fira Sans" font-size="${fs}" font-weight="800" text-anchor="${o.a || 'middle'}" class="${o.c || 'tx'}">${s}</text>`;
+const tt = (x, y, s, fs = 13, o = {}) => `<text x="${x}" y="${y}" font-family="Nunito Sans" font-size="${fs}" font-weight="800" text-anchor="${o.a || 'middle'}" class="${o.c || 'tx'}">${s}</text>`;
 const fill = (x, y, w, h, op = .9, cls = 'k2', rx = 3) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" class="${cls}" opacity="${op}"/>`;
 const mini = (o, f) => { const g = MCVP.plot({ W: 200, H: 130, ml: 30, mr: 8, mt: 8, mb: 22, fs: 10, ...o }); return SV(g.base + f(g), o.lab || 'Graphique'); };
 
@@ -35,7 +35,7 @@ const D = {
 const SK = {
   /* chapitre 1 */
   classeur: () => { const K = Sketch(701); let s = fill(30, 14, 140, 104, .4) + K.P(K.rect(30, 14, 140, 104)); for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) { const x = 40 + c * 42, y = 20 + r * 32; s += fill(x, y, 36, 28, (r + c) % 3 ? .9 : .6, (r + c) % 3 ? 'k2' : 'k') + K.P(K.rect(x, y, 36, 28), { w: 1.2 }); } return SV(s + tt(100, 128, '9 pochettes par page', 11), 'Une page de classeur à 9 pochettes'); },
-  tomes: () => { const K = Sketch(702); let s = K.P(K.line(10, 104, 190, 104), { w: 3 }); [109, 110, 111, 112, 113, 114].forEach((n, i) => { const x = 14 + i * 29, pr = [109, 113].includes(n); s += fill(x, 26, 25, 78, .9, pr ? 'k' : 'k2', 2) + K.P(K.rect(x, 26, 25, 78), { w: 1.4 }) + `<text x="${x + 12.5}" y="72" font-family="Fira Sans" font-size="11" font-weight="800" text-anchor="middle" class="${pr ? 'tw' : 'tx'}" transform="rotate(-90 ${x + 12.5} 68)">${n}</text>`; }); return SV(s + tt(100, 124, 'en couleur : numéro premier', 11), 'Six tomes numérotés de 109 à 114 ; 109 et 113 sont mis en valeur'); },
+  tomes: () => { const K = Sketch(702); let s = K.P(K.line(10, 104, 190, 104), { w: 3 }); [109, 110, 111, 112, 113, 114].forEach((n, i) => { const x = 14 + i * 29, pr = [109, 113].includes(n); s += fill(x, 26, 25, 78, .9, pr ? 'k' : 'k2', 2) + K.P(K.rect(x, 26, 25, 78), { w: 1.4 }) + `<text x="${x + 12.5}" y="72" font-family="Nunito Sans" font-size="11" font-weight="800" text-anchor="middle" class="${pr ? 'tw' : 'tx'}" transform="rotate(-90 ${x + 12.5} 68)">${n}</text>`; }); return SV(s + tt(100, 124, 'en couleur : numéro premier', 11), 'Six tomes numérotés de 109 à 114 ; 109 et 113 sont mis en valeur'); },
   arbre: () => { const t = (x, y, s, k) => fill(x - 17, y - 13, 34, 20, .9, k ? 'k' : 'k2', 6) + tt(x, y + 2, s, 12, { c: k ? 'tw' : 'tx' }); const L = (a, b, c, d) => `<path d="M${a} ${b}L${c} ${d}" class="ks" stroke-width="1.8"/>`;
     return SV(t(100, 18, '800') + L(92, 26, 60, 44) + L(108, 26, 140, 44) + t(56, 54, '2', 1) + t(144, 54, '400') + L(136, 62, 112, 80) + L(152, 62, 176, 80) + t(108, 90, '2', 1) + t(180, 90, '200') + tt(100, 122, '… jusqu’aux nombres premiers', 10), 'Le début d’un arbre de décomposition de 800'); },
   fraction: () => { let s = ''; for (let i = 0; i < 10; i++) s += fill(14 + i * 17.2, 34, 15, 40, .9, i < 7 ? 'k' : 'k2', 2); return SV(s + tt(100, 24, '252 sur 360', 13) + tt(100, 98, '= 7 sur 10', 15, { c: 'kt' }), 'Une barre de 10 parts, dont 7 colorées : 252/360 = 7/10'); },

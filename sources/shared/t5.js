@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 5 — Fonctions : image, antécédent, lecture graphique, fonctions linéaires et affines,
+/* 3ème Prépa-Métiers · chapitre 5 — Fonctions : image, antécédent, lecture graphique, fonctions linéaires et affines,
    comparer deux formules. */
 (function (root) {
   'use strict';

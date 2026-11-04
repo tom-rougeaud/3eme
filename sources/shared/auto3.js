@@ -1,4 +1,4 @@
-/* 3ème Série Pro — zones « ⚡ Automatismes » : 5 questions flash par chapitre, sans calculatrice, comme la partie 1 du brevet.
+/* 3ème Prépa-Métiers — zones « ⚡ Automatismes » : 5 questions flash par chapitre, sans calculatrice, comme la partie 1 du brevet.
    Les questions suivent la liste indicative des automatismes du DNB (Eduscol) : nombres et calculs, grandeurs et mesures,
    données et probabilités, proportionnalité, géométrie, algorithmique. Tirage fixe dans le manuel, nouveau tirage dans l’appli.
    Une question = { t, v, tol, a, x } (réponse numérique) ou { t, choices, ok, a, x } (choix). */

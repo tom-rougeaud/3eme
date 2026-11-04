@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 6 — Statistiques : moyenne (simple et pondérée), médiane, étendue, diagrammes, fréquences. */
+/* 3ème Prépa-Métiers · chapitre 6 — Statistiques : moyenne (simple et pondérée), médiane, étendue, diagrammes, fréquences. */
 (function (root) {
   'use strict';
   const { DEP, TR, H } = typeof module !== 'undefined' ? require('./train.js').MCVT : root.MCVT;

@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 2 — Fractions, puissances de 10 et écriture scientifique :
+/* 3ème Prépa-Métiers · chapitre 2 — Fractions, puissances de 10 et écriture scientifique :
    additionner des fractions, prendre une fraction d’une quantité, puissances de 10 et préfixes, écriture scientifique. */
 (function (root) {
   'use strict';

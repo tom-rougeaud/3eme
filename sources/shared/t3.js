@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 3 — Calcul littéral et équations : développer, factoriser, prouver, résoudre une équation,
+/* 3ème Prépa-Métiers · chapitre 3 — Calcul littéral et équations : développer, factoriser, prouver, résoudre une équation,
    équation produit nul. */
 (function (root) {
   'use strict';

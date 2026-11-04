@@ -8,16 +8,16 @@ const QR = JSON.parse(fs.readFileSync(path.join(HERE, 'lib', 'qr.json'), 'utf8')
 const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Notice d’installation · 3ème Prépa-Métiers</title><style>${FONTS}
 @page{size:A4;margin:13mm 14mm 14mm}
 *{box-sizing:border-box}
-body{font-family:'Fira Sans','Noto Color Emoji','DejaVu Sans',sans-serif;font-size:9.4pt;line-height:1.3;color:#1D2240;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-h1,h2,.k,.tag,th{font-family:'Fira Sans','Noto Color Emoji','DejaVu Sans',sans-serif}
+body{font-family:'Nunito Sans','Noto Color Emoji','DejaVu Sans',sans-serif;font-size:9.4pt;line-height:1.3;color:#1D2240;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+h1,h2,.k,.tag,th{font-family:'Nunito Sans','Noto Color Emoji','DejaVu Sans',sans-serif}
 .hd{display:grid;grid-template-columns:auto 1fr 34mm;gap:5mm;align-items:center;background:#FFEC73;color:#1D2240;border-radius:6mm;padding:5mm 6mm;position:relative;overflow:hidden}
 .hd::after{content:"";position:absolute;right:-18mm;top:-22mm;width:60mm;height:60mm;border-radius:50%;background:#FFF5B8}
 .hd>*{position:relative;z-index:1}
-.sig{display:grid;place-items:center;width:17mm;height:17mm;border-radius:4.5mm;background:#1D2240;color:#FFEC73;font:800 28pt 'Fira Sans'}
+.sig{display:grid;place-items:center;width:17mm;height:17mm;border-radius:4.5mm;background:#1D2240;color:#FFEC73;font:800 28pt 'Nunito Sans'}
 .k{font-weight:800;font-size:8.6pt;letter-spacing:.08em;text-transform:uppercase;color:#6B4A00;margin:0}
 h1{margin:.5mm 0 1mm;font-size:21pt;line-height:1.05}
 .hd p{margin:0}
-.qr{background:#fff;border-radius:3mm;padding:1.6mm;text-align:center;color:#9A5B00;font:800 7pt 'Fira Sans'}.qr svg{width:100%;display:block}
+.qr{background:#fff;border-radius:3mm;padding:1.6mm;text-align:center;color:#9A5B00;font:800 7pt 'Nunito Sans'}.qr svg{width:100%;display:block}
 h2{font-size:12pt;color:#9A5B00;margin:3.6mm 0 1.4mm;break-after:avoid;display:flex;align-items:center;gap:2mm}
 h2 b{display:inline-grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:#FFEC73;color:#1D2240;font-size:10pt}
 .box{border:1.6px solid #D9DEF2;border-radius:4mm;padding:2.2mm 3.6mm;background:#fff}tr,li{break-inside:avoid}

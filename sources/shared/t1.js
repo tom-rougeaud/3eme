@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 1 — Nombres entiers et arithmétique : multiples, diviseurs, critères de divisibilité,
+/* 3ème Prépa-Métiers · chapitre 1 — Nombres entiers et arithmétique : multiples, diviseurs, critères de divisibilité,
    nombres premiers, décomposition en produit de facteurs premiers, fraction irréductible, partage en lots identiques. */
 (function (root) {
   'use strict';

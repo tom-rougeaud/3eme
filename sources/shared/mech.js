@@ -1,4 +1,4 @@
-/* Maths · 3ème Série Pro — « Je m’entraîne à la mécanique » : cinq petits calculs sans contexte pour chaque notion.
+/* Maths · 3ème Prépa-Métiers — « Je m’entraîne à la mécanique » : cinq petits calculs sans contexte pour chaque notion.
    Commun au manuel (tirage fixe) et à l’appli (nouveau tirage au choix).
    MCVT.mech('c3', 1, seed) → { titre, consigne, items:[{ k, t, a, v?, vs?, tol? }] }
      t : énoncé court (les formules sont mises en forme automatiquement) ; a : réponse affichée ;

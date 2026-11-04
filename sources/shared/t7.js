@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 7 — Probabilités : issues, événements, probabilité, événement contraire,
+/* 3ème Prépa-Métiers · chapitre 7 — Probabilités : issues, événements, probabilité, événement contraire,
    expérience à deux épreuves, fréquence et probabilité. */
 (function (root) {
   'use strict';

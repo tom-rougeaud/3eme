@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 10 — Espace et transformations : volumes (pavé, cylindre, cône, pyramide, boule),
+/* 3ème Prépa-Métiers · chapitre 10 — Espace et transformations : volumes (pavé, cylindre, cône, pyramide, boule),
    repérage sur la sphère (latitude, longitude), transformations (translation, symétrie, rotation, homothétie), Scratch. */
 (function (root) {
   'use strict';

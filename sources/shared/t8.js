@@ -1,4 +1,4 @@
-/* 3ème Série Pro · chapitre 8 — Théorème de Pythagore, réciproque, trigonométrie (cosinus, sinus, tangente). */
+/* 3ème Prépa-Métiers · chapitre 8 — Théorème de Pythagore, réciproque, trigonométrie (cosinus, sinus, tangente). */
 (function (root) {
   'use strict';
   const { DEP, TR, H } = typeof module !== 'undefined' ? require('./train.js').MCVT : root.MCVT;
